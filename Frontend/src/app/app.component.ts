@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
+import { MenuComponent } from '../shared/menu/menu.component';
 
 
 @Component({
   selector: 'app-root',
-  standalone: false,
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Frontend';
+  
 }

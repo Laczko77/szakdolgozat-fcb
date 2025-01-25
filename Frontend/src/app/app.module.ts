@@ -5,22 +5,28 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
-import { RegisterComponent } from './register/register/register.component';
-import { LoginComponent } from './login/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { LoginComponent } from './pages/login/login.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { CommonModule } from '@angular/common';
+import { MenuComponent } from '../shared/menu/menu.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    MenuComponent
+    
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,  // Hozzáadjuk az HttpClientModule-t
-    RouterModule,
+    HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

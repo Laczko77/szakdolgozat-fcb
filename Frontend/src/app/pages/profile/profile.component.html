@@ -1,0 +1,9 @@
+<div class="profile-container">
+    <h2>Saját profil:</h2>
+    <div class="profile-info" *ngIf="!errorMessage">
+      <p><strong>Username:</strong> {{ username }}</p>
+      <p><strong>Email:</strong> {{ email }}</p>
+    </div>
+    <button (click)="logout()">Kijelentkezés</button>
+</div>
+  

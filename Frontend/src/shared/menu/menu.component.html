@@ -1,0 +1,8 @@
+<div class="container">
+  <a class="navbar-brand" routerLink="/home">FC Barcelona</a>
+  <ul class="nav-links">
+    <li><a routerLink="/login" routerLinkActive="active" *ngIf="!(isAuthenticated$ | async)">Login</a></li>
+    <li><a routerLink="/register" routerLinkActive="active" *ngIf="!(isAuthenticated$ | async)">Register</a></li>
+    <li><a routerLink="/profile" *ngIf="isAuthenticated$ | async">Profile</a></li>
+  </ul>
+</div>

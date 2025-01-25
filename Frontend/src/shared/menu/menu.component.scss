@@ -1,0 +1,74 @@
+/* Alap container stílusok */
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #1c1c1c;
+  color: white;
+}
+
+/* Navbar logó */
+.navbar-brand {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  color: #fcfcfc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.navbar-brand:hover {
+  color: #f5b800; /* FC Barcelona sárga szín */
+}
+
+/* Navigációs linkek stílusa */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+}
+
+/* Egyes linkek stílusai */
+.nav-links li a {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.1rem;
+  color: #fcfcfc;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 30px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-links li a:hover {
+  background-color: #f5b800;  /* FC Barcelona sárga */
+  color: #1c1c1c; /* Sötét háttér szín a hover-re */
+}
+
+/* Aktív link szín */
+.nav-links li a.router-link-active {
+  background-color: #f5b800;
+  color: #1c1c1c;
+}
+
+/* Responszív navbar */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .nav-links li a {
+    padding: 10px 15px;
+  }
+}
