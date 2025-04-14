@@ -21,8 +21,8 @@ export class AuthService {
           console.error('Registration error:', error);
           throw error; // Hiba esetén a hiba tovább dobása
         })
-      );
-  }
+      ); 
+  } 
 
   // Bejelentkezés
   login(email: string, password: string) {

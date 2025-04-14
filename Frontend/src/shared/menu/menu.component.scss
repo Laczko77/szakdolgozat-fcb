@@ -21,7 +21,7 @@
 }
 
 .navbar-brand:hover {
-  color: #f5b800; /* FC Barcelona sárga szín */
+  color: blue; /* FC Barcelona sárga szín */
 }
 
 /* Navigációs linkek stílusa */
@@ -45,13 +45,13 @@
 }
 
 .nav-links li a:hover {
-  background-color: #f5b800;  /* FC Barcelona sárga */
+  background-color: blue;  /* FC Barcelona sárga */
   color: #1c1c1c; /* Sötét háttér szín a hover-re */
 }
 
 /* Aktív link szín */
 .nav-links li a.router-link-active {
-  background-color: #f5b800;
+  background-color: blue;
   color: #1c1c1c;
 }
 

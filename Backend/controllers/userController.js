@@ -1,40 +1,68 @@
 const userService = require('../services/userService');
-const bcrypt = require('bcrypt'); // bcrypt importálása
-const jwt = require('jsonwebtoken');
+// Az userService modul importálása, amely tartalmazza a felhasználók regisztrációs és keresési logikáját.
 
+const bcrypt = require('bcrypt');
+// A bcrypt importálása jelszó-ellenőrzéshez.
+
+const jwt = require('jsonwebtoken');
+// A jsonwebtoken importálása, amely a felhasználói azonosításhoz használt JWT-k generálásához szükséges.
+
+// Felhasználó regisztrációs függvény
 const register = async (req, res) => {
   try {
     const newUser = await userService.registerUser(req.body);
-    res.status(201).json({ message: 'User registered successfully', user: newUser });
+    // Az userService `registerUser` függvényének meghívása a kéréstörzsben kapott adatokkal.
+
+    res.status(201).json({ 
+      message: 'User registered successfully', 
+      user: newUser 
+    });
+    // 201-es státusz: A felhasználó sikeresen létrehozva, és az új felhasználó adatait visszaküldjük.
   } catch (error) {
     res.status(400).json({ error: error.message });
+    // 400-as státusz: Hibás kérés esetén hibaüzenet visszaadása.
   }
 };
 
+// Felhasználó bejelentkezési függvény
 const login = async (req, res) => {
   const { email, password } = req.body;
+  // A kéréstörzsből kinyerjük az emailt és jelszót.
 
   try {
-    const user = await userService.findUserByEmail(email); // Egy új helper funkciót készíthetsz a szolgáltatásban
+    const user = await userService.findUserByEmail(email);
+    // Az email alapján keresünk egy felhasználót az adatbázisban.
 
-    // Ellenőrizd, hogy a felhasználó létezik-e
     if (!user) {
+      // Ha nem található a felhasználó, hibás hitelesítési üzenetet küldünk.
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Ellenőrizd a jelszót
     const isMatch = await bcrypt.compare(password, user.password);
+    // A megadott jelszót összehasonlítjuk az adatbázisban tárolt hash-elt jelszóval.
+
     if (!isMatch) {
+      // Ha a jelszó nem egyezik, hibás hitelesítési üzenetet küldünk.
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Generálj egy JWT-t
-    const token = jwt.sign({ userId: user._id }, 'secretkey', { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id }, // A token tartalmazza a felhasználó azonosítóját.
+      'secretkey',         // Titkos kulcs, amelyet a token aláírásához használunk.
+      { expiresIn: '1h' }  // A token érvényességi ideje 1 óra.
+    );
 
-    res.json({ message: 'Login successful', token });
+    res.json({ 
+      message: 'Login successful', 
+      token 
+    });
+    // Sikeres bejelentkezés esetén visszaküldjük a JWT-t.
   } catch (err) {
     console.error(err);
+    // Hibák logolása konzolra.
+
     res.status(500).json({ message: 'Internal server error' });
+    // 500-as státusz: Általános szerverhiba esetén hibaüzenet visszaadása.
   }
 };
 
@@ -42,3 +70,4 @@ module.exports = {
   register,
   login,
 };
+// A regisztrációs és bejelentkezési függvények exportálása, hogy a routerekben használhatóak legyenek.
