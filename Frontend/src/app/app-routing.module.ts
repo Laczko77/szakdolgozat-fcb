@@ -7,6 +7,7 @@ import { AuthGuard } from '../shared/services/auth.guard';// AuthGuard importál
 import { HomeComponent } from './pages/main/home/home.component';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { NewsCreateComponent } from './pages/news/news-create/news-create.component';
+import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'news/create', component: NewsCreateComponent },
   { path: 'news/:id', component: NewsDetailComponent },
+  { path: 'shop/admin', component: ProductAdminComponent },
   { path: '**', redirectTo: '/login' }
 ];
 

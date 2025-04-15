@@ -5,5 +5,6 @@
     <li><a routerLink="/register" routerLinkActive="active" *ngIf="!(isAuthenticated$ | async)">Register</a></li>
     <li><a routerLink="/profile" *ngIf="isAuthenticated$ | async">Profile</a></li>
     <li><a routerLink="/news/create">Hír létrehozása</a></li>
+    <li><a routerLink="/shop/admin">Termékek létrehozása</a></li>
   </ul>
 </div>

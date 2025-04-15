@@ -14,6 +14,7 @@ import { HomeComponent } from './pages/main/home/home.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { NewsCreateComponent } from './pages/news/news-create/news-create.component';
+import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.component';
 
 
 @NgModule({ declarations: [
@@ -24,7 +25,8 @@ import { NewsCreateComponent } from './pages/news/news-create/news-create.compon
         MenuComponent,
         HomeComponent,
         NewsDetailComponent,
-        NewsCreateComponent
+        NewsCreateComponent,
+        ProductAdminComponent
 
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,

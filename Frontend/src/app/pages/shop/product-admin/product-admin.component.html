@@ -1,0 +1,88 @@
+<!--<div class="product-admin-container">
+  <h2>{{ selectedProduct ? 'Termék szerkesztése' : 'Új termék létrehozása' }}</h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="submit()">
+    <label for="name">Név</label>
+    <input id="name" type="text" formControlName="name" />
+
+    <label for="description">Leírás</label>
+    <textarea id="description" rows="3" formControlName="description"></textarea>
+
+    <label for="price">Ár (HUF)</label>
+    <input id="price" type="number" formControlName="price" />
+
+    <label for="imageUrl">Kép URL</label>
+    <input id="imageUrl" type="text" formControlName="imageUrl" />
+
+    <label for="category">Kategória</label>
+    <input id="category" type="text" formControlName="category" />
+
+    <div class="form-buttons">
+      <button type="submit" [disabled]="isSubmitting">
+        {{ selectedProduct ? 'Frissítés' : 'Létrehozás' }}
+      </button>
+      <button type="button" class="cancel" *ngIf="selectedProduct" (click)="clearForm()">Mégse</button>
+    </div>
+  </form>
+
+  <h2>Termékek listája</h2>
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of productList">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.category }}</p>
+      <p class="price">{{ product.price | number }} Ft</p>
+
+      <div class="actions">
+        <button (click)="selectForEdit(product)">Szerkesztés</button>
+        <button class="delete" (click)="deleteProduct(product._id!)">Törlés</button>
+      </div>
+    </div>
+  </div>
+</div>-->
+<div class="product-admin-container">
+
+  <h2>Termékek</h2>
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of productList">
+        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-img" />
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.category }}</p>
+        <p class="price">{{ product.price | number }} Ft</p>
+
+        <div class="actions">
+          <button (click)="selectForEdit(product)">Szerkesztés</button>
+          <button class="delete" (click)="deleteProduct(product._id!)">Törlés</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="product-form-container">
+  <h2>{{ selectedProduct ? 'Termék szerkesztése' : 'Új termék létrehozása' }}</h2>
+  <form [formGroup]="productForm" (ngSubmit)="submit()">
+    <label for="name">Név</label>
+    <input id="name" type="text" formControlName="name" />
+
+    <label for="description">Leírás</label>
+    <textarea id="description" rows="3" formControlName="description"></textarea>
+
+    <label for="price">Ár (HUF)</label>
+    <input id="price" type="number" formControlName="price" />
+
+    <label for="imageUrl">Kép URL</label>
+    <input id="imageUrl" type="text" formControlName="imageUrl" />
+
+    <label for="category">Kategória</label>
+    <input id="category" type="text" formControlName="category" />
+
+    <div class="form-buttons">
+      <button type="submit" [disabled]="isSubmitting">
+        {{ selectedProduct ? 'Frissítés' : 'Létrehozás' }}
+      </button>
+      <button type="button" class="cancel" *ngIf="selectedProduct" (click)="clearForm()">Mégse</button>
+    </div>
+  </form>
+
+</div>

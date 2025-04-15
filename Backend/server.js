@@ -51,9 +51,10 @@ app.get('/', (req, res) => {
 
 const newsRoutes = require('./routes/newsRoutes');
 app.use('/api/news', newsRoutes);
+/*app.use('/api/news', require('./routes/newsRoutes'));*/
 
-
-app.use('/api/news', require('./routes/newsRoutes'));
+const productRoutes = require('./routes/productRoutes');
+app.use('/api/products', productRoutes);
 
 // Start server
 app.listen(port, () => {
