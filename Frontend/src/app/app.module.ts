@@ -10,6 +10,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CommonModule } from '@angular/common';
 import { MenuComponent } from '../shared/menu/menu.component';
+import { HomeComponent } from './pages/main/home/home.component';
 
 
 @NgModule({
@@ -18,8 +19,8 @@ import { MenuComponent } from '../shared/menu/menu.component';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    MenuComponent
-    
+    MenuComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

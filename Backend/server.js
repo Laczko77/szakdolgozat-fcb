@@ -49,6 +49,8 @@ app.get('/', (req, res) => {
 // Az alapértelmezett route, amely egy egyszerű üzenetet küld vissza, hogy jelezze,
 // a szerver fut. Ez tesztelésre használható. 
 
+const newsRoutes = require('./routes/newsRoutes');
+app.use('/api/news', newsRoutes);
 
 // Start server
 app.listen(port, () => {

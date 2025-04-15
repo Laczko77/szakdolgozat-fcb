@@ -1,2 +1,10 @@
 <h1>Üdv a Barça rajongói oldalon!</h1>
 <p>Itt megtalálod a legfrissebb híreket és információkat a csapatról.</p>
+
+<div class="news-container">
+  <div *ngFor="let news of newsList" class="news-card">
+    <img *ngIf="news.imageUrl" [src]="news.imageUrl" alt="Hír képe" />
+    <h2>{{ news.title }}</h2>
+    <p>{{ news.content }}</p>
+  </div>
+</div>
