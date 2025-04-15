@@ -1,0 +1,40 @@
+<div class="news-admin-container">
+  <h2>Hírek kezelése</h2>
+
+  <!-- Hírek rácsos nézete -->
+  <div class="news-grid">
+    <div class="news-card" *ngFor="let news of newsList">
+      <img [src]="news.imageUrl" alt="News image" class="news-img" />
+      <h3>{{ news.title }}</h3>
+      <div class="actions">
+        <button (click)="selectForEdit(news)">Szerkesztés</button>
+        <button class="delete" (click)="deleteNews(news._id!)">Törlés</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hír létrehozása/szerkesztése -->
+  <div class="news-form-container">
+    <h3 *ngIf="selectedNews; else newForm">Hír szerkesztése</h3>
+    <ng-template #newForm><h3>Új hír létrehozása</h3></ng-template>
+
+    <form [formGroup]="newsForm" (ngSubmit)="submit()">
+      <label for="title">Cím</label>
+      <input id="title" type="text" formControlName="title" />
+
+      <label for="content">Tartalom</label>
+      <textarea id="content" formControlName="content" rows="5"></textarea>
+
+      <label for="imageUrl">Kép URL</label>
+      <input id="imageUrl" type="text" formControlName="imageUrl" />
+
+      <button type="submit" [disabled]="isSubmitting">
+        {{ selectedNews ? 'Frissítés' : 'Létrehozás' }}
+      </button>
+
+      <button type="button" class="cancel" *ngIf="selectedNews" (click)="clearForm()">
+        Mégse
+      </button>
+    </form>
+  </div>
+</div>

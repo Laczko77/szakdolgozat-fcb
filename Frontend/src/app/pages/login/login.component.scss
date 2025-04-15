@@ -1,81 +1,71 @@
 // Barcelona színek
 $barcelona-blue: #004d98;
-$barcelona-red: #a50021;
-$yellow: #f4c300;
+$barcelona-red: #a50044;
 
-// Modernizált dizájn a login formhoz
+// Stílus alap
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, $barcelona-red, $barcelona-blue);
+  font-family: 'Segoe UI', sans-serif;
+}
+
 form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 30px;
-  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  max-width: 400px;
 
-  &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  label {
-    font-size: 18px;
-    font-weight: 500;
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
     color: $barcelona-blue;
-    margin-bottom: 8px;
-    display: block;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: $barcelona-red;
-    }
   }
 
   input {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
 
     &:focus {
-      border-color: $barcelona-red;
       outline: none;
-      box-shadow: 0 0 8px rgba($barcelona-red, 0.4);
-    }
-
-    &::placeholder {
-      color: #aaa;
+      border-color: $barcelona-blue;
+      box-shadow: 0 0 0 2px rgba(0, 77, 152, 0.2);
     }
   }
 
   button {
     width: 100%;
-    padding: 14px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
     background-color: $barcelona-red;
     color: white;
-    font-size: 18px;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: darken($barcelona-red, 10%);
-      transform: translateY(-2px);
+      background-color: #850038;
     }
+  }
 
-    &:active {
-      transform: translateY(0);
-    }
+  .link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: $barcelona-blue;
+    text-decoration: none;
 
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-      transform: none;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

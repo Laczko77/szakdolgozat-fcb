@@ -3,9 +3,10 @@ import { AuthService } from '../../../shared/services/auth.service'; // AuthServ
 import { Router } from '@angular/router'; // Router importálása
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent {
   email: string = ''; // Az email mező

@@ -1,0 +1,73 @@
+.news-detail {
+    font-family: 'Segoe UI', sans-serif;
+    color: #2e2e2e;
+  
+    .header-image {
+      width: 100%;
+      height: 400px;
+      background-size: cover;
+      background-position: center;
+      border-bottom: 8px solid #a50044; // Barça bordó
+    }
+
+    .image-overlay {
+        position: absolute;
+        bottom: 0;
+        height: 200px;
+        width: 100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, #a50044 100%);
+      }
+      
+    .news-content {
+      background: #fff;
+      padding: 2rem;
+      margin-top: -50px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+  
+      .news-title {
+        font-size: 2rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #002147; // Barça kék
+  
+        .highlight {
+          color: #a50044; // Barça bordó
+        }
+      }
+  
+      .news-text {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        text-align: justify;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .news-detail {
+      .header-image {
+        height: 200px;
+      }
+  
+      .news-content {
+        padding: 1.5rem;
+  
+        .news-title {
+          font-size: 1.5rem;
+        }
+  
+        .news-text {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+ 
+  

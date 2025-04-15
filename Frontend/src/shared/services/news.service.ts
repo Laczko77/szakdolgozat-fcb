@@ -20,4 +20,21 @@ export class NewsService {
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(this.apiUrl);
   }
+
+  
+  getNewsById(id: string): Observable<News> {
+    return this.http.get<News>(`${this.apiUrl}/${id}`);
+  }
+
+  createNews(news: News): Observable<News> {
+    return this.http.post<News>(this.apiUrl, news);
+  }
+
+  updateNews(id: string, news: News): Observable<News> {
+    return this.http.put<News>(`${this.apiUrl}/${id}`, news);
+  }
+  
+  deleteNews(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

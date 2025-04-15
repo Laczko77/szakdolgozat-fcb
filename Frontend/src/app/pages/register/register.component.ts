@@ -4,9 +4,10 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';  // Importáljuk a Router-t
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    standalone: false
 })
 export class RegisterComponent {
 

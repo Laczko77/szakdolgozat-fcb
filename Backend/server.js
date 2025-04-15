@@ -52,6 +52,9 @@ app.get('/', (req, res) => {
 const newsRoutes = require('./routes/newsRoutes');
 app.use('/api/news', newsRoutes);
 
+
+app.use('/api/news', require('./routes/newsRoutes'));
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

@@ -1,112 +1,71 @@
 // Barcelona színek
 $barcelona-blue: #004d98;
-$barcelona-red: #a50021;
-$yellow: #f4c300;
+$barcelona-red: #a50044;
 
-// Modernizált dizájn
+// Stílus alap
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, $barcelona-red, $barcelona-blue);
+  font-family: 'Segoe UI', sans-serif;
+}
+
 form {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-  padding: 30px;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e2e2e2 100%);
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
+  max-width: 400px;
 
   h2 {
     text-align: center;
+    margin-bottom: 1.5rem;
     color: $barcelona-blue;
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
   }
 
-  div {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
 
-    label {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: $barcelona-blue;
-      transition: color 0.3s ease;
-
-      &:hover {
-        color: $barcelona-red;
-      }
-    }
-
-    input {
-      padding: 14px;
-      font-size: 16px;
-      border: 2px solid #ccc;
-      border-radius: 6px;
-      background-color: #fff;
-      transition: all 0.3s ease;
-      margin-top: 6px;
-      
-      &:focus {
-        border-color: $barcelona-red;
-        outline: none;
-        box-shadow: 0 0 8px rgba($barcelona-red, 0.4);
-      }
-
-      &::placeholder {
-        color: #aaa;
-      }
+    &:focus {
+      outline: none;
+      border-color: $barcelona-blue;
+      box-shadow: 0 0 0 2px rgba(0, 77, 152, 0.2);
     }
   }
 
   button {
     width: 100%;
-    padding: 14px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
     background-color: $barcelona-red;
     color: white;
-    font-size: 18px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: darken($barcelona-red, 10%);
-      transform: translateY(-2px);
-    }
-
-    &:active {
-      transform: translateY(0);
-    }
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-      transform: none;
+      background-color: #850038;
     }
   }
 
-  .form-footer {
+  .link {
+    display: block;
     text-align: center;
-    margin-top: 15px;
+    margin-top: 1rem;
+    color: $barcelona-blue;
+    text-decoration: none;
 
-    a {
-      color: $barcelona-blue;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-
-      &:hover {
-        color: $yellow;
-      }
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

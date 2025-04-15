@@ -7,9 +7,15 @@ const authenticateToken = require('../middlewares/authMiddleware');
 router.get('/', newsController.getAllNews);
 
 // Új hír létrehozása (csak bejelentkezett felhasználóknak/adminnak)
-router.post('/', authenticateToken, newsController.createNews);
+router.post('/',  newsController.createNews);
 
 // Hír törlése (csak bejelentkezett felhasználóknak/adminnak)
-router.delete('/:id', authenticateToken, newsController.deleteNews);
+router.delete('/:id', newsController.deleteNews);
+
+router.get('/:id', newsController.getNewsById);
+
+router.put('/:id', newsController.updateNews);
+
+
 
 module.exports = router;

@@ -1,0 +1,16 @@
+<div class="news-detail" *ngIf="newsItem">
+  
+  <div class="header-image" [style.backgroundImage]="'url(' + newsItem.imageUrl + ')'"></div>
+
+  
+  <div class="news-content">
+    <h1 class="news-title">
+      <span class="highlight">PREVIEW</span> |
+      {{ newsItem.title }}
+    </h1>
+    <p class="news-text">
+      {{ newsItem.content }}
+    </p>
+  </div>
+</div>
+
