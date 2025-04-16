@@ -1,0 +1,22 @@
+<div class="shop-container">
+  <div class="product-grid">
+
+    
+    <div class="product-card" *ngFor="let product of products">
+      <a [routerLink]="['/shop/product', product._id]" class="product-card-link">
+        <div class="image-container">
+          <img [src]="product.imageUrl" [alt]="product.name" />
+        </div>
+
+        <div class="details">
+          <p class="category">{{ product.category.toUpperCase() }}</p>
+          <p class="name">{{ product.name }}</p>
+          <p class="price">{{ product.price | currency:'EUR' }}</p>
+        </div>
+      </a>
+    </div>
+
+
+  </div>
+</div>
+

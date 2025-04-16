@@ -15,6 +15,12 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
 import { NewsCreateComponent } from './pages/news/news-create/news-create.component';
 import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.component';
+import { ShopComponent } from './pages/shop/shop/shop.component';
+import { ProductDetailComponent } from './pages/shop/product-detail/product-detail.component';
+import { CartComponent } from './pages/shop/cart/cart.component';
+import { OrderService } from '../shared/services/order.service';
+import { OrdersComponent } from './pages/shop/orders/orders.component';
+
 
 
 @NgModule({ declarations: [
@@ -26,13 +32,40 @@ import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.
         HomeComponent,
         NewsDetailComponent,
         NewsCreateComponent,
-        ProductAdminComponent
+        ProductAdminComponent,
+        ShopComponent,
+        ProductDetailComponent,
+        CartComponent,
+        OrdersComponent
 
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [
+        AppComponent
+    ], 
+    
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         FormsModule,
         SlickCarouselModule,
         ReactiveFormsModule,
-        CommonModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        CommonModule
+    ],
+    /*providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptor,
+          multi: true
+        }
+      ],*/
+
+
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
+        
+    ] 
+
+        
+    
+    })
 export class AppModule {}

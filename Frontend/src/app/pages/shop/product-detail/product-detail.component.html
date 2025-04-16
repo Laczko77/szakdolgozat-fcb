@@ -1,0 +1,28 @@
+<div class="product-detail-container" *ngIf="product">
+    <div class="product-images">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image" />
+      <!--<img [src]="product.imageUrl" alt="{{ product.name }} back" class="back-image" />-->
+    </div>
+  
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="price">{{ product.price | currency:'EUR':'symbol-narrow' }}</p>
+  
+      <div class="sizes">
+        <h4>Méret</h4>
+        <div class="size-options">
+          <button *ngFor="let size of ['XS','S','M','L','XL','2XL','3XL']" class="size-btn">{{ size }}</button>
+        </div>
+      </div>
+  
+      <div class="customize">
+        <h4>Személyre szabható (+20 EUR)</h4>
+        <input type="text" placeholder="Add meg a neved vagy mezszámod" />
+      </div>
+  
+      <div class="actions">
+        <button class="add-to-cart" (click)="addToCart()">Kosárba</button>
+      </div>
+    </div>
+  </div>
+ 

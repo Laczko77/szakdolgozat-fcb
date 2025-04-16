@@ -1,0 +1,37 @@
+<div *ngIf="orderPlaced; else cartView" class="order-success">
+  <h2>Sikeres rendelés! 🎉</h2>
+  <p>Köszönjük a rendelésed. A részleteket megtalálod a rendeléseid között.</p>
+  <button routerLink="/orders" class="order-btn">Rendeléseim megtekintése</button>
+</div>
+
+<ng-template #cartView>
+  <div class="cart-container" *ngIf="cart">
+    <h2>Kosarad</h2>
+
+    <div *ngIf="cart.items.length === 0" class="empty">
+      A kosarad üres 😕
+      <button routerLink="/orders" class="order-btn">Rendeléseim megtekintése</button>
+    </div>
+
+    <div *ngIf="cart.items.length > 0" class="items">
+      <div class="item" *ngFor="let item of cart.items">
+        <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />
+        <div class="details">
+          <h3>{{ item.productId.name }}</h3>
+          <p>Kategória: {{ item.productId.category }}</p>
+          <p>Ár: {{ item.productId.price | currency:'EUR' }}</p>
+          <p>Mennyiség: {{ item.quantity }}</p>
+        </div>
+        <div class="actions">
+          <button (click)="decreaseItem(item.productId._id)">–</button>
+          <button (click)="removeItem(item.productId._id)">❌</button>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <button class="clear" (click)="clearCart()">Kosár ürítése</button>
+        <button class="order" (click)="placeOrder()">Rendelés leadása</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

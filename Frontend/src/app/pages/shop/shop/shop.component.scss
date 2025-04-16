@@ -1,0 +1,93 @@
+.shop-container {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+  
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.25rem;
+    }
+  
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      border: none;
+      min-height: 560px;
+      overflow: hidden;
+  
+      .image-container {
+        width: 100%;
+        height: 450px;
+        background-color: #f9f9f9;
+        overflow: hidden;
+  
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          transition: transform 0.3s ease;
+        }
+      }
+  
+      .details {
+        padding: 1rem;
+        transition: 0.3s ease;
+  
+        .category {
+          font-size: 0.75rem;
+          color: #555;
+          font-weight: bold;
+          text-transform: uppercase;
+          margin-bottom: 0.3rem;
+        }
+  
+        .name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #111;
+            display: inline-block; // fontos: csak akkora lesz, mint a szöveg
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s ease;
+          }
+  
+        .price {
+            color: #a50044;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+      }
+  
+      &:hover {
+        .image-container img {
+          transform: scale(1.05);
+        }
+      
+        .details .name {
+          border-bottom: 2px solid #004d98;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 1200px) {
+    .product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  

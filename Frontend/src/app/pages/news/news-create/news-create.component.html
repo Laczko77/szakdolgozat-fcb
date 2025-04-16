@@ -1,17 +1,5 @@
 <div class="news-admin-container">
-  <h2>Hírek kezelése</h2>
-
-  <!-- Hírek rácsos nézete -->
-  <div class="news-grid">
-    <div class="news-card" *ngFor="let news of newsList">
-      <img [src]="news.imageUrl" alt="News image" class="news-img" />
-      <h3>{{ news.title }}</h3>
-      <div class="actions">
-        <button (click)="selectForEdit(news)">Szerkesztés</button>
-        <button class="delete" (click)="deleteNews(news._id!)">Törlés</button>
-      </div>
-    </div>
-  </div>
+  
 
   <!-- Hír létrehozása/szerkesztése -->
   <div class="news-form-container">
@@ -36,5 +24,19 @@
         Mégse
       </button>
     </form>
+  </div>
+
+  <h2>Hírek kezelése</h2>
+
+  <!-- Hírek rácsos nézete -->
+  <div class="news-grid">
+    <div class="news-card" *ngFor="let news of newsList">
+      <img [src]="news.imageUrl" alt="News image" class="news-img" />
+      <h3>{{ news.title }}</h3>
+      <div class="actions">
+        <button (click)="selectForEdit(news)">Szerkesztés</button>
+        <button class="delete" (click)="deleteNews(news._id!)">Törlés</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -27,5 +27,9 @@ export class ProductService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  getProductById(id: string) {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
   // később: updateProduct, deleteProduct, getById stb.
 }

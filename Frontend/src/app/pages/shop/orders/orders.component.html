@@ -1,0 +1,22 @@
+<div class="orders-container" *ngIf="orders.length > 0; else noOrders">
+  <h2>Korábbi rendeléseid</h2>
+
+  <div *ngFor="let order of orders" class="order-card">
+    <p><strong>Dátum:</strong> {{ order.createdAt | date:'medium' }}</p>
+    <p><strong>Végösszeg:</strong> {{ order.totalAmount | currency:'EUR' }}</p>
+
+    <div class="order-items">
+      <div *ngFor="let item of order.items" class="order-item">
+        <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />
+        <div>
+          <p><strong>{{ item.productId.name }}</strong></p>
+          <p>{{ item.quantity }} db</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noOrders>
+  <p>Még nem adtál le rendelést.</p>
+</ng-template>

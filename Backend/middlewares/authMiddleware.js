@@ -14,6 +14,7 @@ const authenticateToken = async (req, res, next) => {
     if (!user) return res.status(404).json({ message: 'Felhasználó nem található!' });
 
     req.user = user; // továbbadjuk a user-t
+    req.userId = user._id;
     next();
   } catch (err) {
     return res.status(403).json({ message: 'Érvénytelen token!' });
