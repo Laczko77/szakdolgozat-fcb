@@ -41,7 +41,42 @@ const getUserOrders = async (req, res) => {
     }
   };
 
+  const getAllOrders = async (req, res) => {
+    try {
+      const orders = await Order.find().populate('items.productId userId').sort({ createdAt: -1 });
+      res.json(orders);
+    } catch (err) {
+      res.status(500).json({ message: 'Hiba az összes rendelés lekérdezésekor' });
+    }
+  };
+
+  const updateOrderStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+  
+    try {
+      const updated = await Order.findByIdAndUpdate(id, { status }, { new: true }).populate('items.productId userId');
+      res.json(updated);
+    } catch (err) {
+      res.status(500).json({ message: 'Hiba a rendelés állapotának frissítésekor' });
+    }
+  };
+
+  const deleteOrder = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      await Order.findByIdAndDelete(id);
+      res.json({ message: 'Rendelés törölve' });
+    } catch (err) {
+      res.status(500).json({ message: 'Hiba a rendelés törlésekor' });
+    }
+  };
+
 module.exports = {
   placeOrder,
-  getUserOrders
+  getUserOrders,
+  getAllOrders,
+  updateOrderStatus,
+  deleteOrder
 };

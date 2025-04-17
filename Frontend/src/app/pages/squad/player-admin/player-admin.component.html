@@ -1,0 +1,34 @@
+<div class="player-admin">
+    <h2>Játékosok kezelése</h2>
+  
+    <form (ngSubmit)="savePlayer()" class="player-form">
+      <input type="text" placeholder="Név" [(ngModel)]="newPlayer.name" name="name" required>
+      <input type="number" placeholder="Mezszám" [(ngModel)]="newPlayer.number" name="number">
+      <input type="text" placeholder="Poszt" [(ngModel)]="newPlayer.position" name="position">
+      <input type="text" placeholder="Nemzetiség" [(ngModel)]="newPlayer.nationality" name="nationality">
+      <input type="date" placeholder="Születési dátum" [(ngModel)]="newPlayer.birthDate" name="birthDate">
+      <input type="text" placeholder="Kép URL" [(ngModel)]="newPlayer.imageUrl" name="imageUrl">
+      <input type="number" placeholder="Meccsek" [(ngModel)]="newPlayer.appearances" name="appearances">
+      <input type="number" placeholder="Gólok" [(ngModel)]="newPlayer.goals" name="goals">
+      <input type="number" placeholder="Asszisztok" [(ngModel)]="newPlayer.assists" name="assists">
+  
+      <label>
+        <input type="checkbox" [(ngModel)]="newPlayer.isCoach" name="isCoach">
+        Edző?
+      </label>
+  
+      <button type="submit">{{ editingPlayer ? 'Mentés' : 'Hozzáadás' }}</button>
+      <button type="button" (click)="resetForm()">Mégse</button>
+    </form>
+  
+    <hr>
+  
+    <ul class="player-list">
+      <li *ngFor="let player of players">
+        <strong>{{ player.name }}</strong> – {{ player.position }} – {{ player.number }}<span *ngIf="player.isCoach"> (Edző)</span>
+        <button (click)="editPlayer(player)">✏️</button>
+        <button (click)="deletePlayer(player._id!)">❌</button>
+      </li>
+    </ul>
+  </div>
+  

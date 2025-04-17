@@ -4,7 +4,9 @@
   <div *ngFor="let order of orders" class="order-card">
     <p><strong>Dátum:</strong> {{ order.createdAt | date:'medium' }}</p>
     <p><strong>Végösszeg:</strong> {{ order.totalAmount | currency:'EUR' }}</p>
-
+    <!--<p><strong>Státusz:</strong> {{ order.status }}</p>-->
+    <span *ngIf="order.status === 'Teljesítve'">✅ Teljesítve</span>
+    <span *ngIf="order.status === 'Feldolgozás alatt'">⏳ Feldolgozás alatt</span>
     <div class="order-items">
       <div *ngFor="let item of order.items" class="order-item">
         <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />

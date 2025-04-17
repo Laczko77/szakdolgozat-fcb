@@ -18,8 +18,12 @@ import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.
 import { ShopComponent } from './pages/shop/shop/shop.component';
 import { ProductDetailComponent } from './pages/shop/product-detail/product-detail.component';
 import { CartComponent } from './pages/shop/cart/cart.component';
-import { OrderService } from '../shared/services/order.service';
 import { OrdersComponent } from './pages/shop/orders/orders.component';
+import { OrdersAdminComponent } from './pages/shop/orders-admin/orders-admin.component';
+import { MatchAdminComponent } from './pages/matches/match-admin/match-admin.component';
+import { MatchListComponent } from './pages/matches/match-list/match-list.component';
+import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.component';
+import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
 
 
 
@@ -36,7 +40,12 @@ import { OrdersComponent } from './pages/shop/orders/orders.component';
         ShopComponent,
         ProductDetailComponent,
         CartComponent,
-        OrdersComponent
+        OrdersComponent,
+        OrdersAdminComponent,
+        MatchAdminComponent,
+        MatchListComponent,
+        PlayerAdminComponent,
+        PlayerListComponent
 
     ],
     bootstrap: [

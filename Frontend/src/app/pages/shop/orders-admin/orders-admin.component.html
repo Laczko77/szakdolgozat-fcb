@@ -1,0 +1,26 @@
+<div class="admin-orders" *ngIf="orders.length > 0; else noOrders">
+    <h2>Összes rendelés</h2>
+  
+    <div *ngFor="let order of orders" class="order-card">
+      <p><strong>Felhasználó:</strong> {{ order.userId.email }}</p>
+      <p><strong>Dátum:</strong> {{ order.createdAt | date:'medium' }}</p>
+      <p><strong>Státusz:</strong> {{ order.status }}</p>
+      <p><strong>Végösszeg:</strong> {{ order.totalAmount | currency:'EUR' }}</p>
+  
+      <ul>
+        <li *ngFor="let item of order.items">
+          {{ item.productId.name }} – {{ item.quantity }} db
+        </li>
+      </ul>
+  
+      <div class="admin-actions">
+        <button (click)="markAsCompleted(order._id)" [disabled]="order.status === 'Teljesítve'">✅ Teljesítve</button>
+        <button (click)="deleteOrder(order._id)">❌ Törlés</button>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noOrders>
+    <p>Nincsenek leadott rendelések.</p>
+  </ng-template>
+  

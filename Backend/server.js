@@ -66,6 +66,12 @@ const orderRoutes = require('./routes/orderRoutes');
 app.use('/api/orders', orderRoutes);
 
 
+const matchRoutes = require('./routes/matchRoutes');
+app.use('/api/matches', matchRoutes);
+
+
+const playerRoutes = require('./routes/playerRoutes');
+app.use('/api/players', playerRoutes);
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

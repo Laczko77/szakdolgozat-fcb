@@ -23,6 +23,11 @@ const orderSchema = new mongoose.Schema({
   totalAmount: {
     type: Number,
     required: true
+  },
+  status: {
+    type: String,
+    enum: ['Feldolgozás alatt', 'Teljesítve'],
+    default: 'Feldolgozás alatt'
   }
 }, {
   timestamps: true

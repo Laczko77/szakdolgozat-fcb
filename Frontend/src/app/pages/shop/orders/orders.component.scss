@@ -25,6 +25,15 @@
       margin: 0.5rem 0;
       color: #343a40;
     }
+    .completed {
+      color: #28a745;
+      font-weight: bold;
+    }
+    
+    .pending {
+      color: #ffc107;
+      font-weight: bold;
+    }
 
     .order-items {
       display: flex;

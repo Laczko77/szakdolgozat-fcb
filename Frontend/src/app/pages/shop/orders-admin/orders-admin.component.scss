@@ -1,0 +1,55 @@
+.admin-orders {
+    padding: 2rem;
+  
+    h2 {
+      color: #002868;
+      margin-bottom: 1.5rem;
+    }
+  
+    .order-card {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  
+      p {
+        margin: 0.5rem 0;
+      }
+  
+      ul {
+        margin-top: 0.5rem;
+        padding-left: 1.2rem;
+      }
+  
+      .admin-actions {
+        margin-top: 1rem;
+        display: flex;
+        gap: 1rem;
+  
+        button {
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          border: none;
+          cursor: pointer;
+          font-weight: bold;
+          transition: background 0.2s ease;
+  
+          &:first-child {
+            background-color: #28a745;
+            color: white;
+  
+            &:disabled {
+              background-color: #ccc;
+            }
+          }
+  
+          &:last-child {
+            background-color: #dc3545;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  

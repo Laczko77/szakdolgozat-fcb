@@ -1,0 +1,30 @@
+<div class="player-list">
+    <div class="players">
+      <div class="player-card" *ngFor="let player of players">
+        <img [src]="player.imageUrl" alt="{{ player.name }}">
+        <div class="number-overlay" *ngIf="!player.isCoach">{{ player.number }}</div>
+        <div class="info">
+          <h3>
+            <span>{{ player.name.split(' ')[0] }}</span> {{ player.name.split(' ').slice(1).join(' ') }}
+          </h3>
+          <p *ngIf="!player.isCoach">{{ player.position }}</p>
+          <p *ngIf="player.isCoach">Edző</p>
+        </div>
+        <div class="stats" *ngIf="!player.isCoach">
+          <div>
+            <span>{{ player.appearances }}</span>
+            <label>Meccs</label>
+          </div>
+          <div>
+            <span>{{ player.goals }}</span>
+            <label>Gól</label>
+          </div>
+          <div>
+            <span>{{ player.assists }}</span>
+            <label>Assist</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

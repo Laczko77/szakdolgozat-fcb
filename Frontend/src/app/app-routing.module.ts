@@ -12,6 +12,11 @@ import { ShopComponent } from './pages/shop/shop/shop.component';
 import { ProductDetailComponent } from './pages/shop/product-detail/product-detail.component';
 import { CartComponent } from './pages/shop/cart/cart.component';
 import { OrdersComponent } from './pages/shop/orders/orders.component';
+import { OrdersAdminComponent } from './pages/shop/orders-admin/orders-admin.component';
+import { MatchAdminComponent } from './pages/matches/match-admin/match-admin.component';
+import { MatchListComponent } from './pages/matches/match-list/match-list.component';
+import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.component';
+import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -26,7 +31,12 @@ const routes: Routes = [
   { path: 'shop/product/:id', component: ProductDetailComponent },
   { path: 'cart', component: CartComponent },
   { path: 'orders', component: OrdersComponent },
-  { path: '**', redirectTo: '/login' }
+  { path: 'admin/orders', component: OrdersAdminComponent },
+  { path: 'admin/matches', component: MatchAdminComponent },
+  { path: 'matches', component: MatchListComponent },
+  { path: 'admin/players', component: PlayerAdminComponent },
+  { path: 'players', component: PlayerListComponent }
+  
 ];
 
 @NgModule({
