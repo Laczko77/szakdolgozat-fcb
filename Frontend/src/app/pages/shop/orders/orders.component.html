@@ -1,24 +1,41 @@
-<div class="orders-container" *ngIf="orders.length > 0; else noOrders">
-  <h2>Korábbi rendeléseid</h2>
+<div class="orders-page">
+  <h2>Rendeléseim</h2>
 
-  <div *ngFor="let order of orders" class="order-card">
-    <p><strong>Dátum:</strong> {{ order.createdAt | date:'medium' }}</p>
-    <p><strong>Végösszeg:</strong> {{ order.totalAmount | currency:'EUR' }}</p>
-    <!--<p><strong>Státusz:</strong> {{ order.status }}</p>-->
-    <span *ngIf="order.status === 'Teljesítve'">✅ Teljesítve</span>
-    <span *ngIf="order.status === 'Feldolgozás alatt'">⏳ Feldolgozás alatt</span>
-    <div class="order-items">
-      <div *ngFor="let item of order.items" class="order-item">
-        <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />
-        <div>
-          <p><strong>{{ item.productId.name }}</strong></p>
-          <p>{{ item.quantity }} db</p>
-        </div>
-      </div>
-    </div>
+  <div class="toggle">
+    <button (click)="showTickets = false" [class.active]="!showTickets">Shop rendelések</button>
+    <button (click)="showTickets = true" [class.active]="showTickets">Jegyrendelések</button>
+  </div>
+
+  <div *ngIf="!showTickets">
+    <h3>Shop rendeléseid</h3>
+    <ul *ngIf="orders.length > 0; else noOrders">
+      <li *ngFor="let order of orders">
+        <strong>Rendelés #{{ order._id.slice(-5) }}</strong> – {{ order.status }} – {{ order.createdAt | date:'short' }}
+        <ul>
+          <li *ngFor="let item of order.products">
+            {{ item.productId.name }} – {{ item.quantity }} db
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ng-template #noOrders><p>Nincs még shop rendelésed.</p></ng-template>
+  </div>
+
+  <div *ngIf="showTickets">
+    <h3>Jegyrendeléseid</h3>
+    <ul *ngIf="tickets.length > 0; else noTickets">
+      <li *ngFor="let ticket of tickets">
+        <strong>{{ formatTeams(ticket.matchId) }}</strong>
+        – {{ ticket.matchId.date | date:'shortDate' }}
+
+        <ul>
+          <li *ngFor="let t of ticket.tickets">
+            {{ t.category.toUpperCase() }} – {{ t.quantity }} db
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ng-template #noTickets><p>Nincs még jegyrendelésed.</p></ng-template>
   </div>
 </div>
 
-<ng-template #noOrders>
-  <p>Még nem adtál le rendelést.</p>
-</ng-template>

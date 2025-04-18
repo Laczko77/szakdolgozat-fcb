@@ -24,6 +24,8 @@ import { MatchAdminComponent } from './pages/matches/match-admin/match-admin.com
 import { MatchListComponent } from './pages/matches/match-list/match-list.component';
 import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.component';
 import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
+import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
+import { ForumComponent } from './pages/forum/forum/forum.component';
 
 
 
@@ -45,7 +47,9 @@ import { PlayerListComponent } from './pages/squad/player-list/player-list.compo
         MatchAdminComponent,
         MatchListComponent,
         PlayerAdminComponent,
-        PlayerListComponent
+        PlayerListComponent,
+        TicketPurchaseComponent,
+        ForumComponent
 
     ],
     bootstrap: [

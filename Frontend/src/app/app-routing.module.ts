@@ -17,6 +17,8 @@ import { MatchAdminComponent } from './pages/matches/match-admin/match-admin.com
 import { MatchListComponent } from './pages/matches/match-list/match-list.component';
 import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.component';
 import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
+import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
+import { ForumComponent } from './pages/forum/forum/forum.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -35,7 +37,9 @@ const routes: Routes = [
   { path: 'admin/matches', component: MatchAdminComponent },
   { path: 'matches', component: MatchListComponent },
   { path: 'admin/players', component: PlayerAdminComponent },
-  { path: 'players', component: PlayerListComponent }
+  { path: 'players', component: PlayerListComponent },
+  { path: 'tickets/purchase/:id', component: TicketPurchaseComponent },
+  { path: 'forum', component: ForumComponent, canActivate: [AuthGuard] }
   
 ];
 

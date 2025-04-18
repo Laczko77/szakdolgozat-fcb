@@ -5,6 +5,9 @@
       <li *ngFor="let match of allMatches">
         <strong>{{ match.date | date:'short' }}</strong> – {{ formatTeams(match) }}
         <span class="badge">{{ match.competition }} • {{ match.matchday }}. forduló</span>
+        <button *ngIf="!match.score" [routerLink]="['/tickets/purchase', match._id] " class="ticket-button">
+          Jegyvásárlás
+        </button>
       </li>
     </ul>
   </div>

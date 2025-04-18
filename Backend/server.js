@@ -72,6 +72,15 @@ app.use('/api/matches', matchRoutes);
 
 const playerRoutes = require('./routes/playerRoutes');
 app.use('/api/players', playerRoutes);
+
+
+const ticketRoutes = require('./routes/ticketRoutes');
+app.use('/api/tickets', ticketRoutes);
+
+
+const forumRoutes = require('./routes/forumRoutes');
+app.use('/api/forum', forumRoutes);
+app.use('/uploads/forum', express.static('uploads/forum'));
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

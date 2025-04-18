@@ -2,41 +2,50 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface Order {
+  _id: string;
+  products: {
+    productId: any;
+    quantity: number;
+  }[];
+  status: string;
+  createdAt: string;
+}
+
+@Injectable({ providedIn: 'root' })
 export class OrderService {
   private apiUrl = 'http://localhost:3000/api/orders';
 
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    };
+  }
+
   placeOrder(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post(this.apiUrl, {}, { headers });
+    return this.http.post(this.apiUrl, {}, this.getHeaders());
   }
 
-  getOrders(): Observable<any[]> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(this.apiUrl, { headers });
+  getMyOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiUrl, this.getHeaders()); // <- helyes útvonal: /api/orders
   }
 
-  getAllOrders(): Observable<any[]> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(`${this.apiUrl}/all`, { headers });
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiUrl, this.getHeaders());
   }
-  
-  updateOrderStatus(orderId: string, status: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.patch(`${this.apiUrl}/${orderId}/status`, { status }, { headers });
+
+  updateOrderStatus(id: string, status: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/status`, { status }, this.getHeaders());
   }
-  
-  deleteOrder(orderId: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete(`${this.apiUrl}/${orderId}`, { headers });
+
+  deleteOrder(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders());
+  }
+
+  markAsCompleted(id: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/complete`, {}, this.getHeaders());
   }
 }

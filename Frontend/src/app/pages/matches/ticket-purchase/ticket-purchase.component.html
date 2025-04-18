@@ -1,0 +1,17 @@
+<div class="ticket-purchase" *ngIf="match">
+    <h2>Jegyvásárlás: {{ match.home === 'home' ? 'FC Barcelona' : match.opponent }} vs {{ match.home === 'home' ? match.opponent : 'FC Barcelona' }}</h2>
+    <p>{{ match.date | date:'fullDate' }} – {{ match.competition }}</p>
+  
+    <div class="category" *ngFor="let category of ['cat1', 'cat2', 'cat3', 'vip']">
+      <h3>{{ category.toUpperCase() }}</h3>
+      <button (click)="adjustQuantity(category, -1)">−</button>
+      <span>{{ ticketQuantities[category] }}</span>
+      <button (click)="adjustQuantity(category, 1)">+</button>
+    </div>
+  
+    <div class="total" *ngIf="totalTickets > 0">
+      <p>Összesen: {{ totalTickets }} jegy</p>
+      <button (click)="submitOrder()">Rendelés leadása</button>
+    </div>
+  </div>
+  

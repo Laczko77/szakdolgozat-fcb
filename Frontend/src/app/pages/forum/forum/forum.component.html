@@ -1,0 +1,19 @@
+<div class="forum-wrapper">
+    <h2>FCB Fórum</h2>
+  
+    <form (submit)="submitPost(); $event.preventDefault()">
+      <textarea [(ngModel)]="text" name="text" placeholder="Írj valamit..."></textarea>
+      <input type="file" (change)="onFileSelected($event)" />
+      <button type="submit">Posztolás</button>
+    </form>
+  
+    <div class="posts">
+      <div class="post" *ngFor="let post of posts">
+        <p><strong>{{ post.username }}</strong></p>
+        <p *ngIf="post.text">{{ post.text }}</p>
+        <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="forum image">
+        <button *ngIf="isOwnPost(post)" (click)="deletePost(post._id)">Törlés</button>
+      </div>
+    </div>
+  </div>
+  

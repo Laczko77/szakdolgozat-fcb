@@ -1,0 +1,63 @@
+.ticket-purchase {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  
+    h2 {
+      color: #002868;
+      margin-bottom: 1rem;
+    }
+  
+    .category {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 1rem 0;
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+  
+      h3 {
+        margin: 0;
+        font-size: 1rem;
+        flex: 1;
+      }
+  
+      button {
+        padding: 0.4rem 0.8rem;
+        font-size: 1.2rem;
+        border: none;
+        background: #ae1c28;
+        color: white;
+        border-radius: 0.4rem;
+        cursor: pointer;
+  
+        &:first-of-type {
+          background: #6c757d;
+        }
+      }
+  
+      span {
+        width: 2rem;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+  
+    .total {
+      text-align: center;
+      margin-top: 2rem;
+  
+      button {
+        margin-top: 1rem;
+        background: #002868;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+  

@@ -1,82 +1,72 @@
-.orders-container {
+.orders-page {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 2rem;
-  background: #f8f9fa;
-  border-radius: 1rem;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
 
   h2 {
+    text-align: center;
+    margin-bottom: 2rem;
     color: #002868;
-    margin-bottom: 1.5rem;
   }
 
-  .order-card {
-    background: #ffffff;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
+  .toggle {
+    display: flex;
+    justify-content: center;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
+    gap: 1rem;
 
-    &:hover {
-      transform: translateY(-3px);
-    }
-
-    p {
-      margin: 0.5rem 0;
-      color: #343a40;
-    }
-    .completed {
-      color: #28a745;
+    button {
+      background: #ddd;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
       font-weight: bold;
+      transition: background 0.3s ease;
+
+      &.active {
+        background: #ae1c28;
+        color: white;
+      }
+
+      &:hover:not(.active) {
+        background: #ccc;
+      }
     }
-    
-    .pending {
-      color: #ffc107;
-      font-weight: bold;
-    }
+  }
 
-    .order-items {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
+  ul {
+    list-style: none;
+    padding: 0;
 
-      .order-item {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-        background: #f1f3f5;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
+    li {
+      background: #f9f9f9;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
-        img {
-          width: 60px;
-          height: auto;
-          border-radius: 0.5rem;
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
+      strong {
+        color: #ae1c28;
+        font-weight: bold;
+      }
 
-        p {
-          margin: 0.2rem 0;
-          font-size: 0.95rem;
-          color: #212529;
+      ul {
+        margin-top: 0.5rem;
+        padding-left: 1rem;
 
-          strong {
-            color: #ae1c28;
-          }
+        li {
+          padding: 0.2rem 0;
+          font-size: 0.9rem;
+          color: #333;
         }
       }
     }
   }
-}
 
-@media (max-width: 600px) {
-  .order-item {
-    flex-direction: column;
-    align-items: flex-start;
-
-    img {
-      width: 100%;
-    }
+  p {
+    text-align: center;
+    font-style: italic;
+    color: #666;
   }
 }
