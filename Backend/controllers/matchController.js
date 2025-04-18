@@ -41,9 +41,20 @@ const deleteMatch = async (req, res) => {
   }
 };
 
+const getUpcomingMatches = async (req, res) => {
+  try {
+    const upcoming = await Match.find({ date: { $gte: new Date() } }).sort({ date: 1 });
+    res.json(upcoming);
+  } catch (err) {
+    console.error('Hiba a közelgő meccsek lekérésekor:', err);
+    res.status(500).json({ error: 'Nem sikerült lekérni a közelgő meccseket.' });
+  }
+};
+
 module.exports = {
   getAllMatches,
   createMatch,
   updateMatch,
-  deleteMatch
+  deleteMatch,
+  getUpcomingMatches
 };

@@ -32,4 +32,10 @@ export class ForumService {
       headers: this.getAuthHeaders()
     });
   }
+
+  updatePost(id: string, formData: FormData) {
+    return this.http.put(`${this.apiUrl}/${id}`, formData, {
+      headers: this.getAuthHeaders()
+    });
+  }
 }

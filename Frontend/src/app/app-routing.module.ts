@@ -20,6 +20,7 @@ import { PlayerListComponent } from './pages/squad/player-list/player-list.compo
 import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
 import { ForumComponent } from './pages/forum/forum/forum.component';
 
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },

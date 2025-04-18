@@ -38,6 +38,7 @@ app.use(express.json());
 // Middleware a bejövő kérések JSON formátumban történő automatikus feldolgozására.
 
 // Az authRoutes beillesztése
+
 app.use('/api/users', authRoutes);
 // A `/api/users` útvonalat az `authRoutes`-hoz rendeljük. Ez azt jelenti, hogy az
 // `authRoutes`-ban definiált végpontok elérhetők például `/api/users/register` alatt.
@@ -81,6 +82,8 @@ app.use('/api/tickets', ticketRoutes);
 const forumRoutes = require('./routes/forumRoutes');
 app.use('/api/forum', forumRoutes);
 app.use('/uploads/forum', express.static('uploads/forum'));
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

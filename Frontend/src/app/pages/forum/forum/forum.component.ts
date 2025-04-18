@@ -12,6 +12,9 @@ export class ForumComponent implements OnInit {
   text = '';
   image: File | null = null;
   posts: any[] = [];
+  editPostId: string | null = null;
+  editText: string = '';
+  editImage: File | null = null;
 
   constructor(public forumService: ForumService, public auth: AuthService) {}
 
@@ -50,4 +53,36 @@ export class ForumComponent implements OnInit {
   isOwnPost(post: any): boolean {
     return this.auth.getUsername() === post.username;
   }
+
+  startEdit(post: any) {
+    this.editPostId = post._id;
+    this.editText = post.text;
+    this.editImage = null;
+  }
+  
+  cancelEdit() {
+    this.editPostId = null;
+    this.editText = '';
+    this.editImage = null;
+  }
+  
+  onEditFileSelected(event: any) {
+    this.editImage = event.target.files[0];
+  }
+  
+  submitEdit() {
+    if (!this.editPostId) return;
+  
+    const formData = new FormData();
+    formData.append('text', this.editText);
+    if (this.editImage) {
+      formData.append('image', this.editImage);
+    }
+  
+    this.forumService.updatePost(this.editPostId, formData).subscribe(() => {
+      this.cancelEdit();
+      this.loadPosts();
+    });
+  }
+
 }

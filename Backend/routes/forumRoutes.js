@@ -15,5 +15,6 @@ const upload = multer({ storage });
 router.post('/', verifyToken, upload.single('image'), forumController.createForumPost);
 router.get('/', verifyToken, forumController.getAllForumPosts);
 router.delete('/:id', verifyToken, forumController.deleteForumPost);
+router.put('/:id', verifyToken, upload.single('image'), forumController.updateForumPost);
 
 module.exports = router;

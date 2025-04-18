@@ -29,6 +29,7 @@ import { ForumComponent } from './pages/forum/forum/forum.component';
 
 
 
+
 @NgModule({ declarations: [
         AppComponent,
         RegisterComponent,

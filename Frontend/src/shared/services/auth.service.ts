@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, tap } from 'rxjs/operators'; // Az error kezelést és az 'tap' operátort hozzáadtam
 
@@ -80,4 +80,6 @@ export class AuthService {
       return null;
     }
   }
+
+
 }
