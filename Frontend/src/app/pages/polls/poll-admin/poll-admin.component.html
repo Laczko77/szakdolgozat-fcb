@@ -1,0 +1,70 @@
+<div class="poll-admin-container">
+  <h2>Szavazás létrehozása</h2>
+
+  <form [formGroup]="pollForm" (ngSubmit)="createPoll()">
+    <label for="matchId">Válassz meccset:</label>
+    <select formControlName="matchId" required>
+      <option value="">-- válassz --</option>
+      <option *ngFor="let match of matches" [value]="match._id">
+        Barcelona vs {{ match.opponent }} ({{ match.date | date:'shortDate' }})
+      </option>
+    </select>
+
+    <div formArrayName="questions">
+      <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i" class="question-box">
+        <label>Kérdés {{ i + 1 }}:</label>
+        <input type="text" formControlName="question" placeholder="Pl: Ki fog nyerni?" />
+        <button type="button" (click)="removeQuestion(i)" *ngIf="questions.length > 1">❌</button>
+      </div>
+    </div>
+
+    <button type="button" (click)="addQuestion()">+ Új kérdés hozzáadása</button>
+    <button type="submit" [disabled]="isSubmitting">Szavazás létrehozása</button>
+  </form>
+
+  <p class="message">{{ message }}</p>
+
+  <hr />
+
+  <h3>Aktív szavazások</h3>
+  <div *ngFor="let poll of polls" class="poll-card">
+    <h4>
+      Meccs: Barcelona vs {{ poll.matchId?.opponent }} ({{ poll.matchId?.date | date:'shortDate' }})
+      <span *ngIf="poll.isClosed" class="badge">[Lezárva]</span>
+
+    </h4>
+
+    <ul>
+      <li *ngFor="let q of poll.questions">🗨️ {{ q.question }}</li>
+    </ul>
+
+    <ng-container *ngIf="!poll.isClosed; else closedBlock">
+      <button (click)="closePoll(poll._id)">Lezárás</button>
+      <button (click)="deletePoll(poll._id)">Törlés</button>
+      <button (click)="startEvaluation(poll)">Kiértékelés</button>
+    </ng-container>
+
+    <ng-template #closedBlock>
+      <p class="closed-text">Ez a szavazás már le van zárva.</p>
+      <button (click)="deletePoll(poll._id)">Törlés</button>
+      <button (click)="startEvaluation(poll)">Kiértékelés</button>
+
+    </ng-template>
+
+    <div *ngIf="evaluatingPollId === poll._id" class="evaluation-box">
+      <h5>Kiértékelés</h5>
+      <div *ngFor="let q of poll.questions; let qi = index" class="question-eval">
+        <p><strong>{{ q.question }}</strong></p>
+        <div *ngFor="let opt of q.options">
+          <label>
+            <input type="checkbox"
+            [checked]="evaluationAnswers[qi] && evaluationAnswers[qi].correctAnswers.includes(opt)"
+                   (change)="toggleCorrectAnswer(qi, opt)" />
+            {{ opt }}
+          </label>
+        </div>
+      </div>
+      <button (click)="submitEvaluation()">Kiértékelés mentése</button>
+    </div>
+  </div>
+</div>

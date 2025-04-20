@@ -26,6 +26,9 @@ import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.co
 import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
 import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
 import { ForumComponent } from './pages/forum/forum/forum.component';
+import { PollAdminComponent } from './pages/polls/poll-admin/poll-admin.component';
+import { PollUserComponent } from './pages/polls/poll-user/poll-user.component';
+import { LeaderboardComponent } from './pages/polls/leaderboard/leaderboard.component';
 
 
 
@@ -50,7 +53,11 @@ import { ForumComponent } from './pages/forum/forum/forum.component';
         PlayerAdminComponent,
         PlayerListComponent,
         TicketPurchaseComponent,
-        ForumComponent
+        ForumComponent,
+        PollAdminComponent,
+        PollUserComponent,
+        LeaderboardComponent
+
 
     ],
     bootstrap: [

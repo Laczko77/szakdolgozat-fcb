@@ -16,7 +16,7 @@ router.post('/login', userController.login);
 // POST kérés a `/login` végponthoz. Meghívja a `userController` `login` metódusát,
 // amely kezeli a felhasználó bejelentkezését.
 const authenticateToken = require('../middlewares/authMiddleware');
-
+router.get('/leaderboard', userController.getLeaderboard);
 router.get('/profile', authenticateToken, (req, res) => {
     res.json(req.user);
   });

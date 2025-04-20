@@ -84,6 +84,10 @@ app.use('/api/forum', forumRoutes);
 app.use('/uploads/forum', express.static('uploads/forum'));
 
 
+const pollRoutes = require('./routes/pollRoutes');
+app.use('/api/poll', pollRoutes);
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

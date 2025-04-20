@@ -1,0 +1,42 @@
+<div class="poll-user-container">
+    <h2>Aktív szavazások</h2>
+    <p class="message">{{ message }}</p>
+  
+    <div *ngFor="let poll of polls" class="poll-card">
+      <h3>
+        Barcelona vs {{ poll.matchId?.opponent }}
+        ({{ poll.matchId?.date | date: 'shortDate' }})
+      </h3>
+  
+      <div *ngFor="let q of poll.questions; let qi = index" class="question-block">
+        <p><strong>{{ q.question }}</strong></p>
+  
+        <!-- Még nem szavazott -->
+        <div *ngIf="!q.hasVoted">
+          <label *ngFor="let option of q.options">
+            <input type="radio"
+                   name="{{ poll._id }}_{{ qi }}"
+                   [value]="option"
+                   (change)="selectAnswer(poll._id, qi, option)"
+                   [checked]="selectedAnswers[poll._id + '_' + qi] === option" />
+            {{ option }}
+          </label>
+          <button (click)="submitVote(poll._id, qi)">Szavazat leadása</button>
+        </div>
+  
+        <!-- Már szavazott -->
+        <div *ngIf="q.hasVoted">
+          <div class="disabled-options">
+            <label *ngFor="let option of q.options">
+              <input type="radio" [disabled]="true" [checked]="q.userAnswer === option" />
+              {{ option }}
+            </label>
+          </div>
+          <p class="already-voted">
+            Már szavaztál: <strong>{{ q.userAnswer }}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -19,6 +19,9 @@ import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.co
 import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
 import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
 import { ForumComponent } from './pages/forum/forum/forum.component';
+import { PollAdminComponent } from './pages/polls/poll-admin/poll-admin.component';
+import { PollUserComponent } from './pages/polls/poll-user/poll-user.component';
+import { LeaderboardComponent } from './pages/polls/leaderboard/leaderboard.component';
 
 
 const routes: Routes = [
@@ -40,6 +43,9 @@ const routes: Routes = [
   { path: 'admin/players', component: PlayerAdminComponent },
   { path: 'players', component: PlayerListComponent },
   { path: 'tickets/purchase/:id', component: TicketPurchaseComponent },
+  { path: 'admin/poll', component: PollAdminComponent },
+  { path: 'polls', component: PollUserComponent },
+  { path: 'leaderboard', component: LeaderboardComponent },
   { path: 'forum', component: ForumComponent, canActivate: [AuthGuard] }
   
 ];

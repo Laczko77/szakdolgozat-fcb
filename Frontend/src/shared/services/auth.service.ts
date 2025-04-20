@@ -67,7 +67,7 @@ export class AuthService {
   isAuthenticated() {
     return !!this.tokenSubject.value;
   }
-
+ 
   getUsername(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -79,6 +79,10 @@ export class AuthService {
       console.error('Hibás token vagy nem tartalmaz username mezőt');
       return null;
     }
+  }
+
+  getLeaderboard(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/leaderboard`);
   }
 
 

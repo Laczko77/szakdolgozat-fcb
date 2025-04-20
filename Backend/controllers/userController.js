@@ -3,7 +3,7 @@ const userService = require('../services/userService');
 
 const bcrypt = require('bcrypt');
 // A bcrypt importálása jelszó-ellenőrzéshez.
-
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 // A jsonwebtoken importálása, amely a felhasználói azonosításhoz használt JWT-k generálásához szükséges.
 
@@ -66,8 +66,22 @@ const login = async (req, res) => {
   }
 };
 
+const getLeaderboard = async (req, res) => {
+  try {
+    const topUsers = await User.find({}, 'username score')
+      .sort({ score: -1 })
+      .limit(5);
+
+    res.json(topUsers);
+  } catch (err) {
+    console.error('Hiba a leaderboard lekérdezésekor:', err);
+    res.status(500).json({ error: 'Nem sikerült lekérni a toplistát.' });
+  }
+};
+
 module.exports = {
   register,
   login,
+  getLeaderboard
 };
 // A regisztrációs és bejelentkezési függvények exportálása, hogy a routerekben használhatóak legyenek.
