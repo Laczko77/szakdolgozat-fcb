@@ -1,64 +1,78 @@
 .orders-page {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 2rem;
+  background-color: #1e1e2f;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  color: #f5f5f5;
+  font-family: 'Segoe UI', sans-serif;
 
   h2 {
     text-align: center;
+    color: #a50044;
     margin-bottom: 2rem;
-    color: #002868;
   }
 
   .toggle {
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
     gap: 1rem;
+    margin-bottom: 2rem;
 
     button {
-      background: #ddd;
-      border: none;
-      padding: 0.5rem 1.5rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 0.5rem;
-      cursor: pointer;
+      border: none;
       font-weight: bold;
-      transition: background 0.3s ease;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #2b2b3d;
+      color: #fff;
+      transition: all 0.2s;
 
       &.active {
-        background: #ae1c28;
-        color: white;
+        background: linear-gradient(90deg, #a50044, #004d98);
       }
 
-      &:hover:not(.active) {
-        background: #ccc;
+      &:hover {
+        opacity: 0.9;
       }
     }
+  }
+
+  h3 {
+    color: #ffc107;
+    margin-bottom: 1rem;
+    text-align: center;
   }
 
   ul {
     list-style: none;
     padding: 0;
+    margin: 0 0 2rem 0;
 
-    li {
-      background: #f9f9f9;
-      margin-bottom: 1rem;
+    > li {
+      background-color: #2b2b3d;
       padding: 1rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
       strong {
-        color: #ae1c28;
-        font-weight: bold;
+        color: #ffc107;
+        display: block;
+        margin-bottom: 0.5rem;
       }
 
       ul {
-        margin-top: 0.5rem;
         padding-left: 1rem;
+        margin-top: 0.5rem;
 
         li {
-          padding: 0.2rem 0;
-          font-size: 0.9rem;
-          color: #333;
+          font-size: 0.95rem;
+          color: #ddd;
+          padding: 0.25rem 0;
         }
       }
     }
@@ -66,7 +80,8 @@
 
   p {
     text-align: center;
+    color: #aaa;
     font-style: italic;
-    color: #666;
+    margin-top: 1rem;
   }
 }

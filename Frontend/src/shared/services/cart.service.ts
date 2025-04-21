@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface CartItem {
   productId: string;
@@ -21,40 +23,44 @@ export interface Cart {
   }[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CartService {
   private apiUrl = 'http://localhost:3000/api/cart';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 
   getCart(): Observable<Cart> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Cart>(this.apiUrl, { headers });
+    return this.http.get<Cart>(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   addToCart(productId: string, quantity: number = 1): Observable<Cart> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<Cart>(this.apiUrl, { productId, quantity }, { headers });
+    return this.http.post<Cart>(this.apiUrl, { productId, quantity }, { headers: this.getAuthHeaders() }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   removeFromCart(productId: string): Observable<Cart> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<Cart>(`${this.apiUrl}/${productId}`, { headers });
+    return this.http.delete<Cart>(`${this.apiUrl}/${productId}`, { headers: this.getAuthHeaders() }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   clearCart(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete(`${this.apiUrl}`, { headers });
+    return this.http.delete(`${this.apiUrl}`, { headers: this.getAuthHeaders() }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
+
   decreaseQuantity(productId: string): Observable<Cart> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<Cart>(`${this.apiUrl}/decrease`, { productId }, { headers });
+    return this.http.post<Cart>(`${this.apiUrl}/decrease`, { productId }, { headers: this.getAuthHeaders() }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 }

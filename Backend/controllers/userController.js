@@ -47,9 +47,12 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id }, // A token tartalmazza a felhasználó azonosítóját.
-      'secretkey',         // Titkos kulcs, amelyet a token aláírásához használunk.
-      { expiresIn: '1h' }  // A token érvényességi ideje 1 óra.
+      {
+        userId: user._id,
+        role: user.role  // 💡 most már ezt is tartalmazza
+      },
+      'secretkey',
+      { expiresIn: '1h' }
     );
 
     res.json({ 

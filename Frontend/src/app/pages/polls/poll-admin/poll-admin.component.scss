@@ -1,3 +1,5 @@
+
+
 .poll-admin-container {
   max-width: 500px;
   margin: 3rem auto;
@@ -106,13 +108,39 @@
     }
   }
 
+  /* 🔽 Szűrés stílusa */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+
+    label {
+      font-weight: bold;
+      color: #ffc107;
+    }
+
+    select {
+      flex: 1;
+      padding: 0.6rem;
+      background-color: #2b2b3d;
+      border: none;
+      border-radius: 0.5rem;
+      color: #fff;
+      font-size: 1rem;
+
+      &:focus {
+        outline: 2px solid #a50044;
+      }
+    }
+  }
+
   .poll-card {
     background-color: #2a2a3d;
     padding: 1rem;
     border-radius: 0.75rem;
     margin-top: 1.5rem;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-
 
     .badge {
       background-color: #ff5c5c;
@@ -122,7 +150,7 @@
       font-size: 0.8rem;
       border-radius: 0.5rem;
     }
-  
+
     .closed-text {
       color: #aaa;
       font-style: italic;
@@ -184,35 +212,36 @@
       }
     }
   }
+
   .evaluation-box {
     background: #2d2d40;
     border-radius: 0.5rem;
     padding: 1rem;
     margin-top: 1rem;
     font-size: 0.95rem;
-  
+
     h5 {
       margin-bottom: 1rem;
       color: #ffc107;
     }
-  
+
     .question-eval {
       margin-bottom: 1rem;
-  
+
       p {
         margin-bottom: 0.25rem;
       }
-  
+
       label {
         display: block;
         margin-bottom: 0.25rem;
       }
     }
-  
+
     input[type="checkbox"] {
       margin-right: 0.5rem;
     }
-  
+
     button {
       margin-top: 0.5rem;
       padding: 0.5rem 1rem;
@@ -222,7 +251,7 @@
       border: none;
       border-radius: 0.5rem;
       cursor: pointer;
-  
+
       &:hover {
         background-color: #00a344;
       }

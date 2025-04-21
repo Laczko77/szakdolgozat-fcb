@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';  // Importáljuk a Router-t
+import { Router } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth.service';  // Importáljuk a Router-t
 
 @Component({
     selector: 'app-register',
@@ -11,24 +12,22 @@ import { Router } from '@angular/router';  // Importáljuk a Router-t
 })
 export class RegisterComponent {
 
-  constructor(private http: HttpClient, private router: Router) {}  // A Router szolgáltatás hozzáadása
+  constructor(private authService: AuthService, private router: Router) {}  // A Router szolgáltatás hozzáadása
 
   // Módosított onSubmit
   onSubmit(registerForm: NgForm) {
     if (registerForm.valid) {
-      const user = registerForm.value;  // Form adatainak lekérése
-
-      this.http.post('http://localhost:3000/api/users/register', user)
-        .subscribe(
-          (response) => {
-            console.log('Registration successful:', response);
-            // Sikeres regisztráció után átirányítás a /login oldalra
-            this.router.navigate(['/login']);  // Itt történik az átirányítás
+      const user = registerForm.value;
+  
+      this.authService.register(user.username, user.email, user.password)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/login']);
           },
-          (error) => {
-            console.error('There was an error!', error);
+          error: () => {
+            // Itt nem kell semmi, a service automatikusan snackBar-t mutat
           }
-        );
+        });
     }
   }
 }

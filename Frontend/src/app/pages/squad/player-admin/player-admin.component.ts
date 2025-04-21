@@ -12,6 +12,9 @@ export class PlayerAdminComponent implements OnInit {
   players: Player[] = [];
   newPlayer: Player = this.createEmptyPlayer();
   editingPlayer: Player | null = null;
+  searchTerm: string = '';
+  selectedPosition: string = '';
+  filteredPlayers: Player[] = [];
 
   constructor(private playerService: PlayerService) {}
 
@@ -35,7 +38,17 @@ export class PlayerAdminComponent implements OnInit {
   }
 
   loadPlayers(): void {
-    this.playerService.getAll().subscribe(players => this.players = players);
+    this.playerService.getAll().subscribe(players => {
+      this.players = players;
+      this.applyFilters(); // új
+    });
+  }
+
+  applyFilters(): void {
+    this.filteredPlayers = this.players.filter(player =>
+      player.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+      (this.selectedPosition === '' || player.position === this.selectedPosition)
+    );
   }
 
   savePlayer(): void {
@@ -65,5 +78,13 @@ export class PlayerAdminComponent implements OnInit {
   resetForm(): void {
     this.newPlayer = this.createEmptyPlayer();
     this.editingPlayer = null;
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+  
+  onPositionChange(): void {
+    this.applyFilters();
   }
 }

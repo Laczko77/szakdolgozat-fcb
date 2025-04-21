@@ -16,6 +16,9 @@ export class PollAdminComponent implements OnInit {
   message = '';
   evaluatingPollId: string | null = null;
   evaluationAnswers: { questionIndex: number, correctAnswers: string[] }[] = [];
+  selectedStatus: string = 'all'; // all | open | closed
+  filteredPolls: any[] = [];
+  
 
 
   constructor(private fb: FormBuilder, private pollService: PollService) {}
@@ -65,12 +68,26 @@ export class PollAdminComponent implements OnInit {
     this.pollService.getAllPolls().subscribe({
       next: (data) => {
         this.polls = data;
+        this.applyFilters();
       },
-      error: (err) => {
-        console.error('Hiba a szavazások lekérésekor:', err);
-      }
+      error: (err) => console.error(err)
     });
   }
+
+  applyFilters(): void {
+    this.filteredPolls = this.polls.filter(poll => {
+      const matchesStatus =
+        this.selectedStatus === 'all' ||
+        (this.selectedStatus === 'open' && !poll.isClosed) ||
+        (this.selectedStatus === 'closed' && poll.isClosed);
+      return matchesStatus;
+    });
+  }
+
+  onStatusChange(): void {
+    this.applyFilters();
+  }
+
 
   createPoll(): void {
     if (this.pollForm.invalid) return;
@@ -152,6 +169,10 @@ export class PollAdminComponent implements OnInit {
         this.message = 'Nem sikerült elmenteni a kiértékelést.';
       }
     });
+  }
+  
+  isPollEvaluated(poll: any): boolean {
+    return poll.questions.every((q: any) => q.correctAnswers && q.correctAnswers.length > 0);
   }
   
 }

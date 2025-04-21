@@ -1,116 +1,132 @@
+
+
 .forum-wrapper {
   max-width: 700px;
-  margin: 2rem auto;
-  padding: 1rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #1e1e2f;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  color: #f5f5f5;
   font-family: 'Segoe UI', sans-serif;
-  color: #222;
 
   h2 {
     text-align: center;
-    font-size: 2rem;
-    color: #a50044; // Barça bordó
-    margin-bottom: 1.5rem;
+    color: #a50044;
+    margin-bottom: 2rem;
   }
 
   form {
-    background: #f5f5f5;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
 
     textarea {
-      resize: vertical;
-      min-height: 80px;
       padding: 0.75rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      min-height: 120px;
+      background-color: #2b2b3d;
+      border: none;
+      border-radius: 0.5rem;
+      color: white;
       font-size: 1rem;
+      resize: vertical;
+
+      &:focus {
+        outline: 2px solid #a50044;
+      }
     }
 
-    input[type='file'] {
-      font-size: 0.9rem;
+    input[type="file"] {
+      color: white;
     }
 
     button {
       align-self: flex-end;
-      background-color: #004d98; // Barça kék
-      color: #fff;
-      padding: 0.4rem 1rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      font-weight: bold;
       border: none;
-      border-radius: 6px;
-      font-weight: 600;
+      border-radius: 0.5rem;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      background: linear-gradient(90deg, #a50044, #004d98);
+      color: white;
+      transition: all 0.3s ease;
 
       &:hover {
-        background-color: #003b79;
+        opacity: 0.85;
+        transform: scale(1.02);
       }
     }
   }
 
   .post {
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
+    background-color: #2a2a3d;
     padding: 1rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-
-    strong {
-      color: #004d98;
-    }
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 
     p {
-      margin: 0;
-      line-height: 1.5;
+      margin-bottom: 0.5rem;
       font-size: 1rem;
     }
 
-    img {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      display: block;
+    strong {
+      color: #ffc107;
     }
 
     textarea {
-      resize: vertical;
-      min-height: 80px;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: 1px solid #bbb;
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      background-color: #2b2b3d;
+      color: white;
       font-size: 1rem;
+      margin-bottom: 0.5rem;
+
+      &:focus {
+        outline: 2px solid #004d98;
+      }
     }
 
-    input[type='file'] {
-      margin-top: 0.4rem;
+    img {
+      max-width: 100%;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
     }
 
     .actions {
+      margin-top: 0.5rem;
       display: flex;
-      justify-content: flex-end;
       gap: 0.5rem;
 
       button {
-        padding: 0.3rem 0.9rem;
+        padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
-        border-radius: 6px;
         border: none;
+        border-radius: 0.5rem;
+        font-weight: bold;
         cursor: pointer;
-        font-weight: 600;
-        background-color: #e0e0e0;
-        transition: background-color 0.2s;
+        transition: 0.2s;
 
-        &:hover {
-          background-color: #cfcfcf;
+        &:first-child {
+          background-color: #004d98;
+          color: white;
+
+          &:hover {
+            background-color: #003570;
+          }
+        }
+
+        &:last-child {
+          background-color: #a50044;
+          color: white;
+
+          &:hover {
+            background-color: #80002b;
+          }
         }
       }
     }

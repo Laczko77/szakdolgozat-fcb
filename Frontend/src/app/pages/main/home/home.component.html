@@ -1,11 +1,8 @@
-
-
 <ngx-slick-carousel class="carousel" [config]="slideConfig">
-  <div ngxSlickItem *ngFor="let news of newsList" class="slide">
+  <div ngxSlickItem *ngFor="let news of newsList" class="slide" (click)="goToDetail(news._id)">
     <img [src]="news.imageUrl" alt="{{ news.title }}">
-    <h2 (click)="goToDetail(news._id)" class="slide-title">
+    <h2 class="slide-title">
       {{ news.title }}
     </h2>
   </div>
 </ngx-slick-carousel>
-

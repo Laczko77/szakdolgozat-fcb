@@ -1,21 +1,36 @@
-<div class="container">
-  <a class="navbar-brand" routerLink="/home">FC Barcelona</a>
-  <ul class="nav-links">
-    <li><a routerLink="/login" routerLinkActive="active" *ngIf="!(isAuthenticated$ | async)">Bejelentkezés</a></li>
-    <li><a routerLink="/register" routerLinkActive="active" *ngIf="!(isAuthenticated$ | async)">Regisztráció</a></li>
-    <li><a routerLink="/profile" *ngIf="isAuthenticated$ | async">Profil</a></li>
-    <li><a routerLink="/news/create">Hírek kezelése</a></li>
-    <li><a routerLink="/shop/admin">Termékek kezelése</a></li>
-    <li><a routerLink="/shop">Shop</a></li>
-    <li><a routerLink="/cart">Kosár</a></li>
-    <li><a routerLink="/admin/orders">Rendelések kezelése</a></li>
-    <li><a routerLink="/admin/matches">Meccsek kezelése</a></li>
-    <li><a routerLink="/matches">Meccsek</a></li>
-    <li><a routerLink="/admin/players" routerLinkActive="active">Játékosok kezelése</a></li>
-    <li><a routerLink="/players">Játékosok</a></li>
-    <li><a routerLink="/forum">Fórum</a></li>
-    <li><a routerLink="/admin/poll">Szavazások létrehozása</a></li>
-    <li><a routerLink="/polls">Szavazások</a></li>
-    <li><a routerLink="/leaderboard">Tabella</a></li>
-  </ul>
-</div>
+<nav>
+  <div *ngIf="isLoggedIn && !isAdmin">
+    <a routerLink="/home">Főoldal</a>
+    <a routerLink="/matches">Meccsek</a>
+    <a routerLink="/players">Csapat</a>
+    <a routerLink="/shop">Shop</a>
+    <a routerLink="/cart">Kosár</a>
+    <a routerLink="/polls" *ngIf="isLoggedIn">Szavazások</a>
+    <a routerLink="/leaderboard" *ngIf="isLoggedIn">Toplista</a>
+    <a routerLink="/forum" *ngIf="isLoggedIn">Fórum</a>
+    <a routerLink="/profile">Profil</a>
+  </div>
+
+  <!-- Admin menü -->
+  <div *ngIf="isAdmin">
+    <hr />
+    <a routerLink="/news/create">Hír hozzáadása</a>
+    <a routerLink="/shop/admin">Termékek kezelése</a>
+    <a routerLink="/admin/orders">Rendelések kezelése</a>
+    <a routerLink="/admin/matches">Meccsek kezelése</a>
+    <a routerLink="/admin/players">Játékosok kezelése</a>
+    <a routerLink="/admin/poll">Szavazások kezelése</a>
+    <a routerLink="/forum" *ngIf="isLoggedIn">Fórum</a>
+    <a routerLink="/profile">Profil</a>
+  </div>
+
+  <!-- Nincs bejelentkezve -->
+  <div *ngIf="!isLoggedIn">
+    <a routerLink="/home">Főoldal</a>
+    <a routerLink="/matches">Meccsek</a>
+    <a routerLink="/players">Csapat</a>
+    <a routerLink="/shop">Shop</a>
+    <a routerLink="/login">Bejelentkezés</a>
+    <a routerLink="/register">Regisztráció</a>
+  </div>
+</nav>

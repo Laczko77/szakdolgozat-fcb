@@ -15,11 +15,20 @@ export class ForumComponent implements OnInit {
   editPostId: string | null = null;
   editText: string = '';
   editImage: File | null = null;
+  
 
   constructor(public forumService: ForumService, public auth: AuthService) {}
 
   ngOnInit() {
     this.loadPosts();
+  }
+
+  isAdmin(): boolean {
+    return this.auth.isAdmin();
+  }
+  
+  isOwner(post: any): boolean {
+    return this.auth.getUsername() === post.username;
   }
 
   onFileSelected(event: any) {

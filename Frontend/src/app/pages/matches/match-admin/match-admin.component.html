@@ -1,12 +1,16 @@
 <div class="match-admin">
-    <h2>Meccsek kezelése</h2>
+    <h2>Meccsek kezelése</h2> 
   
     <form (ngSubmit)="saveMatch()" class="match-form">
       <label>Dátum:</label>
       <input type="datetime-local" [(ngModel)]="newMatch.date" name="date" required>
   
       <label>Sorozat:</label>
-      <input type="text" [(ngModel)]="newMatch.competition" name="competition" required>
+      <select [(ngModel)]="newMatch.competition" name="competition" required>
+        <option *ngFor="let tournament of availableTournaments" [value]="tournament">
+          {{ tournament }}
+        </option>
+      </select>
   
       <label>Meccsnap:</label>
       <input type="text" [(ngModel)]="newMatch.matchday" name="matchday" required>
@@ -29,16 +33,36 @@
     </form>
   
     <hr>
-  
+    <div class="filter-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Keresés ellenfélre..."
+        class="filter-input"
+      />
+    
+      <select
+        [(ngModel)]="selectedTournament"
+        (change)="onTournamentChange()"
+        class="filter-select"
+      >
+        <option value="">Összes sorozat</option>
+        <option value="La Liga">La Liga</option>
+        <option value="Bajnokok Ligája">Bajnokok Ligája</option>
+        <option value="Copa del Rey">Copa del Rey</option>
+        <option value="Szuperkupa">Szuperkupa</option>
+      </select>
+    </div>
     <ul class="match-list">
-      <li *ngFor="let match of matches">
+      <li *ngFor="let match of filteredMatches">
         <strong>{{ match.date | date:'short' }}</strong> – {{ match.home ? 'FC Barcelona' : match.opponent }}
         vs
         {{ match.home ? match.opponent : 'FC Barcelona' }}
         <span *ngIf="match.score"> ({{ match.score }})</span>
   
-        <button (click)="editMatch(match)">✏️</button>
-        <button (click)="deleteMatch(match._id!)">❌</button>
+        <button (click)="editMatch(match)">Szerkesztés</button>
+        <button (click)="deleteMatch(match._id!)">Törlés</button>
       </li>
     </ul>
   </div>

@@ -1,7 +1,7 @@
 // match-admin.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatchService, Match } from '../../../../shared/services/match.service';
-
+ 
 @Component({
   selector: 'app-match-admin',
   templateUrl: './match-admin.component.html',
@@ -10,6 +10,17 @@ import { MatchService, Match } from '../../../../shared/services/match.service';
 })
 export class MatchAdminComponent implements OnInit {
   matches: Match[] = [];
+  searchTerm: string = '';
+  selectedTournament: string = '';
+  filteredMatches: Match[] = [];
+
+  availableTournaments: string[] = [
+    'La Liga',
+    'Bajnokok Ligája',
+    'Copa del Rey',
+    'Szuperkupa'
+  ];
+
   newMatch: Match = {
     date: '',
     competition: '',
@@ -27,7 +38,25 @@ export class MatchAdminComponent implements OnInit {
   }
 
   loadMatches(): void {
-    this.matchService.getAll().subscribe(matches => this.matches = matches);
+    this.matchService.getAll().subscribe(matches => {
+      this.matches = matches;
+      this.applyFilters();
+    });
+  }
+  
+  applyFilters(): void {
+    this.filteredMatches = this.matches.filter(match =>
+      match.opponent.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
+      (this.selectedTournament === '' || match.competition === this.selectedTournament)
+    );
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+  
+  onTournamentChange(): void {
+    this.applyFilters();
   }
 
   saveMatch(): void {

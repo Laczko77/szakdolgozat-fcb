@@ -1,40 +1,51 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface News {
   _id?: string;
   title: string;
   content: string;
-  imageUrl?: string;
+  imageUrl: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class NewsService {
   private apiUrl = 'http://localhost:3000/api/news';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 
   getNews(): Observable<News[]> {
-    return this.http.get<News[]>(this.apiUrl);
+    return this.http.get<News[]>(this.apiUrl).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
-  
   getNewsById(id: string): Observable<News> {
-    return this.http.get<News>(`${this.apiUrl}/${id}`);
+    return this.http.get<News>(`${this.apiUrl}/${id}`).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   createNews(news: News): Observable<News> {
-    return this.http.post<News>(this.apiUrl, news);
+    return this.http.post<News>(this.apiUrl, news).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   updateNews(id: string, news: News): Observable<News> {
-    return this.http.put<News>(`${this.apiUrl}/${id}`, news);
+    return this.http.put<News>(`${this.apiUrl}/${id}`, news).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
-  
+
   deleteNews(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 }
+
+

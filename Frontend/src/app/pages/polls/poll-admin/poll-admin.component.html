@@ -26,12 +26,21 @@
 
   <hr />
 
-  <h3>Aktív szavazások</h3>
-  <div *ngFor="let poll of polls" class="poll-card">
+  <!-- 🔽 Szűrő mező -->
+  <div class="filter-bar">
+    <label for="status">Szűrés:</label>
+    <select id="status" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+      <option value="all">Összes</option>
+      <option value="open">Csak aktív</option>
+      <option value="closed">Csak lezárt</option>
+    </select>
+  </div>
+
+  <h3>Szavazások</h3>
+  <div *ngFor="let poll of filteredPolls" class="poll-card">
     <h4>
       Meccs: Barcelona vs {{ poll.matchId?.opponent }} ({{ poll.matchId?.date | date:'shortDate' }})
       <span *ngIf="poll.isClosed" class="badge">[Lezárva]</span>
-
     </h4>
 
     <ul>
@@ -41,14 +50,13 @@
     <ng-container *ngIf="!poll.isClosed; else closedBlock">
       <button (click)="closePoll(poll._id)">Lezárás</button>
       <button (click)="deletePoll(poll._id)">Törlés</button>
-      <button (click)="startEvaluation(poll)">Kiértékelés</button>
+      <button *ngIf="!isPollEvaluated(poll)" (click)="startEvaluation(poll)">Kiértékelés</button>
     </ng-container>
 
     <ng-template #closedBlock>
       <p class="closed-text">Ez a szavazás már le van zárva.</p>
       <button (click)="deletePoll(poll._id)">Törlés</button>
-      <button (click)="startEvaluation(poll)">Kiértékelés</button>
-
+      <button *ngIf="!isPollEvaluated(poll)" (click)="startEvaluation(poll)">Kiértékelés</button>
     </ng-template>
 
     <div *ngIf="evaluatingPollId === poll._id" class="evaluation-box">
@@ -57,9 +65,10 @@
         <p><strong>{{ q.question }}</strong></p>
         <div *ngFor="let opt of q.options">
           <label>
-            <input type="checkbox"
-            [checked]="evaluationAnswers[qi] && evaluationAnswers[qi].correctAnswers.includes(opt)"
-                   (change)="toggleCorrectAnswer(qi, opt)" />
+            <input
+              type="checkbox"
+              [checked]="evaluationAnswers[qi] && evaluationAnswers[qi].correctAnswers.includes(opt)"
+              (change)="toggleCorrectAnswer(qi, opt)" />
             {{ opt }}
           </label>
         </div>

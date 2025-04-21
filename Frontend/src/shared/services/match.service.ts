@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface Match {
   _id?: string;
@@ -16,7 +18,7 @@ export interface Match {
 export class MatchService {
   private apiUrl = 'http://localhost:3000/api/matches';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 
   private getHeaders(): { headers: HttpHeaders } {
     const token = localStorage.getItem('token');
@@ -26,18 +28,26 @@ export class MatchService {
   }
 
   getAll(): Observable<Match[]> {
-    return this.http.get<Match[]>(this.apiUrl);
+    return this.http.get<Match[]>(this.apiUrl).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   create(match: Match): Observable<Match> {
-    return this.http.post<Match>(this.apiUrl, match, this.getHeaders());
+    return this.http.post<Match>(this.apiUrl, match, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
-  
+
   update(id: string, match: Match): Observable<Match> {
-    return this.http.put<Match>(`${this.apiUrl}/${id}`, match, this.getHeaders());
+    return this.http.put<Match>(`${this.apiUrl}/${id}`, match, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   delete(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders());
+    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 }

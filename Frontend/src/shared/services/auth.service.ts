@@ -2,88 +2,94 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs/operators'; // Az error kezelést és az 'tap' operátort hozzáadtam
+import { catchError, tap, map } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/users'; // Backend API URL
+  private apiUrl = 'http://localhost:3000/api/users';
   private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
+  authStatus$ = this.tokenSubject.asObservable().pipe(map(token => !!token));
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private errorHandler: HttpErrorHandlerService
+  ) {}
 
-  // Regisztrációs metódus
   register(username: string, email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/register`, { username, email, password })
-      .pipe(
-        catchError(error => {
-          console.error('Registration error:', error);
-          throw error; // Hiba esetén a hiba tovább dobása
-        })
-      ); 
-  } 
+    return this.http.post(`${this.apiUrl}/register`, { username, email, password }).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
+  }
 
-  // Bejelentkezés
   login(email: string, password: string) {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap(response => {
-          // A token elmentése és az autentikáció frissítése
-          localStorage.setItem('token', response.token);
-          this.tokenSubject.next(response.token);
-        }),
-        catchError(error => {
-          console.error('Login error:', error);
-          throw error; // Hiba esetén a hiba tovább dobása
-        })
-      );
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap(response => {
+        localStorage.setItem('token', response.token);
+        this.tokenSubject.next(response.token);
+      }),
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
-  getUserData() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Mivel a token már a localStorage-ban van, ezt kell küldeni a backend-nek
-      return this.http.get<any>(`${this.apiUrl}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    }
-    return null;  // Ha nincs token, ne történjen semmi
-  }
-
-  // Kilépés
   logout() {
     localStorage.removeItem('token');
     this.tokenSubject.next(null);
-    this.router.navigate(['/login']); // Kilépés után átirányítás a login oldalra
+    this.router.navigate(['/login']);
   }
 
-  // Bejelentkezett felhasználó tokenje
   get token() {
     return this.tokenSubject.asObservable();
   }
 
-  // Ellenőrzés, hogy a felhasználó be van-e jelentkezve
   isAuthenticated() {
     return !!this.tokenSubject.value;
   }
- 
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  isAdmin(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role === 'admin';
+    } catch {
+      return false;
+    }
+  }
+
   getUsername(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
-  
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.username;
-    } catch (err) {
-      console.error('Hibás token vagy nem tartalmaz username mezőt');
+    } catch {
       return null;
     }
   }
 
-  getLeaderboard(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/leaderboard`);
+  getUserData(): Observable<any> | null {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return this.http.get<any>(`${this.apiUrl}/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      }).pipe(
+        catchError(err => this.errorHandler.handleError(err))
+      );
+    }
+    return null;
   }
 
-
+  getLeaderboard(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/leaderboard`).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
+  }
 }

@@ -22,7 +22,8 @@
         <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="forum image" />
         <div class="actions">
           <button (click)="startEdit(post)">Szerkesztés</button>
-          <button (click)="deletePost(post._id)">Törlés</button>
+          <button *ngIf="isAdmin()" (click)="deletePost(post._id)">Törlés</button>
+
         </div>
       </ng-template>
     </div>

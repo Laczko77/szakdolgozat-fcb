@@ -1,12 +1,25 @@
+
 .match-list {
   max-width: 800px;
-  margin: 0 auto;
+  margin: 3rem auto;
   padding: 2rem;
+  background-color: #1e1e2f;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  color: #f5f5f5;
+  font-family: 'Segoe UI', sans-serif;
 
   h2 {
     text-align: center;
-    margin-bottom: 1rem;
-    color: #002868;
+    color: #a50044;
+    margin-bottom: 1.5rem;
+  }
+
+  div {
+    text-align: center;
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 1.5rem;
   }
 
   ul {
@@ -14,43 +27,47 @@
     padding: 0;
 
     li {
-      background: #f9f9f9;
+      background-color: #2b2b3d;
       padding: 1rem;
-      border-radius: 0.5rem;
       margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
 
-      p {
-        margin: 0.3rem 0;
+      strong {
+        font-size: 1.05rem;
+        color: #ffc107;
+      }
+
+      .badge {
+        font-size: 0.9rem;
+        background-color: #004d98;
+        color: white;
+        padding: 0.3rem 0.7rem;
+        border-radius: 0.5rem;
+        display: inline-block;
+        width: fit-content;
+      }
+
+      .ticket-button {
+        margin-top: 0.5rem;
+        align-self: flex-start;
+        padding: 0.5rem 1rem;
+        background-color: #a50044;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 0.5rem;
         font-size: 0.95rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
 
-        strong {
-          color: #ae1c28;
+        &:hover {
+          background-color: #80002b;
         }
       }
-
-      span {
-        display: block;
-        font-size: 0.85rem;
-        color: #555;
-      }
     }
-  }
-}
-
-.ticket-button {
-  margin-top: 0.5rem;
-  padding: 0.4rem 1rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: #002868; // Barcelona kék
-  border: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #ae1c28; // Barcelona bordó
   }
 }

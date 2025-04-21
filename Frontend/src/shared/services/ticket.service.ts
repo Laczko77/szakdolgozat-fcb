@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface TicketRequest {
   matchId: string;
@@ -9,7 +11,7 @@ export interface TicketRequest {
 
 export interface TicketResponse {
   _id: string;
-  matchId: any; // populated match
+  matchId: any;
   tickets: { category: string; quantity: number }[];
   createdAt: string;
 }
@@ -18,7 +20,7 @@ export interface TicketResponse {
 export class TicketService {
   private apiUrl = 'http://localhost:3000/api/tickets';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 
   private getHeaders(): { headers: HttpHeaders } {
     const token = localStorage.getItem('token');
@@ -28,10 +30,14 @@ export class TicketService {
   }
 
   createTicketOrder(request: TicketRequest): Observable<any> {
-    return this.http.post(this.apiUrl, request, this.getHeaders());
+    return this.http.post(this.apiUrl, request, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   getMyTickets(): Observable<TicketResponse[]> {
-    return this.http.get<TicketResponse[]>(`${this.apiUrl}/my`, this.getHeaders());
+    return this.http.get<TicketResponse[]>(`${this.apiUrl}/my`, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 }

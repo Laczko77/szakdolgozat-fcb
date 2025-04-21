@@ -9,6 +9,7 @@ import { OrderService } from '../../../../shared/services/order.service';
 })
 export class OrdersAdminComponent implements OnInit {
   orders: any[] = [];
+  selectedStatus: string = 'all';
 
   constructor(private orderService: OrderService) {}
 
@@ -21,7 +22,7 @@ export class OrdersAdminComponent implements OnInit {
       next: (res) => this.orders = res,
       error: (err) => console.error('Hiba a rendelések lekérdezésekor:', err)
     });
-  }
+  } 
 
   markAsCompleted(orderId: string): void {
     this.orderService.updateOrderStatus(orderId, 'Teljesítve').subscribe(() => {
@@ -35,5 +36,12 @@ export class OrdersAdminComponent implements OnInit {
         this.loadOrders();
       });
     }
+  }
+
+  get filteredOrders(): any[] {
+    if (this.selectedStatus === 'all') {
+      return this.orders;
+    }
+    return this.orders.filter(order => order.status === this.selectedStatus);
   }
 }

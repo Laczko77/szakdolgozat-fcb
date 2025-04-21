@@ -1,34 +1,103 @@
-<div class="player-admin">
-    <h2>Játékosok kezelése</h2>
-  
+<div class="player-admin-box">
+
+  <form (ngSubmit)="savePlayer()" class="player-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name">Név</label>
+        <input type="text" id="name" [(ngModel)]="newPlayer.name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="number">Mezszám</label>
+        <input type="number" id="number" [(ngModel)]="newPlayer.number" name="number">
+      </div>
+
+      <div class="form-group">
+        <label for="position">Poszt</label>
+        <input type="text" id="position" [(ngModel)]="newPlayer.position" name="position">
+      </div>
+
+      <div class="form-group">
+        <label for="nationality">Nemzetiség</label>
+        <input type="text" id="nationality" [(ngModel)]="newPlayer.nationality" name="nationality">
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Születési dátum</label>
+        <input type="date" id="birthDate" [(ngModel)]="newPlayer.birthDate" name="birthDate">
+      </div>
+
+      <div class="form-group">
+        <label for="imageUrl">Kép URL</label>
+        <input type="text" id="imageUrl" [(ngModel)]="newPlayer.imageUrl" name="imageUrl">
+      </div>
+
+      <div class="form-group">
+        <label for="appearances">Meccsek</label>
+        <input type="number" id="appearances" [(ngModel)]="newPlayer.appearances" name="appearances">
+      </div>
+
+      <div class="form-group">
+        <label for="goals">Gólok</label>
+        <input type="number" id="goals" [(ngModel)]="newPlayer.goals" name="goals">
+      </div>
+
+      <div class="form-group">
+        <label for="assists">Asszisztok</label>
+        <input type="number" id="assists" [(ngModel)]="newPlayer.assists" name="assists">
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="newPlayer.isCoach" name="isCoach">
+          Edző?
+        </label>
+      </div>
+    </div>
+  </form>
+
+  <div class="player-admin-box">
     <form (ngSubmit)="savePlayer()" class="player-form">
-      <input type="text" placeholder="Név" [(ngModel)]="newPlayer.name" name="name" required>
-      <input type="number" placeholder="Mezszám" [(ngModel)]="newPlayer.number" name="number">
-      <input type="text" placeholder="Poszt" [(ngModel)]="newPlayer.position" name="position">
-      <input type="text" placeholder="Nemzetiség" [(ngModel)]="newPlayer.nationality" name="nationality">
-      <input type="date" placeholder="Születési dátum" [(ngModel)]="newPlayer.birthDate" name="birthDate">
-      <input type="text" placeholder="Kép URL" [(ngModel)]="newPlayer.imageUrl" name="imageUrl">
-      <input type="number" placeholder="Meccsek" [(ngModel)]="newPlayer.appearances" name="appearances">
-      <input type="number" placeholder="Gólok" [(ngModel)]="newPlayer.goals" name="goals">
-      <input type="number" placeholder="Asszisztok" [(ngModel)]="newPlayer.assists" name="assists">
-  
-      <label>
-        <input type="checkbox" [(ngModel)]="newPlayer.isCoach" name="isCoach">
-        Edző?
-      </label>
-  
-      <button type="submit">{{ editingPlayer ? 'Mentés' : 'Hozzáadás' }}</button>
-      <button type="button" (click)="resetForm()">Mégse</button>
+      <div class="form-grid">
+        <!-- ... (a mezők, ahogy most vannak) ... -->
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit">{{ editingPlayer ? 'Mentés' : 'Hozzáadás' }}</button>
+        <button type="button" (click)="resetForm()">Mégse</button>
+      </div>
     </form>
-  
+
     <hr>
-  
+<!-- 🔍 Szűrés név és poszt alapján -->
+<div class="filter-bar">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (input)="onSearchChange()"
+    placeholder="Keresés név alapján..."
+    class="filter-input"
+  />
+
+  <select
+    [(ngModel)]="selectedPosition"
+    (change)="onPositionChange()"
+    class="filter-select"
+  >
+    <option value="">Összes poszt</option>
+    <option value="Kapus">Kapus</option>
+    <option value="Védő">Védő</option>
+    <option value="Középpályás">Középpályás</option>
+    <option value="Csatár">Támadó</option>
+  </select>
+</div>
     <ul class="player-list">
-      <li *ngFor="let player of players">
-        <strong>{{ player.name }}</strong> – {{ player.position }} – {{ player.number }}<span *ngIf="player.isCoach"> (Edző)</span>
-        <button (click)="editPlayer(player)">✏️</button>
-        <button (click)="deletePlayer(player._id!)">❌</button>
+      <li *ngFor="let player of filteredPlayers">
+        <strong>{{ player.name }}</strong> – {{ player.position }} – {{ player.number }}
+        <span *ngIf="player.isCoach"> (Edző)</span>
+        <button (click)="editPlayer(player)">Szerkesztés</button>
+        <button (click)="deletePlayer(player._id!)">Törlés</button>
       </li>
     </ul>
   </div>
-  
+</div>

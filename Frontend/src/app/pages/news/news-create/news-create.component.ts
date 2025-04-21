@@ -15,6 +15,7 @@ export class NewsCreateComponent {
   newsForm: FormGroup;
   isSubmitting = false;
   errorMessage = '';
+  searchTerm: string = '';
 
   constructor(
     private newsService: NewsService,
@@ -93,5 +94,24 @@ export class NewsCreateComponent {
         },
       });
     }
+  }
+
+  filteredNews(): News[] {
+    return this.newsList.filter(news =>
+      news.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  edit(news: News) {
+    this.selectedNews = news;
+    this.newsForm.setValue({
+      title: news.title,
+      content: news.content,
+      imageUrl: news.imageUrl,
+    });
+
+    setTimeout(() => {
+      document.getElementById('newsForm')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   }
 }

@@ -22,6 +22,7 @@ export class ProductAdminComponent implements OnInit {
   productList: Product[] = [];
   selectedProduct: Product | null = null;
   isSubmitting = false;
+  searchTerm: string = '';
 
   constructor(private fb: FormBuilder, private productService: ProductService) {
     this.productForm = this.fb.group({
@@ -98,5 +99,26 @@ export class ProductAdminComponent implements OnInit {
         }
       });
     }
+  }
+
+  filteredProducts(): Product[] {
+    return this.productList.filter(product =>
+      product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  
+  edit(product: Product) {
+    this.selectedProduct = product;
+    this.productForm.setValue({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      category: product.category
+    });
+  
+    setTimeout(() => {
+      document.getElementById('productForm')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   }
 }

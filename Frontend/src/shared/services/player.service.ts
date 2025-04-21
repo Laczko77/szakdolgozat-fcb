@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface Player {
   _id?: string;
@@ -20,7 +22,7 @@ export interface Player {
 export class PlayerService {
   private apiUrl = 'http://localhost:3000/api/players';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 
   private getHeaders(): { headers: HttpHeaders } {
     const token = localStorage.getItem('token');
@@ -30,19 +32,26 @@ export class PlayerService {
   }
 
   getAll(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.apiUrl);
+    return this.http.get<Player[]>(this.apiUrl).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 
   create(player: Player): Observable<Player> {
-    return this.http.post<Player>(this.apiUrl, player, this.getHeaders());
+    return this.http.post<Player>(this.apiUrl, player, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
-  
+
   update(id: string, player: Player): Observable<Player> {
-    return this.http.put<Player>(`${this.apiUrl}/${id}`, player, this.getHeaders());
+    return this.http.put<Player>(`${this.apiUrl}/${id}`, player, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
-  
 
   delete(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders());
+    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders()).pipe(
+      catchError(err => this.errorHandler.handleError(err))
+    );
   }
 }
