@@ -5,5 +5,11 @@
   <label for="password">Password:</label>
   <input type="password" id="password" [(ngModel)]="password" name="password" required />
 
-  <button type="submit" [disabled]="!email || !password">Login</button> <!-- Ha nincs email vagy password, akkor le van tiltva -->
+  <button type="submit" [disabled]="!email || !password" (click)="onButtonClick()">Login</button>
+  <div style="margin-top: 20px;">
+    <div id="google-login-button"></div>
+  </div>
 </form>
+
+<!-- Google bejelentkezés gomb -->
+

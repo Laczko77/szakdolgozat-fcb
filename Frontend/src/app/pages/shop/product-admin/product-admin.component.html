@@ -11,8 +11,11 @@
     <label for="price">Ár (HUF)</label>
     <input id="price" type="number" formControlName="price" />
 
-    <label for="imageUrl">Kép URL</label>
-    <input id="imageUrl" type="text" formControlName="imageUrl" />
+    <!-- ÚJ: Kép feltöltés fájlból -->
+    <label for="image">Termékkép</label>
+    <input id="image" type="file" (change)="onFileSelected($event)" />
+
+    
 
     <label for="category">Kategória</label>
     <input id="category" type="text" formControlName="category" />

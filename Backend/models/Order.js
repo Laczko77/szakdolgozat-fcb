@@ -13,11 +13,15 @@ const orderSchema = new mongoose.Schema({
         ref: 'Product',
         required: true
       },
-      quantity: {
-        type: Number,
-        required: true,
-        min: 1
-      }
+      name: { type: String, required: true },           // ➔ termék név rögzítve
+      price: { type: Number, required: true },           // ➔ termék ár rögzítve
+      imageUrl: { type: String },                        // ➔ termék kép URL rögzítve
+      quantity: { type: Number, required: true, min: 1 },
+      size: { type: String },                            // ➔ választott méret
+      player: {
+        _id: { type: mongoose.Schema.Types.ObjectId },
+        name: { type: String }
+      }                                                  // ➔ választott játékos (ha van)
     }
   ],
   totalAmount: {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';  // Importáljuk a Router-t
+import { AnalyticsService } from '../../../shared/services/analytics.service';
 
 @Component({
     selector: 'app-register',
@@ -12,8 +13,12 @@ import { AuthService } from '../../../shared/services/auth.service';  // Import�
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthService, private router: Router) {}  // A Router szolgáltatás hozzáadása
+  constructor(private authService: AuthService, private router: Router, private analyticsService: AnalyticsService) {}  // A Router szolgáltatás hozzáadása
 
+
+  onButtonClick() {
+    this.analyticsService.sendButtonClick('Regisztráció');
+  }
   // Módosított onSubmit
   onSubmit(registerForm: NgForm) {
     if (registerForm.valid) {

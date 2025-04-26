@@ -3,34 +3,43 @@ const Cart = require('../models/Cart');
 
 const placeOrder = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.userId }).populate('items.productId');
+    const cart = await Cart.findOne({ userId: req.userId })
+      .populate('items.productId')
+      .populate('items.player');
 
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: 'A kosár üres' });
     }
 
     const totalAmount = cart.items.reduce((sum, item) => {
-      return sum + item.productId.price * item.quantity;
+      return sum + (item.productId.price || 0) * item.quantity;
     }, 0);
 
     const order = new Order({
       userId: req.userId,
       items: cart.items.map(item => ({
         productId: item.productId._id,
-        quantity: item.quantity
+        name: item.productId.name || 'Ismeretlen termék',           // ➔ név mentése
+        price: item.productId.price || 0,                            // ➔ ár mentése
+        imageUrl: item.productId.imageUrl || '',                     // ➔ kép mentése
+        quantity: item.quantity,
+        size: item.size || '',
+        player: item.player ? { _id: item.player._id, name: item.player.name } : undefined
       })),
       totalAmount
     });
 
     await order.save();
+    const populatedOrder = await Order.findById(order._id).populate('items.productId');
     await Cart.findOneAndUpdate({ userId: req.userId }, { items: [] });
 
     res.status(201).json({ message: 'Rendelés sikeresen leadva', order });
   } catch (err) {
-    console.error(err);
+    console.error('Hiba a rendelés leadása során:', err);
     res.status(500).json({ message: 'Hiba a rendelés leadása során' });
   }
 };
+
 
 const getUserOrders = async (req, res) => {
     try {
@@ -55,12 +64,22 @@ const getUserOrders = async (req, res) => {
     const { status } = req.body;
   
     try {
-      const updated = await Order.findByIdAndUpdate(id, { status }, { new: true }).populate('items.productId userId');
-      res.json(updated);
+      const order = await Order.findById(id).populate('items.productId userId');
+      if (!order) {
+        return res.status(404).json({ message: 'Rendelés nem található' });
+      }
+  
+      order.status = status;
+      await order.save();
+      
+
+      res.json(order);
     } catch (err) {
+      console.error('Hiba a rendelés státusz frissítésekor:', err);
       res.status(500).json({ message: 'Hiba a rendelés állapotának frissítésekor' });
     }
   };
+  
 
   const deleteOrder = async (req, res) => {
     const { id } = req.params;

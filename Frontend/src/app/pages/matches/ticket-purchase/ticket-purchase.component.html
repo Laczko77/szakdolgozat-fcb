@@ -11,7 +11,7 @@
   
     <div class="total" *ngIf="totalTickets > 0">
       <p>Összesen: {{ totalTickets }} jegy</p>
-      <button (click)="submitOrder()">Rendelés leadása</button>
+      <button (click)="onButtonClick()" (click)="submitOrder()">Rendelés leadása</button>
     </div>
   </div>
    

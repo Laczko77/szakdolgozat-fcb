@@ -13,26 +13,53 @@ const getCart = async (req, res) => {
 
 // Termék hozzáadása vagy mennyiség növelése
 const addToCart = async (req, res) => {
-  const { productId, quantity } = req.body;
   try {
-    let cart = await Cart.findOne({ userId: req.userId });
+    const user = req.user;
+    const { productId, quantity, size, playerId } = req.body;
+
+    let cart = await Cart.findOne({ userId: user._id });
+
     if (!cart) {
-      cart = new Cart({ userId: req.userId, items: [] });
+      cart = new Cart({ userId: user._id, items: [] });
     }
 
-    const existingItem = cart.items.find(item => item.productId.toString() === productId);
+    // Megkeressük, van-e már ilyen tétel
+    const existingItem = cart.items.find(item =>
+      item.productId.toString() === productId &&
+      item.size === size &&
+      ((item.player && playerId && item.player._id.toString() === playerId) || (!item.player && !playerId))
+    );
+
     if (existingItem) {
-      existingItem.quantity += quantity || 1;
+      // Ha van ilyen, növeljük a mennyiséget
+      existingItem.quantity += quantity;
     } else {
-      cart.items.push({ productId, quantity: quantity || 1 });
+      // Ha nincs, új tételt adunk hozzá
+      const newItem = {
+        productId,
+        quantity,
+        size,
+      };
+
+      if (playerId) {
+        newItem.player = { _id: playerId };
+      }
+
+      cart.items.push(newItem);
     }
 
     await cart.save();
-    res.json(cart);
-  } catch (err) {
-    res.status(500).json({ message: 'Hiba a kosár frissítésekor' });
+
+    res.status(201).json(cart);
+  } catch (error) {
+    console.error('Hiba a kosárba rakáskor:', error);
+    res.status(500).json({ message: 'Hiba a kosárba rakáskor.' });
   }
 };
+
+
+
+
 
 // Termék eltávolítása a kosárból
 const removeFromCart = async (req, res) => {
@@ -66,30 +93,40 @@ const clearCart = async (req, res) => {
 
 
 const decreaseQuantity = async (req, res) => {
-  const { productId } = req.body;
-
   try {
-    const cart = await Cart.findOne({ userId: req.userId });
-    if (!cart) return res.status(404).json({ message: 'Kosár nem található' });
+    const { productId, size, playerId } = req.body;
+    const userId = req.user._id;
 
-    const item = cart.items.find(item => item.productId.toString() === productId);
+    const cart = await Cart.findOne({ userId });
 
-    if (!item) {
-      return res.status(404).json({ message: 'Termék nem található a kosárban' });
+    if (!cart) {
+      return res.status(404).json({ message: 'Kosár nem található.' });
     }
 
-    if (item.quantity > 1) {
-      item.quantity -= 1;
+    const itemIndex = cart.items.findIndex(item =>
+      item.productId.toString() === productId &&
+      item.size === size &&
+      ((item.player && playerId && item.player._id.toString() === playerId) || (!item.player && !playerId))
+    );
+
+    if (itemIndex === -1) {
+      return res.status(404).json({ message: 'Tétel nem található a kosárban.' });
+    }
+
+    if (cart.items[itemIndex].quantity > 1) {
+      cart.items[itemIndex].quantity -= 1;
     } else {
-      cart.items = cart.items.filter(i => i.productId.toString() !== productId);
+      cart.items.splice(itemIndex, 1); // teljes tétel törlése
     }
 
     await cart.save();
     res.json(cart);
-  } catch (err) {
-    res.status(500).json({ message: 'Hiba a mennyiség csökkentésekor' });
+  } catch (error) {
+    console.error('Hiba a mennyiség csökkentésekor:', error);
+    res.status(500).json({ message: 'Hiba a mennyiség csökkentésekor.' });
   }
 };
+
 
 module.exports = {
   getCart,

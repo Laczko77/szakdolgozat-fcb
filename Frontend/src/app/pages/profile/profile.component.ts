@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../shared/services/auth.service';  // Importáljuk az AuthService-t
 import { Router } from '@angular/router'; // A Router szolgáltatás importálása
+import { AnalyticsService } from '../../../shared/services/analytics.service';
 
 @Component({
     selector: 'app-profile',
@@ -15,8 +16,14 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router // Router szolgáltatás injektálása
+    private router: Router,
+    private analyticsService: AnalyticsService // Router szolgáltatás injektálása
   ) {}
+
+
+  onButtonClick() {
+    this.analyticsService.sendButtonClick('Kijelentkezés');
+  }
 
   ngOnInit() {
     this.loadUserData();

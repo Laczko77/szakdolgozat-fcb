@@ -16,7 +16,9 @@
 
     <ul>
       <li *ngFor="let item of order.items">
-        {{ item.productId?.name || 'Termék' }} – {{ item.quantity }} db
+        <div><strong>{{ item.productId?.name || 'Termék' }}</strong> – {{ item.quantity }} db</div>
+        <div *ngIf="item.size">Méret: {{ item.size }}</div>
+        <div *ngIf="item.player?.name">Játékos: {{ item.player.name }}</div>
       </li>
     </ul>
 

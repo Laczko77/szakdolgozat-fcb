@@ -21,7 +21,7 @@
                    [checked]="selectedAnswers[poll._id + '_' + qi] === option" />
             {{ option }}
           </label>
-          <button (click)="submitVote(poll._id, qi)">Szavazat leadása</button>
+          <button (click)="onButtonClick()" (click)="submitVote(poll._id, qi)">Szavazat leadása</button>
         </div>
   
         <!-- Már szavazott -->

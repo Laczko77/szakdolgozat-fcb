@@ -1,54 +1,47 @@
 .product-detail-container {
-  max-width: 900px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: #1e1e2f;
-  color: #f5f5f5;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 2rem;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 
   .product-images {
-    flex: 1;
+    flex: 1 1 400px;
     display: flex;
     justify-content: center;
+    align-items: center;
 
     .main-image {
       max-width: 100%;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      object-fit: contain;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      object-fit: cover;
     }
   }
 
   .product-info {
-    flex: 1;
+    flex: 1 1 400px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 
     h1 {
-      color: #ffc107;
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1e1e1e;
     }
 
     .price {
-      font-size: 1.3rem;
-      color: #00c853;
+      font-size: 1.8rem;
       font-weight: bold;
+      color: #004d98; // Barca kék
     }
 
     .sizes {
       h4 {
+        font-size: 1.2rem;
         margin-bottom: 0.5rem;
-        color: #a50044;
       }
 
       .size-options {
@@ -57,61 +50,66 @@
         gap: 0.5rem;
 
         .size-btn {
-          padding: 0.4rem 0.8rem;
-          border: none;
-          border-radius: 0.5rem;
-          background-color: #2b2b3d;
-          color: white;
-          font-weight: bold;
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          border: 2px solid #ccc;
+          border-radius: 8px;
+          background-color: white;
           cursor: pointer;
-          transition: background-color 0.3s;
+          transition: all 0.3s ease;
+
+          &.selected {
+            background-color: #004d98;
+            color: white;
+            border-color: #004d98;
+          }
 
           &:hover {
-            background-color: #004d98;
+            border-color: #004d98;
           }
         }
       }
     }
 
-    .customize {
+    .player-select {
       h4 {
+        font-size: 1.2rem;
         margin-bottom: 0.5rem;
-        color: #ffc107;
       }
 
-      input {
+      select {
         width: 100%;
         padding: 0.5rem;
-        background-color: #2b2b3d;
-        border: none;
-        border-radius: 0.5rem;
-        color: white;
+        border: 2px solid #ccc;
+        border-radius: 8px;
         font-size: 1rem;
+        background-color: white;
+        transition: border-color 0.3s ease;
 
         &:focus {
-          outline: 2px solid #004d98;
+          border-color: #004d98;
+          outline: none;
         }
       }
     }
 
     .actions {
-      display: flex;
-      justify-content: flex-start;
+      margin-top: 2rem;
 
       .add-to-cart {
-        padding: 0.7rem 1.5rem;
-        font-size: 1rem;
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.2rem;
         font-weight: bold;
-        background: linear-gradient(90deg, #a50044, #004d98);
         color: white;
+        background-color: #a50044; // Barca bordó
         border: none;
-        border-radius: 0.5rem;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: background-color 0.3s ease;
 
         &:hover {
-          transform: scale(1.03);
-          opacity: 0.9;
+          background-color: #820033;
         }
       }
     }

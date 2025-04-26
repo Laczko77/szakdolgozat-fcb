@@ -1,6 +1,9 @@
 // match-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatchService, Match } from '../../../../shared/services/match.service';
+import { AnalyticsService } from '../../../../shared/services/analytics.service';
+
+
 
 @Component({
   selector: 'app-match-list',
@@ -11,7 +14,11 @@ import { MatchService, Match } from '../../../../shared/services/match.service';
 export class MatchListComponent implements OnInit {
   allMatches: Match[] = [];
 
-  constructor(private matchService: MatchService) {}
+  constructor(private matchService: MatchService,private analyticsService: AnalyticsService) {}
+
+  onButtonClick() {
+    this.analyticsService.sendButtonClick('Jegyvásárlás oldal');
+  }
 
   ngOnInit(): void {
     this.matchService.getAll().subscribe(matches => {

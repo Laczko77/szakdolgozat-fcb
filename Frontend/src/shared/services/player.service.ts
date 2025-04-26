@@ -54,4 +54,9 @@ export class PlayerService {
       catchError(err => this.errorHandler.handleError(err))
     );
   }
+
+  getPlayerById(playerId: string): Observable<Player> {
+    return this.http.get<Player>(`http://localhost:3000/api/players/${playerId}`);
+  }
+  
 }

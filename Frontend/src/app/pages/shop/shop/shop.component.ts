@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../../../shared/services/product.service';
 
+
 export interface Product {
   _id?: string;
   name: string;
@@ -20,6 +21,8 @@ export class ShopComponent implements OnInit {
   products: Product[] = [];
 
   constructor(private productService: ProductService) {}
+
+  
 
   ngOnInit(): void {
     this.loadProducts();

@@ -5,51 +5,46 @@ const bcrypt = require('bcrypt');
 // A bcrypt importálása jelszó-ellenőrzéshez.
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-// A jsonwebtoken importálása, amely a felhasználói azonosításhoz használt JWT-k generálásához szükséges.
+// A jsonwebtoken importálása, amely a felhasználói azonosításhoz szükséges.
 
-// Felhasználó regisztrációs függvény
+const { OAuth2Client } = require('google-auth-library');
+// A Google Identity Services könyvtár importálása a Google tokenek ellenőrzéséhez.
+const client = new OAuth2Client('346108805116-bkqslvfiof5kl2odkqim4779lorqs5og.apps.googleusercontent.com');
+
+// Felhasználó regisztrációs függvény (email/jelszó)
 const register = async (req, res) => {
   try {
     const newUser = await userService.registerUser(req.body);
-    // Az userService `registerUser` függvényének meghívása a kéréstörzsben kapott adatokkal.
-
     res.status(201).json({ 
       message: 'User registered successfully', 
       user: newUser 
     });
-    // 201-es státusz: A felhasználó sikeresen létrehozva, és az új felhasználó adatait visszaküldjük.
   } catch (error) {
     res.status(400).json({ error: error.message });
-    // 400-as státusz: Hibás kérés esetén hibaüzenet visszaadása.
   }
 };
 
-// Felhasználó bejelentkezési függvény
+// Felhasználó bejelentkezési függvény (email/jelszó)
 const login = async (req, res) => {
   const { email, password } = req.body;
-  // A kéréstörzsből kinyerjük az emailt és jelszót.
 
   try {
     const user = await userService.findUserByEmail(email);
-    // Az email alapján keresünk egy felhasználót az adatbázisban.
 
     if (!user) {
-      // Ha nem található a felhasználó, hibás hitelesítési üzenetet küldünk.
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    // A megadott jelszót összehasonlítjuk az adatbázisban tárolt hash-elt jelszóval.
 
     if (!isMatch) {
-      // Ha a jelszó nem egyezik, hibás hitelesítési üzenetet küldünk.
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = jwt.sign(
       {
         userId: user._id,
-        role: user.role  // 💡 most már ezt is tartalmazza
+        role: user.role
       },
       'secretkey',
       { expiresIn: '1h' }
@@ -59,16 +54,58 @@ const login = async (req, res) => {
       message: 'Login successful', 
       token 
     });
-    // Sikeres bejelentkezés esetén visszaküldjük a JWT-t.
   } catch (err) {
     console.error(err);
-    // Hibák logolása konzolra.
-
     res.status(500).json({ message: 'Internal server error' });
-    // 500-as státusz: Általános szerverhiba esetén hibaüzenet visszaadása.
   }
 };
 
+// Google OAuth login függvény
+const googleLogin = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: '346108805116-bkqslvfiof5kl2odkqim4779lorqs5og.apps.googleusercontent.com'
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+
+    let user = await userService.findUserByEmail(email);
+
+    if (!user) {
+      user = new User({
+        username: name,
+        email: email,
+        password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10), // Random dummy jelszó
+        role: 'user'
+      });
+      
+      await user.save();
+    }
+
+    const tokenJWT = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role
+      },
+      'secretkey',
+      { expiresIn: '1h' }
+    );
+
+    res.json({ 
+      message: 'Google login successful', 
+      token: tokenJWT 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: 'Invalid Google token' });
+  }
+};
+
+// Leaderboard (Top 5 user)
 const getLeaderboard = async (req, res) => {
   try {
     const topUsers = await User.find({}, 'username score')
@@ -82,9 +119,10 @@ const getLeaderboard = async (req, res) => {
   }
 };
 
+// Exportálás
 module.exports = {
   register,
   login,
+  googleLogin,
   getLeaderboard
 };
-// A regisztrációs és bejelentkezési függvények exportálása, hogy a routerekben használhatóak legyenek.

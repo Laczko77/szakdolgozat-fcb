@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { Product } from '../../app/pages/shop/product-admin/product-admin.component';
+import { Player } from './player.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -23,14 +24,14 @@ export class ProductService {
     );
   }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product).pipe(
+  createProduct(formData: FormData) {
+    return this.http.post(this.apiUrl, formData).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 
-  updateProduct(id: string, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product).pipe(
+  updateProduct(id: string, formData: FormData) {
+    return this.http.put(`${this.apiUrl}/${id}`, formData).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
@@ -40,4 +41,6 @@ export class ProductService {
       catchError(err => this.errorHandler.handleError(err))
     );
   }
+
+  
 }

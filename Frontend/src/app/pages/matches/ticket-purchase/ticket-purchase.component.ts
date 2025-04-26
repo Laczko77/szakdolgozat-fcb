@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatchService,Match } from '../../../../shared/services/match.service';
 import { TicketService } from '../../../../shared/services/ticket.service';
+import { AnalyticsService } from '../../../../shared/services/analytics.service';
 
 @Component({
   selector: 'app-ticket-purchase',
@@ -23,8 +24,13 @@ export class TicketPurchaseComponent implements OnInit {
     private route: ActivatedRoute,
     private matchService: MatchService,
     private ticketService: TicketService,
-    private router: Router
+    private router: Router,
+    private analyticsService: AnalyticsService
   ) {}
+
+  onButtonClick() {
+    this.analyticsService.sendButtonClick('Jegy megvásárlása');
+  }
 
   ngOnInit(): void {
     const matchId = this.route.snapshot.paramMap.get('id');

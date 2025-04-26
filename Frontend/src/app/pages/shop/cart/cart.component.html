@@ -21,16 +21,21 @@
           <p>Kategória: {{ item.productId.category }}</p>
           <p>Ár: {{ item.productId.price | currency:'EUR' }}</p>
           <p>Mennyiség: {{ item.quantity }}</p>
+
+          <p *ngIf="item.size">Méret: {{ item.size }}</p>
+
+          <!-- Játékosnév helyes kiíratása -->
+          <p *ngIf="item.player">Játékos: {{ item.player['name'] }}</p>
         </div>
         <div class="actions">
-          <button (click)="decreaseItem(item.productId._id)">–</button>
+          <button (click)="decreaseItem(item)">–</button>
           <button (click)="removeItem(item.productId._id)">❌</button>
         </div>
       </div>
 
       <div class="bottom">
         <button class="clear" (click)="clearCart()">Kosár ürítése</button>
-        <button class="order" (click)="placeOrder()">Rendelés leadása</button>
+        <button class="order" (click)="onButtonClick()" (click)="placeOrder()">Rendelés leadása</button>
       </div>
     </div>
   </div>

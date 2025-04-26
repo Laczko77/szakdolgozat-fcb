@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PollService } from '../../../../shared/services/poll.service';
+import { AnalyticsService } from '../../../../shared/services/analytics.service';
 
 @Component({
   selector: 'app-poll-user',
@@ -12,7 +13,11 @@ export class PollUserComponent implements OnInit {
   selectedAnswers: { [key: string]: string } = {};
   message = '';
 
-  constructor(private pollService: PollService) {}
+  constructor(private pollService: PollService,private analyticsService: AnalyticsService) {}
+
+  onButtonClick() {
+    this.analyticsService.sendButtonClick('Szavazat leadása');
+  }
 
   ngOnInit(): void {
     this.loadPolls();

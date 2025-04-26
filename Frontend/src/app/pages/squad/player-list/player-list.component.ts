@@ -1,4 +1,4 @@
-// player-list.component.ts
+
 import { Component, OnInit } from '@angular/core';
 import { PlayerService, Player } from '../../../../shared/services/player.service';
 

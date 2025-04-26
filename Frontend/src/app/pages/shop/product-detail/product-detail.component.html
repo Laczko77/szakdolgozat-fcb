@@ -1,28 +1,39 @@
 <div class="product-detail-container" *ngIf="product">
-    <div class="product-images">
-      <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image" />
-      <!--<img [src]="product.imageUrl" alt="{{ product.name }} back" class="back-image" />-->
+  <div class="product-images">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image" />
+  </div>
+
+  <div class="product-info">
+    <h1>{{ product.name }}</h1>
+    <p class="price">{{ product.price | currency:'EUR':'symbol-narrow' }}</p>
+
+    <!-- Méretválasztó -->
+    <div class="sizes">
+      <h4>Méret</h4>
+      <div class="size-options">
+        <button 
+          *ngFor="let size of ['XS','S','M','L','XL','XXL']" 
+          class="size-btn" 
+          [class.selected]="selectedSize === size"
+          (click)="selectedSize = size">
+          {{ size }}
+        </button>
+      </div>
     </div>
-  
-    <div class="product-info">
-      <h1>{{ product.name }}</h1>
-      <p class="price">{{ product.price | currency:'EUR':'symbol-narrow' }}</p>
-  
-      <div class="sizes">
-        <h4>Méret</h4>
-        <div class="size-options">
-          <button *ngFor="let size of ['XS','S','M','L','XL','2XL','3XL']" class="size-btn">{{ size }}</button>
-        </div>
-      </div>
-  
-      <div class="customize">
-        <h4>Személyre szabható (+20 EUR)</h4>
-        <input type="text" placeholder="Add meg a neved vagy mezszámod" />
-      </div>
-  
-      <div class="actions">
-        <button class="add-to-cart" (click)="addToCart()">Kosárba</button>
-      </div>
+
+    <!-- Játékos választó csak ha 'Mez' kategória -->
+    <div class="player-select" *ngIf="product.category === 'Mez'">
+      <h4>Válassz játékost</h4>
+      <select [(ngModel)]="selectedPlayer">
+        <option value="">Válassz játékost</option>
+        <option *ngFor="let player of players" [value]="player._id">
+          {{ player.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="actions">
+      <button class="add-to-cart" (click)="onButtonClick()" (click)="addToCart()">Kosárba</button>
     </div>
   </div>
- 
+</div>

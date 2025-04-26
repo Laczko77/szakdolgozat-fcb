@@ -56,7 +56,7 @@ app.use('/api/news', newsRoutes);
 
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
-
+app.use('/uploads/products', express.static('uploads/products'));
 
 
 const cartRoutes = require('./routes/cartRoutes');
