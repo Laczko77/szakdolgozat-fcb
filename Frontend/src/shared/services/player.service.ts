@@ -37,13 +37,13 @@ export class PlayerService {
     );
   }
 
-  create(player: Player): Observable<Player> {
+  create(player: FormData): Observable<Player> {
     return this.http.post<Player>(this.apiUrl, player, this.getHeaders()).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 
-  update(id: string, player: Player): Observable<Player> {
+  update(id: string, player: FormData): Observable<Player> {
     return this.http.put<Player>(`${this.apiUrl}/${id}`, player, this.getHeaders()).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );

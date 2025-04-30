@@ -29,13 +29,13 @@ export class NewsService {
     );
   }
 
-  createNews(news: News): Observable<News> {
+  createNews(news: FormData): Observable<News> {
     return this.http.post<News>(this.apiUrl, news).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 
-  updateNews(id: string, news: News): Observable<News> {
+  updateNews(id: string, news: FormData): Observable<News> {
     return this.http.put<News>(`${this.apiUrl}/${id}`, news).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );

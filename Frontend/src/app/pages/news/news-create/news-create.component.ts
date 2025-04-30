@@ -16,6 +16,7 @@ export class NewsCreateComponent {
   isSubmitting = false;
   errorMessage = '';
   searchTerm: string = '';
+  selectedFile: File | null = null;
 
   constructor(
     private newsService: NewsService,
@@ -24,12 +25,18 @@ export class NewsCreateComponent {
     this.newsForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(150)]],
       content: ['', [Validators.required]],
-      imageUrl: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
     this.loadNews();
+  }
+
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
+    }
   }
 
   loadNews() {
@@ -59,42 +66,46 @@ export class NewsCreateComponent {
   }
 
   submit() {
-    console.log('Küldött ID:', this.selectedNews?._id);
-    if (this.newsForm.invalid) {
-      this.newsForm.markAllAsTouched();
-      return;
+    if (this.newsForm.invalid) return;
+  
+    const formData = new FormData();
+    formData.append('title', this.newsForm.value.title);
+    formData.append('content', this.newsForm.value.content);
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
     }
-
+  
     this.isSubmitting = true;
-
+  
     if (this.selectedNews) {
-      // Szerkesztés
-      this.newsService.updateNews(this.selectedNews._id!, this.newsForm.value).subscribe({
+      // FRISSÍTÉS (szerkesztés)
+      this.newsService.updateNews(this.selectedNews._id!, formData).subscribe({
         next: () => {
-          this.loadNews();
           this.clearForm();
+          this.loadNews();
           this.isSubmitting = false;
         },
         error: (err) => {
-          console.error('Szerkesztési hiba:', err);
+          console.error('Hiba a hír frissítésekor:', err);
           this.isSubmitting = false;
-        },
+        }
       });
     } else {
-      // Új hír létrehozása
-      this.newsService.createNews(this.newsForm.value).subscribe({
+      // LÉTREHOZÁS
+      this.newsService.createNews(formData).subscribe({
         next: () => {
+          this.clearForm();
           this.loadNews();
-          this.newsForm.reset();
           this.isSubmitting = false;
         },
         error: (err) => {
-          console.error('Létrehozási hiba:', err);
+          console.error('Hiba a hír létrehozásakor:', err);
           this.isSubmitting = false;
-        },
+        }
       });
     }
   }
+  
 
   filteredNews(): News[] {
     return this.newsList.filter(news =>
@@ -104,10 +115,10 @@ export class NewsCreateComponent {
 
   edit(news: News) {
     this.selectedNews = news;
+    this.selectedFile = null;
     this.newsForm.setValue({
       title: news.title,
-      content: news.content,
-      imageUrl: news.imageUrl,
+      content: news.content
     });
 
     setTimeout(() => {

@@ -28,8 +28,8 @@
       </div>
 
       <div class="form-group">
-        <label for="imageUrl">Kép URL</label>
-        <input type="text" id="imageUrl" [(ngModel)]="newPlayer.imageUrl" name="imageUrl">
+        <label for="image">Kép feltöltése</label>
+        <input type="file" (change)="onFileSelected($event)" />
       </div>
 
       <div class="form-group">

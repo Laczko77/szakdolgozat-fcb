@@ -5,7 +5,7 @@ import { PlayerService } from '../../../../shared/services/player.service';
 import { sendOrderEmail } from '../../../../shared/services/email.service';
 import { AuthService } from '../../../../shared/services/auth.service';
 import { AnalyticsService } from '../../../../shared/services/analytics.service';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -17,9 +17,19 @@ import { AnalyticsService } from '../../../../shared/services/analytics.service'
 export class CartComponent implements OnInit {
   cart: Cart | null = null;
   orderPlaced: boolean = false;
-
+  shippingForm: FormGroup;
+  isShippingModalOpen = false;
   
-  constructor(private cartService: CartService,private orderService: OrderService, private playerService: PlayerService, private authService: AuthService,private analyticsService: AnalyticsService) {}
+  constructor(private fb: FormBuilder, private cartService: CartService,private orderService: OrderService, private playerService: PlayerService, private authService: AuthService,private analyticsService: AnalyticsService) {
+    this.shippingForm = this.fb.group({
+      fullName: ['', Validators.required],
+      phone: ['', Validators.required],
+      zip: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      city: ['', Validators.required],
+      street: ['', Validators.required],
+      floor: [''] // opcionális
+    });
+  }
 
   onButtonClick() {
     this.analyticsService.sendButtonClick('Termék/ek megvásárlása');
@@ -27,6 +37,25 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCart();
+  }
+  
+  openShippingModal() {
+    this.isShippingModalOpen = true;
+  }
+  
+  closeShippingModal() {
+    this.isShippingModalOpen = false;
+  }
+  
+  submitShippingAndOrder() {
+    if (this.shippingForm.invalid) return;
+  
+    const shippingData = this.shippingForm.value;
+    console.log('Szállítási adatok:', shippingData);
+  
+    this.placeOrder(); // meglévő rendeléslogika
+    this.shippingForm.reset();
+    this.closeShippingModal();
   }
 
   loadPlayersForCartItems(): void {
@@ -62,22 +91,35 @@ export class CartComponent implements OnInit {
     });
   }
 
-  removeItem(productId: string) {
+  removeItem(productId: string): void {
     this.cartService.removeFromCart(productId).subscribe(() => {
-      this.loadCart();
+      this.loadCart(); // ✅
+      this.cartService.refreshCart(); // ✅ Új sor
     });
   }
+  
 
-  clearCart() {
+  clearCart(): void {
     this.cartService.clearCart().subscribe(() => {
-      this.loadCart();
+      this.loadCart(); // ✅
+      this.cartService.refreshCart(); // ✅ Új sor
     });
   }
 
   decreaseItem(item: CartItem): void {
-    this.cartService.decreaseQuantity(item.productId._id, item.size, item.player?._id).subscribe(() => {
-      this.loadCart();
-    });
+    if (item.quantity > 1) {
+      this.cartService.decreaseQuantity(
+        item.productId._id,
+        item.size,
+        item.player?._id
+      ).subscribe(() => {
+        this.loadCart();
+        this.cartService.refreshCart(); // frissíti a badge-et is
+      });
+      
+    } else {
+      this.removeItem(item.productId._id);
+    }
   }
   
 

@@ -15,6 +15,7 @@ export class PlayerAdminComponent implements OnInit {
   searchTerm: string = '';
   selectedPosition: string = '';
   filteredPlayers: Player[] = [];
+  selectedFile: File | null = null;
 
   constructor(private playerService: PlayerService) {}
 
@@ -44,6 +45,13 @@ export class PlayerAdminComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
+    }
+  }
+
   applyFilters(): void {
     this.filteredPlayers = this.players.filter(player =>
       player.name.toLowerCase().includes(this.searchTerm.toLowerCase()) &&
@@ -52,15 +60,30 @@ export class PlayerAdminComponent implements OnInit {
   }
 
   savePlayer(): void {
-    const request = this.editingPlayer
-      ? this.playerService.update(this.editingPlayer._id!, this.newPlayer)
-      : this.playerService.create(this.newPlayer);
+    const formData = new FormData();
+    const playerData = this.newPlayer as any;
 
+    for (const key in playerData) {
+      if (playerData[key] !== undefined && playerData[key] !== null) {
+        formData.append(key, playerData[key]);
+      }
+    }
+  
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+  
+    const request = this.editingPlayer
+      ? this.playerService.update(this.editingPlayer._id!, formData)
+      : this.playerService.create(formData);
+  
     request.subscribe(() => {
       this.resetForm();
       this.loadPlayers();
+      this.selectedFile = null;
     });
   }
+  
 
   editPlayer(player: Player): void {
     this.editingPlayer = player;

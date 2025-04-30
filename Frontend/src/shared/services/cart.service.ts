@@ -5,6 +5,8 @@ import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { Player } from './player.service';
 import { Product } from '../../app/pages/shop/product-admin/product-admin.component';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface CartItem {
 [x: string]: any;
@@ -35,6 +37,14 @@ export class CartService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
+
+  private cartSubject = new BehaviorSubject<Cart>({ items: [] });
+  cart$ = this.cartSubject.asObservable();
+  refreshCart() {
+    this.http.get<Cart>(this.apiUrl, { headers: this.getAuthHeaders() })
+      .subscribe(cart => this.cartSubject.next(cart));
+  }
+
   getCart(): Observable<Cart> {
     return this.http.get<Cart>(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
       catchError(err => this.errorHandler.handleError(err))
@@ -47,7 +57,7 @@ export class CartService {
     if (playerId) payload.playerId = playerId;
   
     return this.http.post(`${this.apiUrl}`, payload, { headers: this.getAuthHeaders() })
-      .pipe(catchError(err => this.errorHandler.handleError(err)));
+      .pipe(tap(() => this.refreshCart()),catchError(err => this.errorHandler.handleError(err)));
   }
   
   

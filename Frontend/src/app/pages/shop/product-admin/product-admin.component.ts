@@ -140,7 +140,6 @@ export class ProductAdminComponent implements OnInit {
       name: product.name,
       description: product.description,
       price: product.price,
-      imageUrl: product.imageUrl,
       category: product.category
     });
 

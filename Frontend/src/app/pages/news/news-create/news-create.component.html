@@ -11,8 +11,8 @@
       <label for="content">Tartalom</label>
       <textarea id="content" formControlName="content" rows="5"></textarea>
 
-      <label for="imageUrl">Kép URL</label>
-      <input id="imageUrl" type="text" formControlName="imageUrl" />
+      <label for="imageUrl">Kép</label>
+      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
 
       <button type="submit" [disabled]="isSubmitting">
         {{ selectedNews ? 'Frissítés' : 'Létrehozás' }}

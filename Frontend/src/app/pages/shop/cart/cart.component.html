@@ -35,8 +35,33 @@
 
       <div class="bottom">
         <button class="clear" (click)="clearCart()">Kosár ürítése</button>
-        <button class="order" (click)="onButtonClick()" (click)="placeOrder()">Rendelés leadása</button>
+        <button class="order" (click)="openShippingModal()">Szállítási adatok megadása</button>
       </div>
+
+      <!-- MODAL háttér -->
+<div class="modal-overlay" *ngIf="isShippingModalOpen">
+  <div class="modal-content">
+    <h3>Szállítási adatok</h3>
+
+    <form [formGroup]="shippingForm" class="shipping-form">
+      <input formControlName="fullName" placeholder="Teljes név" />
+      <input formControlName="phone" placeholder="Telefonszám" />
+      <input formControlName="zip" placeholder="Irányítószám" />
+      <input formControlName="city" placeholder="Város" />
+      <input formControlName="street" placeholder="Utca, házszám" />
+      <input formControlName="floor" placeholder="Emelet/ajtó (opcionális)" />
+    </form>
+
+    <div class="modal-buttons">
+      <button (click)="closeShippingModal()" class="cancel">Mégse</button>
+      <button 
+        [disabled]="shippingForm.invalid" 
+        (click)="submitShippingAndOrder()" 
+        class="confirm">Rendelés leadása</button>
+    </div>
+  </div>
+</div>
+
     </div>
   </div>
 </ng-template>

@@ -4,7 +4,10 @@
     <a routerLink="/matches">Meccsek</a>
     <a routerLink="/players">Csapat</a>
     <a routerLink="/shop">Shop</a>
-    <a routerLink="/cart">Kosár</a>
+    <a routerLink="/cart" class="cart-link">
+      Kosár
+      <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
+    </a>
     <a routerLink="/polls" *ngIf="isLoggedIn">Szavazások</a>
     <a routerLink="/leaderboard" *ngIf="isLoggedIn">Toplista</a>
     <a routerLink="/forum" *ngIf="isLoggedIn">Fórum</a>

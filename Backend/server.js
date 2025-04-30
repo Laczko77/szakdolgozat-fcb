@@ -52,6 +52,7 @@ app.get('/', (req, res) => {
 
 const newsRoutes = require('./routes/newsRoutes');
 app.use('/api/news', newsRoutes);
+app.use('/uploads/news', express.static('uploads/news'));
 /*app.use('/api/news', require('./routes/newsRoutes'));*/
 
 const productRoutes = require('./routes/productRoutes');
@@ -73,7 +74,7 @@ app.use('/api/matches', matchRoutes);
 
 const playerRoutes = require('./routes/playerRoutes');
 app.use('/api/players', playerRoutes);
-
+app.use('/uploads/players', express.static('uploads/players'));
 
 const ticketRoutes = require('./routes/ticketRoutes');
 app.use('/api/tickets', ticketRoutes);
