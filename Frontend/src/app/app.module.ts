@@ -30,6 +30,8 @@ import { PollAdminComponent } from './pages/polls/poll-admin/poll-admin.componen
 import { PollUserComponent } from './pages/polls/poll-user/poll-user.component';
 import { LeaderboardComponent } from './pages/polls/leaderboard/leaderboard.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ChatAiComponent } from './pages/forum/chat-ai/chat-ai.component';
+import { FooterComponent } from '../shared/footer/footer.component';
 
 
 
@@ -57,7 +59,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         ForumComponent,
         PollAdminComponent,
         PollUserComponent,
-        LeaderboardComponent
+        LeaderboardComponent,
+        ChatAiComponent,
+        ForumComponent,
+        FooterComponent
 
 
     ],
