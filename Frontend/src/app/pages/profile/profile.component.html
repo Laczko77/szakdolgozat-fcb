@@ -1,9 +1,20 @@
 <div class="profile-container">
-    <h2>Saját profil:</h2>
+  <div class="profile-card">
+
+    <img src="assets/home/logo.png" alt="FC Barcelona" class="logo" />
+
+    <h2>Profilom</h2>
+
     <div class="profile-info" *ngIf="!errorMessage">
-      <p><strong>Username:</strong> {{ username }}</p>
+      <p><strong>Felhasználónév:</strong> {{ username }}</p>
       <p><strong>Email:</strong> {{ email }}</p>
+      <p><strong>Pontszám:</strong> {{ points}}</p>
     </div>
-    <button (click)="onButtonClick()" (click)="logout()">Kijelentkezés</button>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <button class="logout-btn" (click)="logout()">Kijelentkezés</button>
+  </div>
 </div>
-  

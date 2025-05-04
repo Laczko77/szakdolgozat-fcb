@@ -1,22 +1,38 @@
-<div class="shop-container">
-  <div class="product-grid">
-
-    
-    <div class="product-card" *ngFor="let product of products">
-      <a [routerLink]="['/shop/product', product._id]" class="product-card-link">
-        <div class="image-container">
-          <img [src]="product.imageUrl" [alt]="product.name" />
-        </div>
-
-        <div class="details">
-          <p class="category">{{ product.category.toUpperCase() }}</p>
-          <p class="name">{{ product.name }}</p>
-          <p class="price">{{ product.price | currency:'EUR' }}</p>
-        </div>
-      </a>
-    </div>
-
-
+<!-- 1. blokk: Shop banner -->
+<section class="shop-hero-section scroll-fade-in" #fadeElement>
+  <div class="hero-text">
+    FÉRFI MEZEK
   </div>
-</div>
+</section>
 
+<!-- 2. blokk: Keresés -->
+<section class="shop-search-section scroll-fade-in" #fadeElement #productSection>
+  <div class="search-box">
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search">
+    <button (click)="onSearch()">
+      <i class="bx bxs-search-alt-2"></i>
+    </button>
+  </div>
+</section>
+
+<!-- 3. blokk: Termékek -->
+<section class="shop-product-section scroll-fade-in" #fadeElement>
+  <div class="product-grid" >
+    <div  [routerLink]="['/shop/product', product._id]" class="product-card scroll-fade-in" *ngFor="let product of paginatedProducts" #fadeElement>
+      <img [src]="product.imageUrl" [alt]="product.name" />
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.price | currency:'EUR' }}</p>
+      </div>
+    </div> 
+  </div>
+  <div class="pagination scroll-fade-in" #fadeElement>
+    <button
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      [class.active]="currentPage === i + 1"
+      (click)="changePage(i + 1)"
+    >
+      {{ i + 1 }}
+    </button>
+  </div>
+</section>

@@ -13,6 +13,8 @@ import { AnalyticsService } from '../../../shared/services/analytics.service';
 })
 export class RegisterComponent {
 
+  errorMessage: string = '';
+
   constructor(private authService: AuthService, private router: Router, private analyticsService: AnalyticsService) {}  // A Router szolgáltatás hozzáadása
 
 

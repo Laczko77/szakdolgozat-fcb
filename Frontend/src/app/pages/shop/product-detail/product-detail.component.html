@@ -1,39 +1,49 @@
-<div class="product-detail-container" *ngIf="product">
-  <div class="product-images">
-    <img [src]="product.imageUrl" alt="{{ product.name }}" class="main-image" />
+<section class="product-detail scroll-fade-in" #fadeElement>
+  <div class="back-button-container scroll-fade-in" #fadeElement>
+    <a routerLink="/shop" class="back-button">← Vissza a termékekhez</a>
   </div>
+  <div class="product-container">
 
-  <div class="product-info">
-    <h1>{{ product.name }}</h1>
-    <p class="price">{{ product.price | currency:'EUR':'symbol-narrow' }}</p>
+    <!-- Bal oldal: kép -->
+    <div class="product-image">
+      <img [src]="product?.imageUrl" [alt]="product?.name">
+    </div>
 
-    <!-- Méretválasztó -->
-    <div class="sizes">
-      <h4>Méret</h4>
-      <div class="size-options">
-        <button 
-          *ngFor="let size of ['XS','S','M','L','XL','XXL']" 
-          class="size-btn" 
-          [class.selected]="selectedSize === size"
-          (click)="selectedSize = size">
-          {{ size }}
-        </button>
+    <!-- Jobb oldal: adatok -->
+    <div class="product-info">
+      <h1>{{ product?.name }}</h1>
+      <h2>{{ product?.price | currency:'EUR' }}</h2>
+
+      <p class="category">{{ product?.category }}</p>
+
+      <div class="selectors"> 
+        <div class="select-group">
+          <label for="playerSelect">Játékos kiválasztása</label>
+          <select [(ngModel)]="selectedPlayer">
+            <option value="">Válassz játékost</option>
+            <option *ngFor="let player of players" [value]="player._id">
+              {{ player.name }}
+            </option>
+          </select>
+        </div>
+      
+        <div class="select-group">
+          <label for="sizeSelect">Méret</label>
+          <select id="sizeSelect" [(ngModel)]="selectedSize">
+            <option *ngFor="let s of sizes" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+      
+
+      <button class="add-to-cart"  (click)="onButtonClick()" (click)="addToCart()">Kosárba</button>
+
+      <div class="description">
+        <h3>Termék leírása</h3>
+        <p>{{ product?.description }}</p>
       </div>
     </div>
 
-    <!-- Játékos választó csak ha 'Mez' kategória -->
-    <div class="player-select" *ngIf="product.category === 'Mez'">
-      <h4>Válassz játékost</h4>
-      <select [(ngModel)]="selectedPlayer">
-        <option value="">Válassz játékost</option>
-        <option *ngFor="let player of players" [value]="player._id">
-          {{ player.name }}
-        </option>
-      </select>
-    </div>
-
-    <div class="actions">
-      <button class="add-to-cart" (click)="onButtonClick()" (click)="addToCart()">Kosárba</button>
-    </div>
   </div>
-</div>
+</section>
+

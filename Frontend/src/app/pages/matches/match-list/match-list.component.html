@@ -1,14 +1,91 @@
-<div class="match-list">
-    <h2>Meccsek</h2>
-    <div *ngIf="allMatches.length === 0">Nincs még elérhető meccs.</div>
-    <ul>
-      <li *ngFor="let match of allMatches">
-        <strong>{{ match.date | date:'short' }}</strong> – {{ formatTeams(match) }}
-        <span class="badge">{{ match.competition }} • {{ match.matchday }}. forduló</span>
-        <button *ngIf="!match.score" [routerLink]="['/tickets/purchase', match._id] " class="ticket-button" (click)="onButtonClick()">
-          Jegyvásárlás
-        </button>
-      </li>
-    </ul>
+<section class="match-hero-section scroll-fade-in" #fadeElement>
+  <div class="hero-text">MÉRKŐZÉSEK</div>
+</section>
+
+<section class="match-list-section scroll-fade-in" #fadeElement>
+  <div *ngFor="let month of groupedMatches | keyvalue">
+    <h2 class="month-title">{{ month.key }}</h2>
+
+    <div class="match-grid">
+      <div class="match-card scroll-fade-in" *ngFor="let match of month.value" (click)="selectMatch(match)" #fadeElement>
+
+        <div class="match-info">
+          <div class="match-header">
+            <span class="competition">{{ match.competition }}</span>
+            <span class="match-date">{{ match.date | date:'yyyy. MM. dd. HH:mm' }}</span>
+          </div>
+
+          <div class="teams">
+            <ng-container *ngIf="match.home === 'home'; else awayMatch">
+              <span class="team home">FC Barcelona</span>
+              <span class="vs" *ngIf="!match.score">vs</span>
+              <span class="score" *ngIf="match.score">{{ match.score }}</span>
+              <span class="team away">{{ match.opponent }}</span>
+            </ng-container>
+
+            <ng-template #awayMatch>
+              <span class="team home">{{ match.opponent }}</span>
+              <span class="vs" *ngIf="!match.score">vs</span> 
+              <span class="score" *ngIf="match.score">{{ match.score }}</span>
+              <span class="team away">FC Barcelona</span>
+            </ng-template>
+          </div>
+
+          <div class="match-extra">
+            <span class="matchday">{{ formatMatchday(match.matchday) }}</span>
+          
+            <div class="card-meta">
+              <span class="clickable-info">Kattints a részletekhez</span>
+              <span *ngIf="!match.score" class="ticket-badge">🎟️ Jegyvásárlás elérhető</span>
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+    </div>
   </div>
-  
+</section>
+
+<!-- Részletes overlay megjelenítés -->
+<div class="match-overlay" *ngIf="selectedMatch" (click)="closeOverlay()">
+  <div class="match-detail" (click)="$event.stopPropagation()">
+    <div class="match-header">
+      <span class="competition">{{ selectedMatch.competition }}</span>
+      <span class="date">{{ selectedMatch.date | date:'yyyy. MM. dd. HH:mm' }}</span>
+    </div>
+    
+    <div class="match-body">
+      <div class="team-block home">
+        {{ selectedMatch.home === 'home' ? 'FC Barcelona' : selectedMatch.opponent }}
+      </div>
+    
+      <div class="result-block">
+        <span *ngIf="selectedMatch.score" class="score">{{ selectedMatch.score }}</span>
+        <span *ngIf="!selectedMatch.score" class="vs">vs</span>
+      </div>
+    
+      <div class="team-block away">
+        {{ selectedMatch.home === 'home' ? selectedMatch.opponent : 'FC Barcelona' }}
+      </div>
+    </div>
+    
+    <div class="matchday-badge">
+      {{ formatMatchday(selectedMatch.matchday) }}
+    </div>
+    
+    <div class="action-buttons">
+      <button class="close-btn" (click)="closeOverlay()">Bezárás</button>
+      <button
+        class="ticket-btn"
+        *ngIf="!selectedMatch.score"
+        [routerLink]="['/tickets/purchase', selectedMatch._id]"
+        (click)="$event.stopPropagation()"
+      >
+        Jegyvásárlás
+      </button>
+    </div>    
+  </div>
+</div>
+
+

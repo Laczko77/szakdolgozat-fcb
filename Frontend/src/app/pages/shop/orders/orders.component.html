@@ -1,41 +1,72 @@
-<div class="orders-page">
-  <h2>Rendeléseim</h2>
+<section class="orders-section scroll-fade-in" #fadeElement>
+  <h2 class="section-title">Rendeléseim</h2>
 
-  <div class="toggle">
-    <button (click)="showTickets = false" [class.active]="!showTickets">Shop rendelések</button>
-    <button (click)="showTickets = true" [class.active]="showTickets">Jegyrendelések</button>
-  </div> 
+  <!-- SWITCH -->
+  <div class="switch-container scroll-fade-in" #fadeElement>
+    <span [class.active]="!showTickets">Shop</span>
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="showTickets">
+      <span class="slider"></span>
+    </label>
+    <span [class.active]="showTickets">Jegyek</span>
+  </div>
+  
 
-  <div *ngIf="!showTickets">
-    <h3>Shop rendeléseid</h3>
-    <ul *ngIf="orders.length > 0; else noOrders">
-      <li *ngFor="let order of orders">
-        <strong>Rendelés #{{ order._id.slice(-5) }}</strong> – {{ order.status }} – {{ order.createdAt | date:'short' }}
-        <ul>
-          <li *ngFor="let item of order.products">
-            {{ item.productId.name }} – {{ item.quantity }} db
+  <!-- SHOP RENDELÉSEK -->
+  <div *ngIf="!showTickets" class="order-list scroll-fade-in" #fadeElement>
+    <ng-container *ngIf="orders.length > 0; else noOrders">
+      <div class="order-card scroll-fade-in" *ngFor="let order of orders" #fadeElement>
+        <div class="order-header">
+          <h3>Rendelés #{{ order._id.slice(-5) }}</h3>
+          <span class="status">{{ order.status }}</span>
+        </div>
+        <div class="order-meta">{{ order.createdAt | date:'short' }}</div>
+
+        <ul class="order-items">
+          <li *ngFor="let item of order.items">
+            <div class="item-line">
+              <span class="product-name">{{ item.productId.name }}</span>
+              <span class="product-info">
+                {{ item.quantity }} db
+                <ng-container *ngIf="item?.size">| Méret: {{ item?.size }}</ng-container>
+                <ng-container *ngIf="item?.player">| Játékos: {{ item?.player?.name }}</ng-container>
+
+
+                | {{ item.productId.price | currency:'EUR' }} /db
+              </span>
+            </div>
           </li>
         </ul>
-      </li>
-    </ul>
-    <ng-template #noOrders><p>Nincs még shop rendelésed.</p></ng-template>
+
+        <div class="order-total">
+          Végösszeg: {{ getOrderTotal(order) | currency:'EUR' }}
+        </div>
+        
+      </div>
+    </ng-container>
+    <ng-template #noOrders>
+      <p class="empty">Nincs még shop rendelésed.</p>
+    </ng-template>
   </div>
 
-  <div *ngIf="showTickets">
-    <h3>Jegyrendeléseid</h3>
-    <ul *ngIf="tickets.length > 0; else noTickets">
-      <li *ngFor="let ticket of tickets">
-        <strong>{{ formatTeams(ticket.matchId) }}</strong>
-        – {{ ticket.matchId.date | date:'shortDate' }}
 
-        <ul>
+  <!-- JEGYRENDELÉSEK -->
+  <div *ngIf="showTickets" class="order-list scroll-fade-in" #fadeElement>
+    <ng-container *ngIf="tickets.length > 0; else noTickets">
+      <div class="order-card scroll-fade-in" *ngFor="let ticket of tickets" #fadeElement>
+        <div class="order-header">
+          <h3>{{ formatTeams(ticket.matchId) }}</h3>
+          <span class="status">{{ ticket.matchId.date | date:'shortDate' }}</span>
+        </div>
+        <ul class="order-items">
           <li *ngFor="let t of ticket.tickets">
             {{ t.category.toUpperCase() }} – {{ t.quantity }} db
           </li>
         </ul>
-      </li>
-    </ul>
-    <ng-template #noTickets><p>Nincs még jegyrendelésed.</p></ng-template>
+      </div>
+    </ng-container>
+    <ng-template #noTickets>
+      <p class="empty">Nincs még jegyrendelésed.</p>
+    </ng-template>
   </div>
-</div>
-
+</section>

@@ -1,5 +1,5 @@
-// player-admin.component.ts
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
 import { PlayerService, Player } from '../../../../shared/services/player.service';
 
 @Component({
@@ -16,11 +16,12 @@ export class PlayerAdminComponent implements OnInit {
   selectedPosition: string = '';
   filteredPlayers: Player[] = [];
   selectedFile: File | null = null;
+  @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
   constructor(private playerService: PlayerService) {}
 
   ngOnInit(): void {
-    this.loadPlayers();
+    this.loadPlayers(); 
   }
 
   createEmptyPlayer(): Player {
@@ -99,9 +100,16 @@ export class PlayerAdminComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newPlayer = this.createEmptyPlayer();
-    this.editingPlayer = null;
+  this.newPlayer = this.createEmptyPlayer();
+  this.editingPlayer = null;
+  this.selectedFile = null;
+
+  // Kép input mező resetelése DOM szinten
+  if (this.fileInputRef) {
+    this.fileInputRef.nativeElement.value = '';
   }
+}
+
 
   onSearchChange(): void {
     this.applyFilters();

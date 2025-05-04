@@ -1,17 +1,46 @@
-<div class="ticket-purchase" *ngIf="match">
-    <h2>Jegyvásárlás: {{ match.home === 'home' ? 'FC Barcelona' : match.opponent }} vs {{ match.home === 'home' ? match.opponent : 'FC Barcelona' }}</h2>
-    <p>{{ match.date | date:'fullDate' }} – {{ match.competition }}</p>
-  
-    <div class="category" *ngFor="let category of ['cat1', 'cat2', 'cat3', 'vip']">
-      <h3>{{ category.toUpperCase() }}</h3>
-      <button (click)="adjustQuantity(category, -1)">−</button>
-      <span>{{ ticketQuantities[category] }}</span>
-      <button (click)="adjustQuantity(category, 1)">+</button>
+<section class="ticket-purchase scroll-fade-in" *ngIf="match" #fadeElement>
+  <div class="ticket-card">
+    <!-- Bal oldal: stadionkép -->
+    <div class="stadium-visual">
+      <img src="assets/home/station.png" alt="Stadion térkép" />
     </div>
-  
-    <div class="total" *ngIf="totalTickets > 0">
-      <p>Összesen: {{ totalTickets }} jegy</p>
-      <button (click)="onButtonClick()" (click)="submitOrder()">Rendelés leadása</button>
+
+    <!-- Jobb oldal: meccsinfó + jegyek -->
+    <div class="ticket-content">
+      
+      <!-- Látványos meccsfejléc -->
+      <div class="match-summary">
+        <h1>Jegyvásárlás</h1>
+        <div class="teams">
+          <span class="home">FC Barcelona</span>
+          <span class="vs">vs</span>
+          <span class="away">{{ match.opponent }}</span>
+        </div>
+        <div class="details">
+          <span class="date">{{ match.date | date:'fullDate' }}</span>
+          <span class="badge">{{ match.competition }}</span>
+        </div>
+      
+
+      <!-- Jegykategóriák ugyanúgy -->
+      <div class="category-group" *ngFor="let category of ['cat1', 'cat2', 'cat3', 'vip']">
+        <div class="label-color">
+          <span class="category-label">{{ category.toUpperCase() }}</span>
+          <span class="color-box" [ngClass]="category"></span>
+        </div>
+        <div class="quantity-controls">
+          <button (click)="adjustQuantity(category, -1)">−</button>
+          <span>{{ ticketQuantities[category] }}</span>
+          <button (click)="adjustQuantity(category, 1)">+</button>
+        </div>
+      </div>
+
+      <!-- Összegzés -->
+      <div class="total" *ngIf="totalTickets > 0">
+        <p>Összesen: {{ totalTickets }} jegy</p>
+        <button class="submit-btn" (click)="onButtonClick()" (click)="submitOrder()">Rendelés leadása</button>
+      </div>
+    </div>
     </div>
   </div>
-   
+</section>

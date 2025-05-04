@@ -1,96 +1,186 @@
-
 .ticket-purchase {
-  max-width: 600px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background-color: #1e1e2f;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-  color: #f5f5f5;
-  font-family: 'Segoe UI', sans-serif;
-  text-align: center;
+  max-width: 1100px;
+  margin: auto;
+  padding-top: 6rem;
+  background: white;
+  border-radius: 20px;
+  
 
-  h2 {
-    color: #a50044;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: #ccc;
-    margin-bottom: 2rem;
-    font-size: 1rem;
-  }
-
-  .category {
+  .ticket-card {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .stadium-visual {
+    flex: 1 1 45%;
+    background: #f5f5fa;
+    display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    background-color: #2b2b3d;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    align-items: center;
+    padding: 1.5rem;
 
-    h3 {
-      color: #ffc107;
-      margin: 0;
-      font-size: 1.1rem;
-      min-width: 80px;
+    img {
+      max-width: 110%;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
+  }
 
-    button {
-      background-color: #004d98;
-      color: white;
-      border: none;
-      padding: 0.4rem 0.8rem;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background-color 0.2s;
+  .ticket-content {
+    flex: 1 1 55%;
+    padding: 2rem 2.5rem;
+    background: #f5f5fa;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2.2rem;
 
-      &:hover {
-        background-color: #003570;
+    .match-summary {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+
+      h1 {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #2b2b3c;
+      }
+
+      .teams {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+
+        .home {
+          color: #004D98
+        }
+
+        .away {
+          color: #DA291C
+        }
+
+        .vs {
+          color: #2b2b3c;
+        }
+      }
+
+      .details {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        
+
+        .date {
+          font-size: 1.05rem;
+          color: #555;
+        }
+
+        .badge {
+          background: #DA291C;
+          color: #fff;
+          font-size: 0.9rem;
+          padding: 0.3rem 0.6rem;
+          border-radius: 12px;
+          font-weight: 500;
+        }
       }
     }
 
-    span {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: white;
-      width: 40px;
-      display: inline-block;
-      text-align: center;
+    .category-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.03);
+      gap: 1.5rem;
+
+      .label-color {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        .category-label {
+          font-weight: bold;
+          color: #2b2b3c;
+        }
+
+        .color-box {
+          width: 20px;
+          height: 20px;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+        }
+
+        .cat1 { background-color: #999999; } // szürke
+        .cat2 { background-color: #DA291C; } // piros
+        .cat3 { background-color: #0033cc; } // kék
+        .vip  { background-color: #fcb900; } // arany
+      }
+
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        button {
+          width: 36px;
+          height: 36px;
+          font-size: 1.2rem;
+          font-weight: bold;
+          background: #e0d4fa;
+          border: none;
+          border-radius: 10px;
+          cursor: pointer;
+
+          &:hover {
+            background: #c6b1f2;
+          }
+        }
+
+        span {
+          font-size: 1.2rem;
+          font-weight: bold;
+          min-width: 24px;
+          text-align: center;
+        }
+      }
     }
-  }
 
-  .total {
-    margin-top: 2rem;
-    background-color: #2d2d40;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    .total {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #ddd;
+      text-align: right;
 
-    p {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #ffc107;
-      margin-bottom: 1rem;
-    }
+      p {
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        color: #333;
+      }
 
-    button {
-      padding: 0.6rem 1.2rem;
-      background: linear-gradient(90deg, #a50044, #004d98);
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s ease;
+      .submit-btn {
+        background: linear-gradient(135deg, #004D98, #DA291C);
+        color: white;
+        padding: 0.6rem 1.4rem;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
 
-      &:hover {
-        opacity: 0.85;
-        transform: scale(1.02);
+        &:hover {
+          filter: brightness(1.1);
+        }
       }
     }
   }

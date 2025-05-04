@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
@@ -17,6 +17,13 @@ export class NewsService {
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 
+  private getHeaders(): { headers: HttpHeaders } {
+    const token = localStorage.getItem('token');
+    return {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`)
+    };
+  }
+
   getNews(): Observable<News[]> {
     return this.http.get<News[]>(this.apiUrl).pipe(
       catchError(err => this.errorHandler.handleError(err))
@@ -30,22 +37,20 @@ export class NewsService {
   }
 
   createNews(news: FormData): Observable<News> {
-    return this.http.post<News>(this.apiUrl, news).pipe(
+    return this.http.post<News>(this.apiUrl, news, this.getHeaders()).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 
   updateNews(id: string, news: FormData): Observable<News> {
-    return this.http.put<News>(`${this.apiUrl}/${id}`, news).pipe(
+    return this.http.put<News>(`${this.apiUrl}/${id}`, news, this.getHeaders()).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 
   deleteNews(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete(`${this.apiUrl}/${id}`, this.getHeaders()).pipe(
       catchError(err => this.errorHandler.handleError(err))
     );
   }
 }
-
-

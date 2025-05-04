@@ -12,6 +12,7 @@ import { AnalyticsService } from '../../../shared/services/analytics.service';
 export class ProfileComponent implements OnInit {
   username: string = '';
   email: string = '';
+  points: number = 0;
   errorMessage: string = ''; // Hibaüzenet változó
 
   constructor(
@@ -26,7 +27,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadUserData();
+    this.loadUserData(); 
   }
 
   // Felhasználói adatok betöltése
@@ -39,6 +40,7 @@ export class ProfileComponent implements OnInit {
           (userData) => {
             this.username = userData.username;
             this.email = userData.email;
+            this.points = userData.score;
           },
           (error) => {
             console.error('Error loading user data', error);

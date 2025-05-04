@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../../shared/services/product.service';
 
@@ -24,6 +24,7 @@ export class ProductAdminComponent implements OnInit {
   isSubmitting = false;
   searchTerm: string = '';
   selectedFile: File | null = null; // ÚJ: fájl mentése
+  @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
   constructor(private fb: FormBuilder, private productService: ProductService) {
     this.productForm = this.fb.group({
@@ -56,7 +57,13 @@ export class ProductAdminComponent implements OnInit {
     this.selectedProduct = null;
     this.productForm.reset();
     this.selectedFile = null;
+  
+    
+    if (this.fileInputRef) {
+      this.fileInputRef.nativeElement.value = '';
+    }
   }
+  
 
   deleteProduct(id: string) {
     if (confirm('Biztosan törölni szeretnéd a terméket?')) {
@@ -116,6 +123,7 @@ export class ProductAdminComponent implements OnInit {
           this.productForm.reset();
           this.selectedFile = null;
           this.loadProducts();
+          this.clearForm();
           this.isSubmitting = false;
         },
         error: (err) => {
@@ -140,11 +148,13 @@ export class ProductAdminComponent implements OnInit {
       name: product.name,
       description: product.description,
       price: product.price,
-      category: product.category
+      category: product.category,
+      imageUrl: product.imageUrl || '' 
     });
-
+  
     setTimeout(() => {
       document.getElementById('productForm')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   }
+  
 }

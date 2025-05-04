@@ -1,31 +1,111 @@
-<div class="forum-wrapper">
+<section class="forum-hero-section scroll-fade-in" #fadeElement>
+  <div class="hero-text">FCB FÓRUM</div>
+</section>
+
+<section class="forum-section scroll-fade-in" #fadeElement>
+  <div class="toggle-ai scroll-fade-in" #fadeElement>
+    <button (click)="toggleAI()">
+      {{ showAI ? 'Vissza a fórumhoz' : 'AI Chat' }}
+    </button>
+  </div>
+
+  <app-chat-ai *ngIf="showAI"></app-chat-ai>
+
+  <div class="forum-wrapper scroll-fade-in" *ngIf="!showAI" #fadeElement>
     <h2>FCB Fórum</h2>
-  
-    <form (submit)="submitPost(); $event.preventDefault()">
+
+    <form (submit)="submitPost(); $event.preventDefault()" class="scroll-fade-in" #fadeElement>
       <textarea [(ngModel)]="text" name="text" placeholder="Írj valamit..."></textarea>
       <input type="file" (change)="onFileSelected($event)" />
       <button type="submit">Posztolás</button>
     </form>
-  
-    <div class="post" *ngFor="let post of posts">
-      <p><strong>{{ post.username }}</strong></p>
-    
-      <ng-container *ngIf="editPostId === post._id; else normalView">
-        <textarea [(ngModel)]="editText"></textarea>
-        <input type="file" (change)="onEditFileSelected($event)" />
-        <button (click)="submitEdit()">Mentés</button>
-        <button (click)="cancelEdit()">Mégse</button>
-      </ng-container>
-    
-      <ng-template #normalView>
-        <p *ngIf="post.text">{{ post.text }}</p>
-        <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="forum image" />
-        <div class="actions">
-          <button (click)="startEdit(post)">Szerkesztés</button>
-          <button *ngIf="isAdmin()" (click)="deletePost(post._id)">Törlés</button>
 
+    <div class="post-card scroll-fade-in" *ngFor="let post of posts" #fadeElement>
+      <div class="post-header">
+        <strong>{{ post.username }}</strong>
+        <div class="actions">
+          <button *ngIf="isOwnPost(post)" (click)="startEdit(post)" class="icon-button">
+            <i class='bx bx-edit-alt'></i>
+          </button>
+          <button *ngIf="isOwnPost(post) || isAdmin()" (click)="deletePost(post._id)" class="icon-button">
+            <i class='bx bx-trash'></i>
+          </button>
         </div>
-      </ng-template>
+      </div>
+
+      <div class="post-body">
+        <ng-container *ngIf="editPostId === post._id; else normalView">
+          <textarea [(ngModel)]="editText"></textarea>
+          <input type="file" (change)="onEditFileSelected($event)" />
+          <div class="edit-actions">
+            <button class="gradient-btn" (click)="submitEdit()">Mentés</button>
+            <button class="gradient-btn cancel" (click)="cancelEdit()">Mégse</button>
+          </div>
+        </ng-container>
+
+        <ng-template #normalView>
+          <p *ngIf="post.text">{{ post.text }}</p>
+          <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="forum image" />
+        </ng-template>
+      </div>
+
+      <div class="post-footer">
+        <div class="left">
+          <button 
+            (click)="likePost(post)" 
+            [class.liked]="post.likedByCurrentUser" 
+            [disabled]="post.likedByCurrentUser">
+            <i class='bx bxs-like'>{{ post.likes?.length || 0 }}</i>
+          </button>
+        </div>
+        <div class="right">
+          <button (click)="toggleComments(post._id)">
+            <i class='bx bxs-comment-add'>Kommentek ({{ post.comments?.length || 0 }})</i>
+          </button>
+        </div>
+      </div>
+
+      <div class="comment-section scroll-fade-in" *ngIf="expandedPostId === post._id" #fadeElement>
+        <form (submit)="addComment(post._id); $event.preventDefault()">
+          <input
+            type="text"
+            [(ngModel)]="commentInputs[post._id]"
+            placeholder="Írj hozzászólást..."
+            [name]="'commentText' + post._id"
+          />
+          <button type="submit">Küldés</button>
+        </form>
+
+        <div class="comments">
+          <div class="comment" *ngFor="let comment of post.comments">
+            <ng-container *ngIf="editingCommentId !== comment._id; else editCommentBlock">
+              <p><strong>{{ comment.username }}</strong>: {{ comment.text }}</p>
+            </ng-container>
+
+            <ng-template #editCommentBlock>
+              <input
+                type="text"
+                [(ngModel)]="editingCommentText"
+                [name]="'editCommentText' + comment._id"
+                class="edit-comment-input"
+              />
+              <button class="gradient-btn" (click)="submitEditComment(post._id)">Mentés</button>
+              <button class="gradient-btn cancel" (click)="cancelEditComment()">Mégse</button>
+            </ng-template>
+
+            <ng-container class="actions" *ngIf="editingCommentId !== comment._id">
+              <div class="comment-icons">
+                <button *ngIf="isOwnComment(comment)" (click)="startEditComment(post._id, comment)" class="icon-button">
+                  <i class='bx bx-edit-alt'></i>
+                </button>
+                <button *ngIf="isOwnComment(comment) || isAdmin()" (click)="deleteComment(post._id, comment)" class="icon-button">
+                  <i class='bx bx-trash'></i>
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  
+</section>

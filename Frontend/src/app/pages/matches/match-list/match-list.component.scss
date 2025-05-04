@@ -1,73 +1,409 @@
-
-.match-list {
-  max-width: 800px;
-  margin: 3rem auto;
+.match-hero-section {
+  background-image: url('/assets/home/hatter.png');
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
   padding: 2rem;
-  background-color: #1e1e2f;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  color: #f5f5f5;
-  font-family: 'Segoe UI', sans-serif;
 
-  h2 {
-    text-align: center;
-    color: #a50044;
-    margin-bottom: 1.5rem;
+  .hero-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px black;
+  }
+}
+
+.match-list-section {
+  padding: 2rem;
+
+  .month-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #004d98;
+    margin: 3rem 0 1rem 0;
+    border-left: 5px solid #004d98;
+    padding-left: 1rem;
+    text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
   }
 
-  div {
-    text-align: center;
-    font-size: 1rem;
-    color: #bbb;
-    margin-bottom: 1.5rem;
+  .match-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
+  .match-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: transform 0.3s ease, background 0.4s ease, color 0.4s ease;
+    flex: 1 1 280px;
+    max-width: 400px;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
 
-    li {
-      background-color: #2b2b3d;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    .match-header {
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      justify-content: space-between;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
 
-      strong {
-        font-size: 1.05rem;
-        color: #ffc107;
+    .teams {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+
+      .team {
+        margin: 0 0.5rem;
+        color: #000;
       }
 
-      .badge {
-        font-size: 0.9rem;
-        background-color: #004d98;
-        color: white;
-        padding: 0.3rem 0.7rem;
-        border-radius: 0.5rem;
-        display: inline-block;
-        width: fit-content;
-      }
-
-      .ticket-button {
-        margin-top: 0.5rem;
-        align-self: flex-start;
-        padding: 0.5rem 1rem;
-        background-color: #a50044;
-        color: white;
+      .vs,
+      .score {
+        margin: 0 0.5rem;
+        color: #555;
         font-weight: bold;
-        border: none;
-        border-radius: 0.5rem;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+      }
 
-        &:hover {
-          background-color: #80002b;
+      .score {
+        font-size: 1.5rem;
+      }
+    }
+
+    .match-extra {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 1rem;
+
+      .matchday {
+        background-color: #e0e0e0;
+        padding: 0.3rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.95rem;
+        display: inline-block;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        color: #333;
+      }
+
+      .card-meta {
+        margin-top: 0.7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+
+        .clickable-info {
+          font-size: 1rem;
+          font-style: italic;
+          color: #888;
+        }
+
+        .ticket-badge {
+          background: #ffcc00;
+          color: #004d98;
+          font-size: 1rem;
+          font-weight: bold;
+          padding: 0.3rem 0.9rem;
+          border-radius: 2rem;
         }
       }
     }
+
+    &:hover {
+      background-color: #0f0f2d;
+      color: white;
+    
+      .competition,
+      .match-date {
+        color: #ffcc00;
+        font-weight: bold;
+      }
+    
+      .team,
+      .vs,
+      .score {
+        color: white !important;
+      }
+    
+      .match-extra {
+        .matchday {
+          background-color: rgba(255, 255, 255, 0.2);
+          color: white;
+        }
+      }
+    
+      .clickable-info {
+        color: #ffcc00;
+      }
+    }
+    
+  }
+}
+
+.match-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+
+  .match-detail {
+    background-color: #0f0f2d;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    max-width: 520px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    animation: zoomIn 0.3s ease;
+    text-align: center;
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+
+      .competition,
+      .date {
+        font-size: 1.2rem;
+        color: #ffcc00;
+        font-weight: bold;
+      }
+    }
+
+    .match-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+
+      .team-block,
+      .result-block {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: white;
+      }
+
+      .team-block {
+        flex: 1;
+      }
+    }
+
+    .matchday-badge {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1.2rem;
+      border-radius: 1rem;
+      font-size: 1rem;
+      display: inline-block;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      button {
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 2rem;
+        transition: all 0.3s ease;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+
+        &:focus {
+          outline: 2px solid #ffcc00;
+          outline-offset: 2px;
+        }
+      }
+
+      .close-btn {
+        background: rgba(255, 255, 255, 0.4);
+        color: white;
+
+        &:hover {
+          background: #ffffff;
+          color: #0f0f2d;
+        }
+      }
+
+      .ticket-btn {
+        background: #ffcc00;
+        color: #004d98;
+
+        &:hover {
+          background: #fddc3a;
+          color: #002a6e;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .match-grid {
+    gap: 1rem;
+  }
+
+  .match-card {
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 1.5rem;
+
+    .teams {
+      font-size: 1.2rem;
+    }
+
+    .match-extra .card-meta {
+      .clickable-info,
+      .ticket-badge {
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  .match-detail {
+    padding: 2rem;
+
+    .match-header {
+      flex-direction: column;
+      gap: 0.3rem;
+      text-align: center;
+
+      .competition,
+      .date {
+        font-size: 1.1rem;
+      }
+    }
+
+    .match-body {
+      flex-direction: column;
+      gap: 1rem;
+
+      .team-block,
+      .result-block {
+        font-size: 1.4rem;
+      }
+    }
+
+    .matchday-badge {
+      font-size: 0.95rem;
+      padding: 0.4rem 1rem;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      button {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .match-card {
+    padding: 1.2rem;
+    font-size: 0.95rem;
+
+    .teams {
+      font-size: 1rem;
+    }
+
+    .match-extra .matchday {
+      font-size: 0.9rem;
+    }
+
+    .match-extra .card-meta {
+      .clickable-info,
+      .ticket-badge {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  .match-detail {
+    padding: 1.5rem;
+
+    .match-header {
+      .competition,
+      .date {
+        font-size: 1rem;
+      }
+    }
+
+    .match-body {
+      .team-block,
+      .result-block {
+        font-size: 1.2rem; 
+      }
+    }
+
+    .matchday-badge {
+      font-size: 0.9rem;
+    }
+
+    .action-buttons button {
+      font-size: 0.95rem;
+    }
+  }
+}
+
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -6,7 +6,7 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface Match {
   _id?: string;
-  date: string;
+  date: string; 
   competition: string;
   matchday: string;
   opponent: string;

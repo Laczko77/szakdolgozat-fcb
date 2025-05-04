@@ -16,7 +16,7 @@ import { AnalyticsService } from '../../../../shared/services/analytics.service'
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
   players: Player[] = [];
-
+  sizes: string[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   selectedSize: string = '';
   selectedPlayer: string = '';
 
@@ -62,7 +62,9 @@ export class ProductDetailComponent implements OnInit {
       },
       error: (err) => console.error('Hiba a játékosok betöltésekor:', err)
     });
-  }
+  } 
+
+  
 
   addToCart(): void {
     if (this.product?._id) {

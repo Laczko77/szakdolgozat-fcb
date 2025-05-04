@@ -1,105 +1,107 @@
-
 .poll-user-container {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background-color: #1e1e2f;
-    border-radius: 1rem;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    color: #f5f5f5;
-    font-family: 'Segoe UI', sans-serif;
-  
-    h2 {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: #a50044;
-      font-size: 1.8rem;
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  padding-top: 4rem;
+
+  .poll-wrapper {
+    background: #f5f5fa;
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 100%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .logo {
+      width: 100px;
+      margin-bottom: 1rem;
     }
-  
+
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2b2b3c;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
     .message {
       text-align: center;
-      margin-bottom: 1rem;
-      font-weight: bold;
-      color: #00ff90;
-    }
-  
-    .poll-card {
-      background-color: #2a2a3d;
-      padding: 1rem;
-      border-radius: 0.75rem;
+      color: #666;
       margin-bottom: 2rem;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-  
+    }
+
+    .poll-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      width: 100%;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+
       h3 {
+        font-size: 1.3rem;
+        color: #b9002f;
         margin-bottom: 1rem;
-        color: #ffc107;
+
+        .date {
+          font-size: 0.9rem;
+          color: #666;
+          margin-left: 0.5rem;
+        }
       }
-  
+
       .question-block {
-        margin-bottom: 1.25rem;
-  
-        p {
-          font-weight: bold;
+        margin-bottom: 1.5rem;
+
+        .question {
           margin-bottom: 0.5rem;
         }
-  
-        label {
-          display: block;
-          margin-bottom: 0.3rem;
-          cursor: pointer;
-  
-          input[type="radio"] {
-            margin-right: 0.5rem;
+
+        .vote-section {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+
+          select {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background: #fff;
+            color: #333;
+            min-width: 250px;
+          }
+
+          .vote-btn {
+            background: linear-gradient(135deg, #004D98, #DA291C);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+
+            &:hover {
+              filter: brightness(1.1);
+            }
           }
         }
-  
-        button {
-          margin-top: 0.5rem;
-          padding: 0.5rem 1rem;
-          background: linear-gradient(90deg, #a50044, #004d98);
-          color: white;
-          font-weight: bold;
-          border: none;
-          border-radius: 0.5rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-  
-          &:hover {
-            opacity: 0.85;
-            transform: scale(1.02);
-          }
-        }
-  
-        .already-voted {
-          margin-top: 0.5rem;
-          color: #aaa;
+
+        .already-voted-block {
+          background: #eee;
+          border-radius: 8px;
+          padding: 0.8rem;
           font-style: italic;
+          color: #555;
         }
       }
     }
-    .disabled-options {
-        opacity: 0.6;
-        pointer-events: none;
-      
-        label {
-          display: block;
-          margin-bottom: 0.25rem;
-        }
-      
-        input[type="radio"] {
-          margin-right: 0.5rem;
-        }
-      }
-      
-      .already-voted {
-        margin-top: 0.5rem;
-        color: #aaa;
-        font-style: italic;
-      
-        strong {
-          color: #ffc107;
-          font-weight: bold;
-        }
-      }
   }
-  
+}

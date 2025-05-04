@@ -1,94 +1,161 @@
-.player-list {
-  max-width: 1200px;
-  margin: 3rem auto;
+.player-hero-section {
+  background-image: url('/assets/home/hatter.png');
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
   padding: 2rem;
-  background-color: #1e1e2f;
-  border-radius: 1rem;
-  color: #f5f5f5;
-  font-family: 'Segoe UI', sans-serif;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 
-  .players {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  .hero-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px black;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+}
+
+.player-list-section {
+  padding: 2rem;
+
+  .position-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #004d98;
+    margin: 3rem 0 1.5rem 0;
+    border-left: 5px solid #004d98;
+    padding-left: 1rem;
+    text-transform: uppercase;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
   }
 
+
+  /*.player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+  }*/
+
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    justify-items: center;
+  }
+  
   .player-card {
-    background-color: #2b2b3d;
-    border-radius: 1rem;
-    padding: 1rem;
+    max-width: 380px;
+    overflow: hidden;
     position: relative;
-    text-align: center;
-    transition: transform 0.3s ease;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
-
-    &:hover {
-      transform: translateY(-5px);
-    }
-
-    img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .number-overlay {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #a50044;
-      color: white;
-      font-weight: bold;
-      font-size: 1.2rem;
-      padding: 0.3rem 0.7rem;
-      border-radius: 0.5rem;
-    }
-
-    .info {
-      margin-bottom: 1rem;
-
-      h3 {
-        font-size: 1.2rem;
-        margin: 0.2rem 0;
-        color: #ffc107;
-
-        span {
-          color: #f5f5f5;
-          font-weight: normal;
-        }
+    
+  
+    .image-wrapper {
+      position: relative;
+      height: 500px;
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
       }
-
-      p {
-        font-size: 0.95rem;
-        color: #ccc;
-        margin: 0;
+  
+      .info-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: linear-gradient(to top, #0f0f2d, rgba(15, 15, 45, 0));
+        padding: 2rem 1rem 1.5rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
-    }
-
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      background-color: #1e1e2f;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-
-      div {
+  
+      .player-info {
         text-align: center;
-
-        span {
-          display: block;
-          font-weight: bold;
-          color: #00c853;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+      
+        .name {
+          font-size: 1.5rem; // NAGYOBB méret, mint most volt
+      
+          .first {
+            font-weight: 300;
+          }
+      
+          .last {
+            font-weight: 800;
+            text-transform: uppercase;
+          }
         }
-
-        label {
-          font-size: 0.8rem;
-          color: #bbb;
+      
+        .position {
+          font-size: 1.1rem; // nagyobb és olvashatóbb
+          color: #ccc;
+          margin-top: 0.3rem;
+        }
+      }
+      
+  
+      .stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        gap: 1rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.4s ease;
+  
+        .stat-block {
+          flex: 1;
+          text-align: center;
+  
+          .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.85;
+          }
+  
+          .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+          }
         }
       }
     }
+  
+    // 🔥 A HIBÁT EZ OLDJA MEG
+    &:hover .image-wrapper .stats {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+    &:hover .image-wrapper .player-info {
+      transform: translateY(-15px);
+    }
+  
+    &:hover .image-wrapper img {
+      transform: scale(1.05);
+    }
+  }
+  
+
+}
+
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

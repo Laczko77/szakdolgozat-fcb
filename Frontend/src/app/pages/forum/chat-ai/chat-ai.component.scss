@@ -1,0 +1,118 @@
+.chat-ai {
+  width: 1200px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f5f5fa;
+  border-radius: 20px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 600px;
+  box-sizing: border-box;
+
+  .chat-header {
+    text-align: center;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2b2b3c;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .chat-box {
+    flex-grow: 1;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 300px;
+    max-height: 400px;
+
+    .message {
+      margin-bottom: 1rem;
+
+      .user {
+        background: #e0d4fa;
+        font-size: 1.2rem;
+        padding: 0.6rem 1rem;
+        border-radius: 12px;
+        max-width: 80%;
+        text-align: right;
+        float: right;
+        clear: both;
+      }
+
+      .assistant {
+        background: #f0f0f5;
+        font-size: 1.2rem;
+        padding: 0.6rem 1rem;
+        border-radius: 12px;
+        max-width: 80%;
+        text-align: left;
+        float: left;
+        clear: both;
+      }
+    }
+  }
+
+  .chat-form {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    input[type="text"] {
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #333;
+      font-size: 1rem;
+      outline: none;
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+
+      .gradient-btn {
+        background: linear-gradient(135deg, #004d98, #a50044);
+        color: white;
+        padding: 0.5rem 1.2rem;
+        border: none;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+          filter: brightness(1.1);
+        }
+
+        &:disabled {
+          background: #aaa;
+          cursor: not-allowed;
+        }
+
+        &.cancel {
+          background: #ccc;
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    color: #888;
+  }
+}

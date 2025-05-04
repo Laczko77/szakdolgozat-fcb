@@ -15,7 +15,7 @@
       <div class="form-group">
         <label for="position">Poszt</label>
         <input type="text" id="position" [(ngModel)]="newPlayer.position" name="position">
-      </div>
+      </div> 
 
       <div class="form-group">
         <label for="nationality">Nemzetiség</label>
@@ -29,7 +29,7 @@
 
       <div class="form-group">
         <label for="image">Kép feltöltése</label>
-        <input type="file" (change)="onFileSelected($event)" />
+        <input type="file" (change)="onFileSelected($event)" #fileInput />
       </div>
 
       <div class="form-group">

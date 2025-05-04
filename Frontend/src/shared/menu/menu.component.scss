@@ -1,74 +1,221 @@
-nav {
-  background-color: #1e1e2f;
-  color: #f5f5f5;
-  padding: 1rem 2rem;
-  border-bottom: 2px solid #a50044;
-  font-family: 'Segoe UI', sans-serif;
+.menu-container {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  padding: 0.5rem 2rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: transparent;
+  transition: top 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 
-  a {
-    color: #ffc107;
-    margin: 0.5rem 1rem;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-
-    &:hover {
-      color: #00c3ff;
-    }
-    .cart-link {
-      position: relative;
-      display: inline-block;
-    
-      .cart-badge {
-        position: absolute;
-        top: -8px;
-        right: -10px;
-        background-color: red;
-        color: white;
-        border-radius: 50%;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        font-weight: bold;
-        line-height: 1;
-      }
-    }
-    
+  &.hidden {
+    top: -100px;
+    opacity: 0;
+    pointer-events: none;
   }
 
-  button {
-    background: #a50044;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 1rem;
-    transition: background 0.3s;
-
-    &:hover {
-      background: #80002b;
-    }
+  &.hovered,
+  &.returning {
+    background-color: #0f0f2d;
   }
 
-  hr {
-    border: none;
-    border-top: 1px solid #444;
-    margin: 1rem 0;
-    width: 100%;
+  .logo {
+    height: 70px; 
+    margin-right: 2rem;
   }
 
-  div {
+  
+
+  .nav-links {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    gap: 2rem;
+    flex-grow: 1;
 
-    & > a, & > button {
-      margin: 0.5rem;
+    .dropdown {
+      position: relative;
+
+      .main-link {
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 1.3rem;
+        text-decoration: none;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #0f0f2d;
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        z-index: 1000;
+        border-radius: 0;
+        animation: fadeInDown 0.3s ease both;
+
+        a {
+          color: white;
+          padding: 0.5rem 0;
+          font-size: 1.1rem;
+          text-decoration: none;
+
+          &:hover {
+            color: #cda45e;
+          }
+        }
+      }
+
+      &:hover .dropdown-content {
+        display: flex;
+      }
+    }
+
+    > a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.3rem;
+
+      &:hover {
+        color: #cda45e;
+      }
+    }
+  }
+  .right-icons {
+    display: flex;
+    align-items: center;
+    gap: 2rem; // 🔥 ez ad távolságot a kosár és a hamburger ikon között
+  }
+
+  .cart-icon {
+    position: relative;
+    margin-left: 1.5rem;
+    cursor: pointer;
+  
+    i {
+      font-size: 2rem;
+      color: white;
+    }
+  
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      font-weight: bold;
+      line-height: 1;
+    }
+  }
+  
+
+  .burger-menu {
+    position: relative;
+    display: block;
+
+    i {
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .burger-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #0f0f2d;
+      padding: 1rem 1.5rem;
+      flex-direction: column;
+      z-index: 1000;
+      border-radius: 0;
+      animation: fadeInDown 0.3s ease both;
+      
+
+      a {
+        color: white;
+        padding: 0.5rem 0;
+        text-decoration: none;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        
+        &:hover {
+          color: #cda45e;
+        }
+      }
+
+      i {
+        font-size: 1.2rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+  }
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+    
+    .burger-menu:hover .burger-dropdown {
+      display: flex;
+    }
+
+    &:hover .burger-dropdown {
+      display: flex;
     }
   }
 }
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+.menu-container.force-bg {
+  background-color: #0f0f2d !important;
+
+  .nav-links > a,
+  .nav-links .main-link,
+  .cart-icon i,
+  .burger-menu i {
+    color: white !important;
+  }
+
+  .dropdown-content,
+  .burger-dropdown {
+    background-color: #0f0f2d;
+
+    a {
+      color: white;
+
+      &:hover {
+        color: #cda45e;
+      }
+    }
+  }
+
+  .cart-badge {
+    background-color: red;
+    color: white;
+  }
+}
+

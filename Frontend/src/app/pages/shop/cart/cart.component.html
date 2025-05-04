@@ -1,67 +1,84 @@
-<div *ngIf="orderPlaced; else cartView" class="order-success">
-  <h2>Sikeres rendelés! 🎉</h2>
-  <p>Köszönjük a rendelésed. A részleteket megtalálod a rendeléseid között.</p>
-  <button routerLink="/orders" class="order-btn">Rendeléseim megtekintése</button>
+<div *ngIf="orderPlaced; else cartView">
+  <div class="order-success scroll-fade-in" #fadeElement>
+    <h2>Sikeres rendelés!</h2>
+    <p>Köszönjük a rendelésed. A részleteket megtalálod a rendeléseid között.</p>
+    <button routerLink="/orders" class="btn primary">Rendeléseim megtekintése</button>
+  </div>
 </div>
 
 <ng-template #cartView>
-  <div class="cart-container" *ngIf="cart">
-    <h2>Kosarad</h2>
+  <section class="cart-section scroll-fade-in" #fadeElement *ngIf="cart">
 
-    <div *ngIf="cart.items.length === 0" class="empty">
-      A kosarad üres 😕
-      <button routerLink="/orders" class="order-btn">Rendeléseim megtekintése</button>
-    </div>
+    <h2 class="cart-title">Kosarad</h2> 
 
-    <div *ngIf="cart.items.length > 0" class="items">
-      <div class="item" *ngFor="let item of cart.items">
-        <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />
-        <div class="details">
-          <h3>{{ item.productId.name }}</h3>
-          <p>Kategória: {{ item.productId.category }}</p>
-          <p>Ár: {{ item.productId.price | currency:'EUR' }}</p>
-          <p>Mennyiség: {{ item.quantity }}</p>
-
-          <p *ngIf="item.size">Méret: {{ item.size }}</p>
-
-          <!-- Játékosnév helyes kiíratása -->
-          <p *ngIf="item.player">Játékos: {{ item.player['name'] }}</p>
+    <div class="cart-content">
+      <!-- BAL OLDAL - Termékek -->
+      <div class="cart-left">
+        <div *ngIf="cart.items.length === 0" class="empty-cart">
+          <p>A kosarad üres!</p>
+          <button routerLink="/shop" class="btn secondary">Vásárlás folytatása</button>
+          <button routerLink="/orders" class="btn secondary">Rendeléseim megtekintése</button>
         </div>
-        <div class="actions">
-          <button (click)="decreaseItem(item)">–</button>
-          <button (click)="removeItem(item.productId._id)">❌</button>
+
+        <div *ngIf="cart.items.length > 0">
+          <div class="cart-item scroll-fade-in" #fadeElement *ngFor="let item of cart.items">
+            <img [src]="item.productId.imageUrl" alt="{{ item.productId.name }}" />
+          
+            <div class="item-content">
+              <div class="item-header">
+                <h3>{{ item.productId.name }}</h3>
+                <button class="remove-btn" (click)="removeItem(item)">✖</button>
+              </div>
+          
+              <div class="item-meta">
+                <p>Kategória: {{ item.productId.category }}</p>
+                <p *ngIf="item.size">Méret: {{ item.size }}</p>
+                <p>Ár: {{ item.productId.price | currency:'EUR' }}</p>
+                <p *ngIf="item.player">Játékos: {{ item.player.name }}</p>
+              </div>
+          
+              <div class="item-quantity">
+                <button (click)="decreaseItem(item)">–</button>
+                <span>{{ item.quantity }}</span>
+                <button (click)="increaseItem(item)">+</button>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn secondary clear-cart" (click)="clearCart()">Kosár ürítése</button>
         </div>
       </div>
 
-      <div class="bottom">
-        <button class="clear" (click)="clearCart()">Kosár ürítése</button>
-        <button class="order" (click)="openShippingModal()">Szállítási adatok megadása</button>
+      <!-- JOBB OLDAL - Összegzés -->
+      <div class="cart-right scroll-fade-in" #fadeElement *ngIf="cart.items.length > 0">
+        <div class="summary-box">
+          <h3>Összegzés</h3>
+          <p>Termékek száma: {{ totalQuantity }}</p>
+          <p>Végösszeg: {{ totalPrice | currency:'EUR' }}</p>
+          <button class="btn primary full" (click)="openShippingModal()">Rendelés leadása</button>
+        </div>
       </div>
-
-      <!-- MODAL háttér -->
-<div class="modal-overlay" *ngIf="isShippingModalOpen">
-  <div class="modal-content">
-    <h3>Szállítási adatok</h3>
-
-    <form [formGroup]="shippingForm" class="shipping-form">
-      <input formControlName="fullName" placeholder="Teljes név" />
-      <input formControlName="phone" placeholder="Telefonszám" />
-      <input formControlName="zip" placeholder="Irányítószám" />
-      <input formControlName="city" placeholder="Város" />
-      <input formControlName="street" placeholder="Utca, házszám" />
-      <input formControlName="floor" placeholder="Emelet/ajtó (opcionális)" />
-    </form>
-
-    <div class="modal-buttons">
-      <button (click)="closeShippingModal()" class="cancel">Mégse</button>
-      <button 
-        [disabled]="shippingForm.invalid" 
-        (click)="submitShippingAndOrder()" 
-        class="confirm">Rendelés leadása</button>
     </div>
-  </div>
-</div>
 
+    <!-- MODAL -->
+    <div class="modal-overlay" *ngIf="isShippingModalOpen" (click)="closeShippingModal()">
+      <div class="shipping-modal" (click)="$event.stopPropagation()">
+        <h3>Szállítási adatok</h3>
+        <form [formGroup]="shippingForm" class="shipping-form">
+          <input formControlName="fullName" placeholder="Teljes név" />
+          <input formControlName="phone" placeholder="Telefonszám" />
+          <input formControlName="zip" placeholder="Irányítószám" />
+          <input formControlName="city" placeholder="Város" />
+          <input formControlName="street" placeholder="Utca, házszám" />
+          <input formControlName="floor" placeholder="Emelet/ajtó (opcionális)" />
+        </form>
+        <div class="modal-actions">
+          <button class="btn secondary" (click)="closeShippingModal()">Mégse</button>
+          <button class="btn primary" [disabled]="shippingForm.invalid" (click)="submitShippingAndOrder()">Rendelés leadása</button>
+        </div>
+      </div>
     </div>
-  </div>
+    
+
+  </section>
 </ng-template>

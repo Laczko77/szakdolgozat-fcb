@@ -1,64 +1,181 @@
+.hero-section {
+  background-image: url('/assets/home/hatter.png'); 
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 2rem;
 
+  .hero-text {
+    color: white;
+    font-size: 5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  }
+}
 
-.carousel {
-  max-width: 900px;
-  margin: 3rem auto;
-  padding: 1rem;
-  background-color: #1e1e2f;
-  border-radius: 1rem;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+.news-section {
 
-  .slide {
-    padding: 1rem;
-    text-align: center;
-    border-radius: 0.75rem;
-    background-color: #2b2b3d;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+  background-color: #f9f9f9;
+  padding: 3rem 2rem;
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
 
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .news-card {
+    display: flex;
+    gap: 1.5rem;
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
     &:hover {
-      transform: scale(1.02);
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(85, 37, 131, 0.2);
     }
+  
+    img {
+      width: 180px;
+      height: 120px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+  
+    &:hover img {
+      transform: scale(1.03);
+    }
+  
+    .news-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  
+      h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.5rem;
+      }
+  
+      p {
+        display: -webkit-box;
+        line-clamp: 1;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 3.2em; 
+      }
+    }
+
+    .read-more {
+      margin-top: 0.5rem;
+      color: #004D98;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    
+  }
+
+  .load-more {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(135deg, #004D98, #DA291C);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    }
+  }
+  
+
+}
+
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .news-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 
     img {
       width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      height: auto;
     }
 
-    .slide-title {
-      color: #ffc107;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.3s ease;
+    .news-content {
+      h3 {
+        font-size: 1.2rem;
+      }
 
-      &:hover {
-        color: #a50044;
-        text-decoration: underline;
+      p {
+        font-size: 0.95rem;
       }
     }
   }
+  .gradient-hover-text {
+    font-size: 3rem;
+  }
+}
 
-  // Slick specific controls (optional)
-  ::ng-deep .slick-prev,
-  ::ng-deep .slick-next {
-    background-color: #a50044;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    z-index: 1;
-
-    &::before {
-      color: white;
-      font-size: 20px;
-    }
-
-    &:hover {
-      background-color: #80002b;
+@media (min-width: 769px) and (max-width: 1023px) {
+  .news-card {
+    img {
+      width: 140px;
+      height: 90px;
     }
   }
 }
+
+
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .news-card {
+    img {
+      width: 160px;
+      height: 110px;
+    }
+  }
+}
+
+
+@media (min-width: 1440px) {
+  .news-list {
+    padding: 0 5vw;
+  }
+
+  .news-card {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+
+

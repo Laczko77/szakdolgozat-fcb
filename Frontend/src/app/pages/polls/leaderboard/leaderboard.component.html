@@ -1,17 +1,21 @@
 <div class="leaderboard-container">
-    <h2>🏆 Top 5 Szavazó</h2>
-  
-    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-  
+  <div class="leaderboard-card">
+    <img src="assets/home/logo.png" alt="FC Barcelona" class="logo" />
+
+    <h2>Top 5 Szavazó</h2>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
     <ol *ngIf="leaderboard.length > 0">
-      <li *ngFor="let user of leaderboard">
+      <li *ngFor="let user of leaderboard; let i = index" class="leaderboard-item">
+        <span class="rank">#{{ i + 1 }}</span>
         <span class="name">{{ user.username }}</span>
         <span class="score">{{ user.score }} pont</span>
       </li>
     </ol>
-  
-    <p *ngIf="leaderboard.length === 0 && !errorMessage">
+
+    <p *ngIf="leaderboard.length === 0 && !errorMessage" class="no-data">
       Még senki nem szerzett pontot.
     </p>
   </div>
-  
+</div>

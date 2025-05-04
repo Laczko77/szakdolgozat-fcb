@@ -1,42 +1,33 @@
-<div class="poll-user-container">
+<div class="poll-user-container scroll-fade-in" #fadeElement>
+  <div class="poll-wrapper">
+    <img src="assets/home/logo.png" alt="FC Barcelona" class="logo" />
     <h2>Aktív szavazások</h2>
     <p class="message">{{ message }}</p>
-  
+
     <div *ngFor="let poll of polls" class="poll-card">
-      <h3>
-        Barcelona vs {{ poll.matchId?.opponent }}
-        ({{ poll.matchId?.date | date: 'shortDate' }})
-      </h3>
-  
+      <h3>Barcelona vs {{ poll.matchId?.opponent }} <span class="date">({{ poll.matchId?.date | date: 'yyyy.MM.dd' }})</span></h3>
+
       <div *ngFor="let q of poll.questions; let qi = index" class="question-block">
-        <p><strong>{{ q.question }}</strong></p>
-  
+        <p class="question"><strong>{{ q.question }}</strong></p>
+
         <!-- Még nem szavazott -->
-        <div *ngIf="!q.hasVoted">
-          <label *ngFor="let option of q.options">
-            <input type="radio"
-                   name="{{ poll._id }}_{{ qi }}"
-                   [value]="option"
-                   (change)="selectAnswer(poll._id, qi, option)"
-                   [checked]="selectedAnswers[poll._id + '_' + qi] === option" />
-            {{ option }}
-          </label>
-          <button (click)="onButtonClick()" (click)="submitVote(poll._id, qi)">Szavazat leadása</button>
+        <div *ngIf="!q.hasVoted" class="vote-section">
+          <select
+            [(ngModel)]="selectedAnswers[poll._id + '_' + qi]"
+            (change)="selectAnswer(poll._id, qi, selectedAnswers[poll._id + '_' + qi])"
+          >
+            <option value="" disabled selected>Válassz egy lehetőséget</option>
+            <option *ngFor="let option of q.options" [value]="option">{{ option }}</option>
+          </select>
+
+          <button class="vote-btn" (click)="submitVote(poll._id, qi)">Szavazat leadása</button>
         </div>
-  
+
         <!-- Már szavazott -->
-        <div *ngIf="q.hasVoted">
-          <div class="disabled-options">
-            <label *ngFor="let option of q.options">
-              <input type="radio" [disabled]="true" [checked]="q.userAnswer === option" />
-              {{ option }}
-            </label>
-          </div>
-          <p class="already-voted">
-            Már szavaztál: <strong>{{ q.userAnswer }}</strong>
-          </p>
+        <div *ngIf="q.hasVoted" class="already-voted-block">
+          <p class="already-voted">Már szavaztál: <strong>{{ q.userAnswer }}</strong></p>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

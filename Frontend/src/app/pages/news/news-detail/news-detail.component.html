@@ -1,16 +1,21 @@
-<div class="news-detail" *ngIf="newsItem">
-  
-  <div class="header-image" [style.backgroundImage]="'url(' + newsItem.imageUrl + ')'"></div>
-
-  
-  <div class="news-content">
-    <h1 class="news-title">
-      <span class="highlight">PREVIEW</span> |
-      {{ newsItem.title }}
-    </h1>
-    <p class="news-text">
-      {{ newsItem.content }}
-    </p>
+<section class="news-detail scroll-fade-in" #fadeElement *ngIf="newsItem">
+  <div class="back-button-container scroll-fade-in" #fadeElement>
+    <a routerLink="/home" class="back-button">← Vissza a főoldalra</a>
   </div>
-</div>
+
+  <div class="news-container">
+
+    <!-- Kép felül, középre igazítva -->
+    <div class="news-image">
+      <img [src]="newsItem.imageUrl" [alt]="newsItem.title">
+    </div>
+
+    <!-- Szöveg -->
+    <div class="news-content">
+      <h1>{{ newsItem.title }}</h1>
+      <p class="content">{{ newsItem.content }}</p>
+    </div>
+
+  </div>
+</section>
 

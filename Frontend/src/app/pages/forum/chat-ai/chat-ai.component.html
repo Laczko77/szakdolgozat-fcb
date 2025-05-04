@@ -1,0 +1,27 @@
+<div class="chat-ai">
+  <div class="chat-header">
+    <h2>AI Asszisztens</h2>
+  </div>
+
+  <div class="chat-box">
+    <div class="message" *ngFor="let msg of messages">
+      <div [ngClass]="msg.role" [innerHTML]="parseMarkdown(msg.content)"></div>
+    </div>
+  </div>
+
+  <form (submit)="sendMessage(); $event.preventDefault()" class="chat-form">
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      name="userInput"
+      placeholder="Kérdezz bármit..."
+    />
+    <div class="button-group">
+      <button type="submit" class="gradient-btn" [disabled]="isLoading || !userInput.trim()">Küldés</button>
+      <button type="button" class="gradient-btn cancel" (click)="clearChat()">Törlés</button>
+    </div>
+  </form>
+
+  <p *ngIf="isLoading" class="loading">💭 AI gondolkodik...</p>
+</div>
+

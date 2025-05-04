@@ -18,7 +18,7 @@ export class TicketPurchaseComponent implements OnInit {
     cat2: 0,
     cat3: 0,
     vip: 0
-  };
+  }; 
 
   constructor(
     private route: ActivatedRoute,

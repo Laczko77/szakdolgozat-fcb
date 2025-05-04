@@ -51,22 +51,31 @@ export class CartService {
     );
   }
 
-  addToCart(productId: string, quantity: number, size?: string, playerId?: string) {
+  addToCart(productId: string, quantity: number, size?: string, playerId?: string): Observable<Cart> {
     const payload: any = { productId, quantity };
     if (size) payload.size = size;
     if (playerId) payload.playerId = playerId;
   
-    return this.http.post(`${this.apiUrl}`, payload, { headers: this.getAuthHeaders() })
-      .pipe(tap(() => this.refreshCart()),catchError(err => this.errorHandler.handleError(err)));
+    return this.http.post<Cart>(`${this.apiUrl}`, payload, { headers: this.getAuthHeaders() })
+      .pipe(
+        tap(cart => {
+          this.cartSubject.next(cart); // ha van subject-ed, itt frissítheted
+        }),
+        catchError(err => this.errorHandler.handleError(err))
+      );
   }
+  
   
   
 
-  removeFromCart(productId: string): Observable<Cart> {
-    return this.http.delete<Cart>(`${this.apiUrl}/${productId}`, { headers: this.getAuthHeaders() }).pipe(
-      catchError(err => this.errorHandler.handleError(err))
-    );
+  removeFromCart(productId: string, size?: string, playerId?: string): Observable<Cart> {
+    const payload: any = { productId, size, playerId };
+    return this.http.post<Cart>(`${this.apiUrl}/remove`, payload, { headers: this.getAuthHeaders() });
   }
+  
+  
+  
+  
 
   clearCart(): Observable<any> {
     return this.http.delete(`${this.apiUrl}`, { headers: this.getAuthHeaders() }).pipe(

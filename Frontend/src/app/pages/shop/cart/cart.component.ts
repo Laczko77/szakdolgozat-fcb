@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CartService, Cart, CartItem } from '../../../../shared/services/cart.service';
 import { OrderService } from '../../../../shared/services/order.service';
 import { PlayerService } from '../../../../shared/services/player.service';
@@ -14,11 +14,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./cart.component.scss'],
   standalone: false
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, AfterViewInit {
   cart: Cart | null = null;
   orderPlaced: boolean = false;
   shippingForm: FormGroup;
   isShippingModalOpen = false;
+  isSubmitting = false;
+  @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
   
   constructor(private fb: FormBuilder, private cartService: CartService,private orderService: OrderService, private playerService: PlayerService, private authService: AuthService,private analyticsService: AnalyticsService) {
     this.shippingForm = this.fb.group({
@@ -37,6 +39,28 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCart();
+  }
+
+  ngAfterViewInit(): void {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+        
+      });
+    }, {
+      threshold: 0.08
+    });
+
+    this.fadeElements.changes.subscribe((elements: QueryList<ElementRef>) => {
+      elements.forEach((el) => observer.observe(el.nativeElement));
+    });
+
+    // Azonnal is lefuttatjuk, ha már van elem
+    this.fadeElements.forEach((el) => observer.observe(el.nativeElement));
   }
   
   openShippingModal() {
@@ -91,12 +115,22 @@ export class CartComponent implements OnInit {
     });
   }
 
-  removeItem(productId: string): void {
-    this.cartService.removeFromCart(productId).subscribe(() => {
-      this.loadCart(); // ✅
-      this.cartService.refreshCart(); // ✅ Új sor
+  removeItem(item: any) {
+    const productId = item.productId._id;
+    const size = item.size;
+    const playerId = item.player?._id;
+  
+    this.cartService.removeFromCart(productId, size, playerId).subscribe({
+      next: cart => {
+        this.cart = cart;
+      },
+      error: err => {
+        console.error('Hiba a tétel törlésekor:', err);
+      }
     });
   }
+  
+  
   
 
   clearCart(): void {
@@ -118,16 +152,46 @@ export class CartComponent implements OnInit {
       });
       
     } else {
-      this.removeItem(item.productId._id);
+      this.removeItem(item);
     }
   }
+
+  increaseItem(item: any) {
+    const productId = item.productId._id;
+    const quantity = 1;
+    const size = item.size;
+    const playerId = item.player?._id;
+  
+    this.cartService.addToCart(productId, quantity, size, playerId).subscribe({
+      next: updatedCart => {
+        this.cart = updatedCart;
+      },
+      error: err => {
+        console.error('Hiba a mennyiség növelésekor', err);
+      }
+    });
+  }
+  
+  
+
+  get totalPrice(): number {
+    if (!this.cart || !this.cart.items) return 0;
+    return this.cart.items.reduce((sum, item) => {
+      return sum + item.productId.price * item.quantity;
+    }, 0);
+  }
+
+  get totalQuantity(): number {
+    return this.cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
+  }
+  
   
 
   placeOrder(): void {
     this.authService.getUserData()?.subscribe({
       next: (user) => {
         if (!user) {
-          console.error('❌ Nincs bejelentkezett felhasználó.');
+          console.error('❌ Nincs bejelentkezett felhasználó.'); 
           return;
         }
   

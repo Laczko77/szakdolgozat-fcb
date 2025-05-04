@@ -6,13 +6,27 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
 
 export interface Order {
   _id: string;
-  products: {
-    productId: any;
-    quantity: number;
-  }[];
+  items: ProductOrderItem[];
   status: string;
   createdAt: string;
 }
+
+export interface ProductOrderItem {
+  productId: {
+    _id: string;
+    name: string;
+    price: number;
+    imageUrl?: string;
+    category?: string;
+  };
+  quantity: number;
+  size?: string;
+  player?: {
+    _id: string;
+    name: string;
+  };
+}
+
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {

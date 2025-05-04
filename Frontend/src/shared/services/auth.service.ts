@@ -45,6 +45,10 @@ export class AuthService {
     return this.tokenSubject.asObservable();
   }
 
+  getToken(): string {
+    return localStorage.getItem('token') || '';
+  }
+
   isAuthenticated() {
     return !!this.tokenSubject.value;
   }
@@ -74,6 +78,19 @@ export class AuthService {
       return null;
     }
   }
+  
+  getUserId(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.userId || null;
+    } catch {
+      return null;
+    }
+  }
+  
+
 
   getUserData(): Observable<any> | null {
     const token = localStorage.getItem('token');
@@ -92,4 +109,7 @@ export class AuthService {
       catchError(err => this.errorHandler.handleError(err))
     );
   }
+
+  
+  
 }

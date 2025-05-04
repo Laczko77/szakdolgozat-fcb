@@ -1,8 +1,28 @@
-<ngx-slick-carousel class="carousel" [config]="slideConfig">
-  <div ngxSlickItem *ngFor="let news of newsList" class="slide" (click)="goToDetail(news._id)">
-    <img [src]="news.imageUrl" alt="{{ news.title }}">
-    <h2 class="slide-title">
-      {{ news.title }}
-    </h2>
+<!-- 1. blokk: Üdvözlő szekció -->
+<section class="hero-section scroll-fade-in" #fadeElement>
+  <div class="hero-text">
+    FŐOLDAL
   </div>
-</ngx-slick-carousel>
+</section>
+
+<!-- 2. blokk: Hírek szekció -->
+<section class="news-section scroll-fade-in" #fadeElement>
+  <h2>Hírek</h2>
+  <div class="news-list" [@fadeInOut]>
+    <div class="news-card scroll-fade-in" #fadeElement *ngFor="let news of visibleNews" (click)="goToDetail(news._id)" [@fadeInOut]>
+      <img [src]="news.imageUrl" alt="Hír képe">
+      <div class="news-content">
+        <h3>{{ news.title }}</h3>
+        <p>{{ news.content }}</p>
+        <span class="read-more">Tovább olvasom →</span>
+      </div>
+    </div>
+  </div>
+  
+  <button class="load-more" *ngIf="hasMoreNews" (click)="loadMoreNews()">Mutass többet +</button>
+  <button class="load-more" *ngIf="!hasMoreNews && canCollapse" (click)="resetNews()">Mutass kevesebbet −</button>
+</section>
+
+
+
+ 

@@ -1,30 +1,41 @@
-<div class="player-list">
-    <div class="players">
-      <div class="player-card" *ngFor="let player of players">
-        <img [src]="player.imageUrl" alt="{{ player.name }}">
-        <div class="number-overlay" *ngIf="!player.isCoach">{{ player.number }}</div>
-        <div class="info">
-          <h3>
-            <span>{{ player.name.split(' ')[0] }}</span> {{ player.name.split(' ').slice(1).join(' ') }}
-          </h3>
-          <p *ngIf="!player.isCoach">{{ player.position }}</p>
-          <p *ngIf="player.isCoach">Edző</p>
-        </div>
-        <div class="stats" *ngIf="!player.isCoach">
-          <div>
-            <span>{{ player.appearances }}</span>
-            <label>Meccs</label>
+<section class="player-hero-section scroll-fade-in" #fadeElement>
+  <div class="hero-text">JÁTÉKOSOK</div>
+</section>
+
+<section class="player-list-section scroll-fade-in" #fadeElement>
+  <div *ngFor="let group of groupedPlayers | keyvalue">
+    <h2 class="position-title">{{ group.key }}</h2>
+  
+    <div class="player-grid scroll-fade-in" #fadeElement>
+      <div class="player-card scroll-fade-in" *ngFor="let player of group.value" #fadeElement>
+  
+      <div class="image-wrapper">
+        <img [src]="player.imageUrl" [alt]="player.name" />
+        <div class="info-overlay">
+          <div class="player-info">
+            <div class="name">
+              <span class="first">{{ player.name.split(' ')[0] }}</span>
+              <span class="last">{{ player.name.split(' ')[1] }}</span>
+            </div>
+            <div class="position">{{ player.position }}</div>
           </div>
-          <div>
-            <span>{{ player.goals }}</span>
-            <label>Gól</label>
-          </div>
-          <div>
-            <span>{{ player.assists }}</span>
-            <label>Assist</label>
+          <div class="stats">
+            <div class="stat-block">
+              <div class="label">MÉRKŐZÉSEK</div>
+              <div class="value">{{ player.appearances }}</div>
+            </div>
+            <div class="stat-block">
+              <div class="label">GÓLOK</div>
+              <div class="value">{{ player.goals }}</div>
+            </div>
+            <div class="stat-block">
+              <div class="label">GÓLPASSZOK</div>
+              <div class="value">{{ player.assists }}</div>
+            </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</section>

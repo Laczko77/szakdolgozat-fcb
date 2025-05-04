@@ -13,7 +13,7 @@
 
     <!-- ÚJ: Kép feltöltés fájlból -->
     <label for="image">Termékkép</label>
-    <input id="image" type="file" (change)="onFileSelected($event)" />
+    <input id="image" type="file" (change)="onFileSelected($event)" #fileInput/>
 
     
 
@@ -21,7 +21,7 @@
     <input id="category" type="text" formControlName="category" />
 
     <div class="form-buttons">
-      <button type="submit" [disabled]="isSubmitting">
+      <button type="submit" [disabled]="isSubmitting" >
         {{ selectedProduct ? 'Frissítés' : 'Létrehozás' }}
       </button>
       <button type="button" class="cancel" *ngIf="selectedProduct" (click)="clearForm()">Mégse</button>
