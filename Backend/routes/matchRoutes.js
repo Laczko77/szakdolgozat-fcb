@@ -7,12 +7,14 @@ const {
   deleteMatch,
   getUpcomingMatches
 } = require('../controllers/matchController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { authenticateToken, requireAdmin } = require('../middlewares/authMiddleware');
 
 router.get('/', getAllMatches);
-router.post('/', authMiddleware, createMatch);
-router.put('/:id', authMiddleware, updateMatch);
-router.delete('/:id', authMiddleware, deleteMatch);
 router.get('/upcoming', getUpcomingMatches);
+
+// Admin-only
+router.post('/', authenticateToken, requireAdmin, createMatch);
+router.put('/:id', authenticateToken, requireAdmin, updateMatch);
+router.delete('/:id', authenticateToken, requireAdmin, deleteMatch);
 
 module.exports = router;

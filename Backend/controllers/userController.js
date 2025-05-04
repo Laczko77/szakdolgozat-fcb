@@ -44,6 +44,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       {
         userId: user._id,
+        username: user.username,
         role: user.role
       },
       'secretkey',
@@ -89,6 +90,7 @@ const googleLogin = async (req, res) => {
     const tokenJWT = jwt.sign(
       {
         userId: user._id,
+        username: user.username,
         role: user.role
       },
       'secretkey',

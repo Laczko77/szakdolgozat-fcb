@@ -10,23 +10,28 @@ const createForumPost = async (req, res) => {
       ? `${req.protocol}://${req.get('host')}/uploads/forum/${req.file.filename}`
       : '';
 
-    if (!text && !imageUrl) {
-      return res.status(400).json({ error: 'Legalább szöveg vagy kép szükséges.' });
+    if ((!text || text.trim().length < 3) && !imageUrl) {
+      return res.status(400).json({ error: 'Legalább 3 karakteres szöveg vagy kép megadása szükséges.' });
+    }
+    if (text && text.length > 1000) {
+      return res.status(400).json({ error: 'A szöveg legfeljebb 1000 karakter lehet.' });
     }
 
     const newPost = new ForumPost({
       userId: req.user.id,
       username: req.user.username,
-      text,
+      text: text?.trim() || '',
       imageUrl
     });
 
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
-    res.status(500).json({ error: 'Hiba a bejegyzés létrehozásakor.' });
+    console.error('Hiba a bejegyzés létrehozásakor:', err);
+    res.status(500).json({ error: 'Szerverhiba a bejegyzés létrehozásakor.' });
   }
 };
+
 
 // Bejegyzések lekérése
 const getAllForumPosts = async (req, res) => {
@@ -48,7 +53,7 @@ const updateForumPost = async (req, res) => {
       return res.status(403).json({ error: 'Nincs jogosultságod szerkeszteni ezt a bejegyzést.' });
     }
 
-    // Ha új kép jön, régit töröljük
+    // Ha új kép jön, régi törlése
     if (req.file) {
       if (post.imageUrl) {
         const oldPath = `.${post.imageUrl}`;
@@ -60,16 +65,24 @@ const updateForumPost = async (req, res) => {
     }
 
     if (req.body.text !== undefined) {
-      post.text = req.body.text;
+      const trimmedText = req.body.text.trim();
+      if (trimmedText.length < 3) {
+        return res.status(400).json({ error: 'A szöveg legalább 3 karakter legyen.' });
+      }
+      if (trimmedText.length > 1000) {
+        return res.status(400).json({ error: 'A szöveg legfeljebb 1000 karakter lehet.' });
+      }
+      post.text = trimmedText;
     }
 
     await post.save();
     res.json(post);
   } catch (err) {
     console.error('Szerkesztési hiba:', err);
-    res.status(500).json({ error: 'Hiba a bejegyzés szerkesztésekor.' });
+    res.status(500).json({ error: 'Szerverhiba a bejegyzés szerkesztésekor.' });
   }
 };
+
 
 // Bejegyzés törlése
 const deleteForumPost = async (req, res) => {
@@ -96,9 +109,98 @@ const deleteForumPost = async (req, res) => {
   }
 };
 
+const likeForumPost = async (req, res) => {
+  try {
+    const post = await ForumPost.findById(req.params.id);
+    if (!post) return res.status(404).json({ error: 'Bejegyzés nem található.' });
+
+    const alreadyLiked = post.likes.includes(req.user.id);
+    if (alreadyLiked) {
+      return res.status(400).json({ error: 'Már lájkoltad ezt a posztot.' });
+    }
+
+    post.likes.push(req.user.id);
+    await post.save();
+    res.json({ message: 'Lájkolva.', likes: post.likes.length });
+  } catch (err) {
+    res.status(500).json({ error: 'Hiba történt lájkolás közben.' });
+  }
+};
+
+const addComment = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'A komment nem lehet üres.' });
+
+    const post = await ForumPost.findById(req.params.id);
+    if (!post) return res.status(404).json({ error: 'Bejegyzés nem található.' });
+
+    post.comments.push({
+      userId: req.user.id,
+      username: req.user.username,
+      text
+    });
+
+    await post.save();
+    res.json(post.comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Hiba a komment mentésekor.' });
+  }
+};
+
+const updateComment = async (req, res) => {
+  try {
+    const { commentId, text } = req.body;
+    const post = await ForumPost.findById(req.params.id);
+    if (!post) return res.status(404).json({ error: 'Poszt nem található.' });
+
+    const comment = post.comments.id(commentId);
+    if (!comment) return res.status(404).json({ error: 'Komment nem található.' });
+
+    if (comment.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'Nincs jogosultságod szerkeszteni ezt a kommentet.' });
+    }
+
+    comment.text = text;
+    await post.save();
+    res.json(post.comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Hiba a komment frissítésekor.' });
+  }
+};
+
+
+const deleteComment = async (req, res) => {
+  try {
+    const { commentId } = req.body;
+    const post = await ForumPost.findById(req.params.id);
+    if (!post) return res.status(404).json({ error: 'Poszt nem található.' });
+
+    const comment = post.comments.id(commentId);
+    if (!comment) return res.status(404).json({ error: 'Komment nem található.' });
+
+    const isOwner = comment.userId.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ error: 'Nincs jogosultságod törölni ezt a kommentet.' });
+    }
+
+    comment.deleteOne();
+    await post.save();
+    res.json(post.comments);
+  } catch (err) {
+    res.status(500).json({ error: 'Hiba a komment törlésekor.' });
+  }
+};
+
+
 module.exports = {
   createForumPost,
   getAllForumPosts,
   updateForumPost,
-  deleteForumPost
+  deleteForumPost,
+  likeForumPost,
+  addComment,
+  updateComment,
+  deleteComment
 };

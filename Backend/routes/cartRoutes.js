@@ -8,12 +8,13 @@ const {
   decreaseQuantity
 } = require('../controllers/cartController');
 
-// (később ide jöhet: const authMiddleware = require('../middlewares/auth');)
-// router.use(authMiddleware); // ha lesz tokenes védelem
-const authMiddleware = require('../middlewares/authMiddleware');
-router.use(authMiddleware);
+
+const { authenticateToken } = require('../middlewares/authMiddleware');
+
+router.use(authenticateToken);
 router.get('/', getCart);                     // GET /api/cart
 router.post('/', addToCart);                 // POST /api/cart
+router.post('/remove', removeFromCart);
 router.delete('/:productId', removeFromCart); // DELETE /api/cart/:productId
 router.delete('/', clearCart);               // DELETE /api/cart
 router.post('/decrease', decreaseQuantity);

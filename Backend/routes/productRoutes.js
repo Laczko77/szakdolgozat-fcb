@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
+const { authenticateToken, requireAdmin } = require('../middlewares/authMiddleware');
 const multer = require('multer');
-
-
-
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -18,12 +15,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Új termék létrehozása
-router.post('/', upload.single('image'), productController.createProduct);
-// Összes termék lekérése
+// Publikus
 router.get('/', productController.getAllProducts);
-router.put('/:id', upload.single('image'), productController.updateProduct);
-router.delete('/:id', productController.deleteProduct);
 router.get('/:id', productController.getProductById);
+
+// Admin-only
+router.post('/', authenticateToken, requireAdmin, upload.single('image'), productController.createProduct);
+router.put('/:id', authenticateToken, requireAdmin, upload.single('image'), productController.updateProduct);
+router.delete('/:id', authenticateToken, requireAdmin, productController.deleteProduct);
 
 module.exports = router;

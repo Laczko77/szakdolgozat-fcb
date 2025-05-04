@@ -7,7 +7,7 @@ const {
   updatePlayer,
   deletePlayer
 } = require('../controllers/playerController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { authenticateToken, requireAdmin } = require('../middlewares/authMiddleware');
 
 const multer = require('multer');
 const path = require('path');
@@ -24,9 +24,10 @@ const upload = multer({ storage });
 
 router.get('/', getAllPlayers);
 router.get('/:id', getPlayerById);
-router.post('/', authMiddleware, upload.single('image'), createPlayer);
-router.put('/:id', authMiddleware, upload.single('image'), updatePlayer);
 
-router.delete('/:id', authMiddleware, deletePlayer);
+// Admin-only
+router.post('/', authenticateToken, requireAdmin, upload.single('image'), createPlayer);
+router.put('/:id', authenticateToken, requireAdmin, upload.single('image'), updatePlayer);
+router.delete('/:id', authenticateToken, requireAdmin, deletePlayer);
 
 module.exports = router;

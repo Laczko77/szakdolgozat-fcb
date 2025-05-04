@@ -64,7 +64,7 @@ const getUserOrders = async (req, res) => {
     const { status } = req.body;
   
     try {
-      const order = await Order.findById(id).populate('items.productId userId');
+      const order = await Order.findById(id).populate('items.productId userId').exec();
       if (!order) {
         return res.status(404).json({ message: 'Rendelés nem található' });
       }

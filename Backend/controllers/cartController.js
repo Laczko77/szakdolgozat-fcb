@@ -49,8 +49,16 @@ const addToCart = async (req, res) => {
     }
 
     await cart.save();
+    const populatedCart = await cart.populate([
+      { path: 'items.productId' },
+      { path: 'items.player' }
+    ]);
+    
+    res.status(201).json(populatedCart);
 
-    res.status(201).json(cart);
+
+
+    
   } catch (error) {
     console.error('Hiba a kosárba rakáskor:', error);
     res.status(500).json({ message: 'Hiba a kosárba rakáskor.' });
@@ -64,17 +72,30 @@ const addToCart = async (req, res) => {
 // Termék eltávolítása a kosárból
 const removeFromCart = async (req, res) => {
   try {
+    const { productId, size, playerId } = req.body;
     const cart = await Cart.findOne({ userId: req.userId });
     if (!cart) return res.status(404).json({ message: 'Kosár nem található' });
 
-    cart.items = cart.items.filter(item => item.productId.toString() !== req.params.productId);
+    cart.items = cart.items.filter(item =>
+      !(item.productId.toString() === productId &&
+        item.size === size &&
+        ((item.player && playerId && item.player._id.toString() === playerId) || (!item.player && !playerId)))
+    );
+
     await cart.save();
 
-    res.json(cart);
+    const populatedCart = await cart.populate([
+      { path: 'items.productId' },
+      { path: 'items.player' }
+    ]);
+
+    res.json(populatedCart);
   } catch (err) {
+    console.error('Hiba a tétel törlésekor:', err);
     res.status(500).json({ message: 'Hiba a törlés során' });
   }
 };
+
 
 // Kosár teljes ürítése
 const clearCart = async (req, res) => {

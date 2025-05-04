@@ -1,6 +1,6 @@
 const express = require('express');
 // Az Express.js keretrendszer importálása HTTP szerver létrehozásához.
-
+require('dotenv').config();
 const mongoose = require('mongoose');
 // A Mongoose importálása az adatbázis kezeléséhez.
 
@@ -88,6 +88,9 @@ app.use('/uploads/forum', express.static('uploads/forum'));
 const pollRoutes = require('./routes/pollRoutes');
 app.use('/api/poll', pollRoutes);
 
+
+const chatRoutes = require('./routes/chatRoutes');
+app.use('/api/chat', chatRoutes);
 
 // Start server
 app.listen(port, () => {

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { createTicketOrder, getMyTickets } = require('../controllers/ticketController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 
-router.post('/', authMiddleware, createTicketOrder);
-router.get('/my', authMiddleware, getMyTickets);
+router.post('/', authenticateToken, createTicketOrder);
+router.get('/my', authenticateToken, getMyTickets);
 
 module.exports = router;

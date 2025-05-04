@@ -9,8 +9,16 @@ const createProduct = async (req, res) => {
     const { name, description, price, category } = req.body;
     const parsedPrice = Number(price);
 
-    if (!name || isNaN(parsedPrice) || !category) {
-      return res.status(400).json({ error: 'Név, ár és kategória kötelező.' });
+    if (!name || name.trim().length < 2 || name.length > 100) {
+      return res.status(400).json({ error: 'A név 2–100 karakter hosszú legyen.' });
+    }
+
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      return res.status(400).json({ error: 'Az ár érvényes, pozitív szám kell legyen.' });
+    }
+
+    if (!category || category.trim().length < 2) {
+      return res.status(400).json({ error: 'A kategória megadása kötelező és legalább 2 karakteres.' });
     }
 
     const imageUrl = req.file
@@ -18,10 +26,10 @@ const createProduct = async (req, res) => {
       : '';
 
     const newProduct = new Product({
-      name,
-      description,
+      name: name.trim(),
+      description: description?.trim() || '',
       price: parsedPrice,
-      category,
+      category: category.trim(),
       imageUrl
     });
 
@@ -32,6 +40,7 @@ const createProduct = async (req, res) => {
     res.status(500).json({ error: 'Szerverhiba termék létrehozásakor.' });
   }
 };
+
 
 
 // Termékek listázása
@@ -50,10 +59,10 @@ const updateProduct = async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ error: 'Termék nem található.' });
 
-    // Új kép feltöltése esetén régit töröljük
+    // Új kép feltöltése esetén régi törlése
     if (req.file) {
       if (product.imageUrl) {
-        const oldPath = `.${product.imageUrl}`;
+        const oldPath = `${product.imageUrl}`;
         fs.unlink(oldPath, err => {
           if (err) console.error('Régi kép törlése sikertelen:', err);
         });
@@ -61,11 +70,34 @@ const updateProduct = async (req, res) => {
       product.imageUrl = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
     }
 
-    // Frissíthető mezők
-    if (req.body.name !== undefined) product.name = req.body.name;
-    if (req.body.description !== undefined) product.description = req.body.description;
-    if (req.body.price !== undefined) product.price = Number(req.body.price); // <-- FONTOS!
-    if (req.body.category !== undefined) product.category = req.body.category;
+    // Validált frissítések
+    if (req.body.name !== undefined) {
+      const name = req.body.name.trim();
+      if (name.length < 2 || name.length > 100) {
+        return res.status(400).json({ error: 'A név 2–100 karakter hosszú legyen.' });
+      }
+      product.name = name;
+    }
+
+    if (req.body.description !== undefined) {
+      product.description = req.body.description.trim();
+    }
+
+    if (req.body.price !== undefined) {
+      const parsedPrice = Number(req.body.price);
+      if (isNaN(parsedPrice) || parsedPrice <= 0) {
+        return res.status(400).json({ error: 'Az ár érvényes, pozitív szám kell legyen.' });
+      }
+      product.price = parsedPrice;
+    }
+
+    if (req.body.category !== undefined) {
+      const category = req.body.category.trim();
+      if (category.length < 2) {
+        return res.status(400).json({ error: 'A kategória legalább 2 karakter legyen.' });
+      }
+      product.category = category;
+    }
 
     await product.save();
     res.json(product);
@@ -74,6 +106,7 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ error: 'Hiba a termék szerkesztésekor.' });
   }
 };
+
 
 
 const deleteProduct = async (req, res) => {

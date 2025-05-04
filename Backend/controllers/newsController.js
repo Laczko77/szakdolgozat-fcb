@@ -16,24 +16,34 @@ const getAllNews = async (req, res) => {
 const createNews = async (req, res) => {
   try {
     const { title, content } = req.body;
-    let imageUrl = '';
 
-    if (req.file) {
-      imageUrl = `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`;
+    if (!title || title.trim().length < 5) {
+      return res.status(400).json({ message: 'A cím legalább 5 karakter hosszú legyen.' });
     }
 
+    if (!content || content.trim().length < 10) {
+      return res.status(400).json({ message: 'A tartalom legalább 10 karakter hosszú legyen.' });
+    }
+
+    const imageUrl = req.file
+      ? `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`
+      : '';
+
     const newNews = new News({
-      title,
-      content,
+      title: title.trim(),
+      content: content.trim(),
       imageUrl
     });
 
     await newNews.save();
     res.status(201).json(newNews);
   } catch (error) {
-    res.status(500).json({ message: 'Hiba a hír létrehozásakor', error });
+    console.error('Hiba a hír létrehozásakor:', error);
+    res.status(500).json({ message: 'Szerverhiba a hír létrehozásakor.' });
   }
 };
+
+
 
 
 
@@ -71,33 +81,44 @@ const getNewsById = async (req, res) => {
 
 const updateNews = async (req, res) => {
   try {
-    const { title, content } = req.body;
     const news = await News.findById(req.params.id);
     if (!news) return res.status(404).json({ message: 'Hír nem található' });
 
-    let updateData = { title, content };
+    const updateData = {};
+
+    if (req.body.title !== undefined) {
+      if (req.body.title.trim().length < 5) {
+        return res.status(400).json({ message: 'A cím legalább 5 karakter hosszú legyen.' });
+      }
+      updateData.title = req.body.title.trim();
+    }
+
+    if (req.body.content !== undefined) {
+      if (req.body.content.trim().length < 10) {
+        return res.status(400).json({ message: 'A tartalom legalább 10 karakter hosszú legyen.' });
+      }
+      updateData.content = req.body.content.trim();
+    }
 
     if (req.file) {
-      // Régi kép törlése
+      // töröljük a régit
       if (news.imageUrl) {
         const oldImagePath = path.join(__dirname, '..', 'uploads', 'news', path.basename(news.imageUrl));
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
+        if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
       }
 
-      // Új kép beállítása
-      const imageUrl = `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`;
-      updateData.imageUrl = imageUrl;
+      updateData.imageUrl = `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`;
     }
 
     const updated = await News.findByIdAndUpdate(req.params.id, updateData, { new: true });
     res.json(updated);
   } catch (err) {
     console.error('Hiba a hír frissítésekor:', err);
-    res.status(500).json({ message: 'Nem sikerült frissíteni a hírt.' });
+    res.status(500).json({ message: 'Szerverhiba a hír frissítésekor.' });
   }
 };
+
+
 
 
 

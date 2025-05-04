@@ -26,17 +26,59 @@ const getPlayerById = async (req, res) => {
 // Új játékos létrehozása
 const createPlayer = async (req, res) => {
   try {
-    const data = req.body;
-    if (req.file) {
-      data.imageUrl = `${req.protocol}://${req.get('host')}/uploads/players/${req.file.filename}`;
+    const {
+      name,
+      position,
+      number,
+      isCoach,
+      nationality,
+      birthDate,
+      appearances,
+      goals,
+      assists
+    } = req.body;
+
+    // Alapellenőrzések
+    if (!name || name.trim().length < 2 || name.length > 50) {
+      return res.status(400).json({ message: 'A név 2–50 karakter hosszú legyen.' });
     }
-    const newPlayer = new Player(data);
+
+    if (!position || position.trim().length < 2) {
+      return res.status(400).json({ message: 'A poszt megadása kötelező.' });
+    }
+
+    const parsedNumber = Number(number);
+    if (isNaN(parsedNumber) || parsedNumber < 0 || parsedNumber > 99) {
+      return res.status(400).json({ message: 'A mezszám 0 és 99 közötti szám kell legyen.' });
+    }
+
+    // Új játékos objektum létrehozása
+    const playerData = {
+      name: name.trim(),
+      position: position.trim(),
+      number: parsedNumber,
+      isCoach: isCoach === 'true' || isCoach === true,
+      nationality: nationality?.trim() || '',
+      birthDate: birthDate ? new Date(birthDate) : null,
+      appearances: Number(appearances) || 0,
+      goals: Number(goals) || 0,
+      assists: Number(assists) || 0,
+      imageUrl: req.file
+        ? `${req.protocol}://${req.get('host')}/uploads/players/${req.file.filename}`
+        : ''
+    };
+
+    const newPlayer = new Player(playerData);
     await newPlayer.save();
+
     res.status(201).json(newPlayer);
   } catch (err) {
-    res.status(400).json({ message: 'Hiba a játékos létrehozásakor' });
+    console.error('Hiba a játékos létrehozásakor:', err);
+    res.status(500).json({ message: 'Szerverhiba a játékos létrehozásakor.' });
   }
 };
+
+
 
 
 // Játékos frissítése

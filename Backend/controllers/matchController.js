@@ -13,23 +13,101 @@ const getAllMatches = async (req, res) => {
 // Új meccs létrehozása
 const createMatch = async (req, res) => {
   try {
-    const match = new Match(req.body);
+    const { opponent, home, date, competition, matchday, score } = req.body;
+
+    if (!opponent || opponent.trim().length < 2) {
+      return res.status(400).json({ message: 'Az ellenfél neve kötelező, és legalább 2 karakter.' });
+    }
+
+    if (!home || !['home', 'away', 'neutral'].includes(home)) {
+      return res.status(400).json({ message: 'A helyszín (home) mező érvénytelen vagy hiányzik.' });
+    }
+
+    if (!date || isNaN(Date.parse(date))) {
+      return res.status(400).json({ message: 'Érvényes dátum szükséges.' });
+    }
+
+    if (!competition || competition.trim().length < 2) {
+      return res.status(400).json({ message: 'A sorozat neve kötelező.' });
+    }
+
+    const parsedMatchday = Number(matchday);
+    if (isNaN(parsedMatchday)) {
+      return res.status(400).json({ message: 'A fordulószám szám formátumú legyen.' });
+    }
+
+    const match = new Match({
+      opponent: opponent.trim(),
+      location: home, // 'home' | 'away' | 'neutral'
+      date: new Date(date),
+      tournament: competition.trim(),
+      matchDay: parsedMatchday,
+      score: score || ''
+    });
+
     await match.save();
     res.status(201).json(match);
   } catch (err) {
-    res.status(400).json({ message: 'Hiba a meccs létrehozásakor' });
+    console.error('Hiba a meccs létrehozásakor:', err);
+    res.status(500).json({ message: 'Szerverhiba a meccs létrehozásakor.' });
   }
 };
 
-// Meccs frissítése
 const updateMatch = async (req, res) => {
   try {
-    const match = await Match.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const match = await Match.findById(req.params.id);
+    if (!match) return res.status(404).json({ message: 'Meccs nem található.' });
+
+    const { opponent, home, date, competition, matchday, score } = req.body;
+
+    if (opponent !== undefined) {
+      if (opponent.trim().length < 2) {
+        return res.status(400).json({ message: 'Az ellenfél neve legalább 2 karakter legyen.' });
+      }
+      match.opponent = opponent.trim();
+    }
+
+    if (home !== undefined) {
+      if (!['home', 'away', 'neutral'].includes(home)) {
+        return res.status(400).json({ message: 'Érvénytelen helyszín (home).' });
+      }
+      match.location = home;
+    }
+
+    if (date !== undefined) {
+      if (isNaN(Date.parse(date))) {
+        return res.status(400).json({ message: 'Érvénytelen dátumformátum.' });
+      }
+      match.date = new Date(date);
+    }
+
+    if (competition !== undefined) {
+      if (competition.trim().length < 2) {
+        return res.status(400).json({ message: 'A sorozat legalább 2 karakter hosszú legyen.' });
+      }
+      match.tournament = competition.trim();
+    }
+
+    if (matchday !== undefined) {
+      const parsedMatchday = Number(matchday);
+      if (isNaN(parsedMatchday)) {
+        return res.status(400).json({ message: 'A fordulószám szám típusú kell legyen.' });
+      }
+      match.matchDay = parsedMatchday;
+    }
+
+    if (score !== undefined) {
+      match.score = score;
+    }
+
+    await match.save();
     res.json(match);
   } catch (err) {
-    res.status(400).json({ message: 'Hiba a meccs frissítésekor' });
+    console.error('Hiba a meccs frissítésekor:', err);
+    res.status(500).json({ message: 'Szerverhiba a meccs frissítésekor.' });
   }
 };
+
 
 // Meccs törlése
 const deleteMatch = async (req, res) => {
