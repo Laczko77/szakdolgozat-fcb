@@ -1,54 +1,64 @@
-<div class="product-admin-container">
-  <h2>{{ selectedProduct ? 'Termék szerkesztése' : 'Új termék létrehozása' }}</h2>
+<section class="product-admin-page scroll-fade-in">
+  <div class="card product-form-container">
+    <h2>{{ selectedProduct ? 'Termék szerkesztése' : 'Új termék létrehozása' }}</h2>
 
-  <form [formGroup]="productForm" (ngSubmit)="submit()" id="productForm">
-    <label for="name">Név</label>
-    <input id="name" type="text" formControlName="name" />
+    <form [formGroup]="productForm" (ngSubmit)="submit()" id="productForm" class="product-form">
+      <div class="form-group">
+        <label for="name">Név</label>
+        <input id="name" type="text" formControlName="name" />
+      </div>
 
-    <label for="description">Leírás</label>
-    <textarea id="description" rows="3" formControlName="description"></textarea>
+      <div class="form-group">
+        <label for="description">Leírás</label>
+        <textarea id="description" rows="3" formControlName="description"></textarea>
+      </div>
 
-    <label for="price">Ár (HUF)</label>
-    <input id="price" type="number" formControlName="price" />
+      <div class="form-group">
+        <label for="price">Ár (HUF)</label>
+        <input id="price" type="number" formControlName="price" />
+      </div>
 
-    <!-- ÚJ: Kép feltöltés fájlból -->
-    <label for="image">Termékkép</label>
-    <input id="image" type="file" (change)="onFileSelected($event)" #fileInput/>
+      <div class="form-group">
+        <label for="image">Termékkép</label>
+        <input id="image" type="file" (change)="onFileSelected($event)" #fileInput />
+      </div>
 
-    
+      <div class="form-group">
+        <label for="category">Kategória</label>
+        <input id="category" type="text" formControlName="category" />
+      </div>
 
-    <label for="category">Kategória</label>
-    <input id="category" type="text" formControlName="category" />
+      <div class="button-row">
+        <button type="submit" class="btn primary" [disabled]="isSubmitting">
+          {{ selectedProduct ? 'Frissítés' : 'Létrehozás' }}
+        </button>
+        <button type="button" class="btn secondary" *ngIf="selectedProduct" (click)="clearForm()">Mégse</button>
+      </div>
+    </form>
+  </div>
 
-    <div class="form-buttons">
-      <button type="submit" [disabled]="isSubmitting" >
-        {{ selectedProduct ? 'Frissítés' : 'Létrehozás' }}
-      </button>
-      <button type="button" class="cancel" *ngIf="selectedProduct" (click)="clearForm()">Mégse</button>
-    </div>
-  </form>
+  <h2 class="section-title text-center">Termékek kezelése</h2>
 
-  <h2>Termékek kezelése</h2>
+  <div class="filter-bar scroll-fade-in">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Keresés név alapján..."
+    />
+  </div>
 
-  <input
-    type="text"
-    [(ngModel)]="searchTerm"
-    placeholder="Keresés név alapján..."
-    class="search-bar"
-  />
-
-  <div class="product-grid">
-    <div *ngFor="let product of filteredProducts()" class="product-card">
+  <div class="product-grid scroll-fade-in">
+    <div *ngFor="let product of filteredProducts()" class="product-card card">
       <img [src]="product.imageUrl" alt="Termék képe" />
-      <div class="product-content">
-        <h4>{{ product.name }}</h4>
-        <p>{{ product.category }}</p>
-        <p><strong>{{ product.price | number:'1.0-0' }} Ft</strong></p>
-        <div class="product-actions">
-          <button (click)="edit(product)">Szerkesztés</button>
-          <button (click)="deleteProduct(product._id!)">Törlés</button>
+      <div class="product-info">
+        <h4 class="product-title">{{ product.name }}</h4>
+        <p class="product-meta">{{ product.category }}</p>
+        <p class="product-price"><strong>{{ product.price | number:'1.0-0' }} Ft</strong></p>
+        <div class="product-actions absolute-actions">
+          <button class="btn small edit" (click)="edit(product)">Szerkesztés</button>
+          <button class="btn small danger" (click)="deleteProduct(product._id!)">Törlés</button>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>

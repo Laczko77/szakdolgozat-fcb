@@ -16,6 +16,7 @@ export class MatchListComponent implements OnInit, AfterViewInit {
 
   allMatches: Match[] = [];
   groupedMatches: { [month: string]: Match[] } = {};
+  monthOrder: string[] = [];
   selectedMatch: Match | null = null;
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
 
@@ -79,7 +80,8 @@ export class MatchListComponent implements OnInit, AfterViewInit {
           return;
         }
 
-        this.allMatches = data.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        this.allMatches = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
         this.groupMatchesByMonth();
       },
       error: (err) => {
@@ -90,17 +92,21 @@ export class MatchListComponent implements OnInit, AfterViewInit {
 
   groupMatchesByMonth(): void {
     this.groupedMatches = {};
+    this.monthOrder = [];
+  
     this.allMatches.forEach(match => {
       const date = new Date(match.date);
       const month = date.toLocaleString('hu-HU', { month: 'long', year: 'numeric' }).toUpperCase();
-
+  
       if (!this.groupedMatches[month]) {
         this.groupedMatches[month] = [];
+        this.monthOrder.push(month); 
       }
-
+  
       this.groupedMatches[month].push(match);
     });
   }
+  
 
   formatMatchday(matchday: string): string {
     return /\d/.test(matchday) ? `${matchday} forduló` : matchday;

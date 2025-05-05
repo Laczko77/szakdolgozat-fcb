@@ -128,17 +128,19 @@ export class PollAdminComponent implements OnInit {
       correctAnswers: [] // vagy q.correctAnswers ha újraértékelhető
     }));
   }
-  
-  toggleCorrectAnswer(qIndex: number, option: string): void {
-    const entry = this.evaluationAnswers.find(e => e.questionIndex === qIndex);
-    if (!entry) return;
-    const i = entry.correctAnswers.indexOf(option);
-    if (i > -1) {
-      entry.correctAnswers.splice(i, 1);
-    } else {
-      entry.correctAnswers.push(option);
-    }
+
+  onSingleAnswerChange(questionIndex: number, selected: string) {
+    this.evaluationAnswers[questionIndex] = {
+      questionIndex,
+      correctAnswers: [selected]
+    };
   }
+  
+  cancelEvaluation(): void {
+    this.evaluatingPollId = null;
+    this.evaluationAnswers = [];
+  }
+  
   
   submitEvaluation(): void {
     if (!this.evaluatingPollId) return;

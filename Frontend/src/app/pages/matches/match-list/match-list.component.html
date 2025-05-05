@@ -3,11 +3,11 @@
 </section>
 
 <section class="match-list-section scroll-fade-in" #fadeElement>
-  <div *ngFor="let month of groupedMatches | keyvalue">
-    <h2 class="month-title">{{ month.key }}</h2>
+  <div *ngFor="let month of monthOrder">
+    <h2 class="month-title">{{ month }}</h2>
 
     <div class="match-grid">
-      <div class="match-card scroll-fade-in" *ngFor="let match of month.value" (click)="selectMatch(match)" #fadeElement>
+      <div class="match-card scroll-fade-in" *ngFor="let match of groupedMatches[month]" (click)="selectMatch(match)" #fadeElement>
 
         <div class="match-info">
           <div class="match-header">

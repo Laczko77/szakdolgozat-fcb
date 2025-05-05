@@ -31,19 +31,15 @@ const createMatch = async (req, res) => {
       return res.status(400).json({ message: 'A sorozat neve kötelező.' });
     }
 
-    const parsedMatchday = Number(matchday);
-    if (isNaN(parsedMatchday)) {
-      return res.status(400).json({ message: 'A fordulószám szám formátumú legyen.' });
-    }
-
     const match = new Match({
       opponent: opponent.trim(),
-      location: home, // 'home' | 'away' | 'neutral'
+      home: home, 
       date: new Date(date),
-      tournament: competition.trim(),
-      matchDay: parsedMatchday,
+      competition: competition.trim(), 
+      matchday: matchday,
       score: score || ''
     });
+    
 
     await match.save();
     res.status(201).json(match);
@@ -52,6 +48,7 @@ const createMatch = async (req, res) => {
     res.status(500).json({ message: 'Szerverhiba a meccs létrehozásakor.' });
   }
 };
+
 
 const updateMatch = async (req, res) => {
   try {
@@ -71,7 +68,8 @@ const updateMatch = async (req, res) => {
       if (!['home', 'away', 'neutral'].includes(home)) {
         return res.status(400).json({ message: 'Érvénytelen helyszín (home).' });
       }
-      match.location = home;
+      match.home = home;
+
     }
 
     if (date !== undefined) {
@@ -85,15 +83,11 @@ const updateMatch = async (req, res) => {
       if (competition.trim().length < 2) {
         return res.status(400).json({ message: 'A sorozat legalább 2 karakter hosszú legyen.' });
       }
-      match.tournament = competition.trim();
+      match.competition = competition.trim();
     }
 
     if (matchday !== undefined) {
-      const parsedMatchday = Number(matchday);
-      if (isNaN(parsedMatchday)) {
-        return res.status(400).json({ message: 'A fordulószám szám típusú kell legyen.' });
-      }
-      match.matchDay = parsedMatchday;
+      match.matchday = matchday;
     }
 
     if (score !== undefined) {

@@ -54,7 +54,15 @@ export class NewsCreateComponent {
   clearForm() {
     this.selectedNews = null;
     this.newsForm.reset();
+    this.selectedFile = null;
+  
+    // Töröljük a file input tartalmát is a DOM-ban, ha kell
+    const fileInput = document.querySelector<HTMLInputElement>('input[type="file"]');
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
+  
 
   deleteNews(id: string) {
     if (confirm('Biztosan törölni szeretnéd a hírt?')) {

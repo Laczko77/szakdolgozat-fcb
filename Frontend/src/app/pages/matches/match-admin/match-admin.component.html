@@ -1,69 +1,84 @@
-<div class="match-admin">
-    <h2>Meccsek kezelése</h2> 
-  
-    <form (ngSubmit)="saveMatch()" class="match-form">
-      <label>Dátum:</label>
-      <input type="datetime-local" [(ngModel)]="newMatch.date" name="date" required>
-  
-      <label>Sorozat:</label>
-      <select [(ngModel)]="newMatch.competition" name="competition" required>
-        <option *ngFor="let tournament of availableTournaments" [value]="tournament">
-          {{ tournament }}
-        </option>
-      </select>
-  
-      <label>Meccsnap:</label>
-      <input type="text" [(ngModel)]="newMatch.matchday" name="matchday" required>
-  
-      <label>Ellenfél:</label>
-      <input type="text" [(ngModel)]="newMatch.opponent" name="opponent" required>
-  
-      <label>Helyszín:</label>
-      <div class="home-options">
-      <label><input type="radio" name="home" value="home" [(ngModel)]="newMatch.home"> Hazai</label>
-      <label><input type="radio" name="home" value="away" [(ngModel)]="newMatch.home"> Idegenbeli</label>
-      <label><input type="radio" name="home" value="neutral" [(ngModel)]="newMatch.home"> Semleges</label>
+<section class="match-admin-page scroll-fade-in">
+  <h2 class="section-title">Meccsek kezelése</h2>
+
+  <!-- Új meccs űrlap -->
+  <form (ngSubmit)="saveMatch()" class="match-form card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Dátum</label>
+        <input type="datetime-local" [(ngModel)]="newMatch.date" name="date" required />
       </div>
-  
-      <label>Eredmény (opcionális):</label>
-      <input type="text" [(ngModel)]="newMatch.score" name="score">
-  
-      <button type="submit">{{ editingMatch ? 'Mentés' : 'Hozzáadás' }}</button>
-      <button type="button" (click)="resetForm()">Mégse</button>
-    </form>
-  
-    <hr>
-    <div class="filter-bar">
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        (input)="onSearchChange()"
-        placeholder="Keresés ellenfélre..."
-        class="filter-input"
-      />
-    
-      <select
-        [(ngModel)]="selectedTournament"
-        (change)="onTournamentChange()"
-        class="filter-select"
-      >
-        <option value="">Összes sorozat</option>
-        <option value="La Liga">La Liga</option>
-        <option value="Bajnokok Ligája">Bajnokok Ligája</option>
-        <option value="Copa del Rey">Copa del Rey</option>
-        <option value="Szuperkupa">Szuperkupa</option>
-      </select>
+      <div class="form-group">
+        <label>Sorozat</label>
+        <select [(ngModel)]="newMatch.competition" name="competition" required>
+          <option *ngFor="let tournament of availableTournaments" [value]="tournament">
+            {{ tournament }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Meccsnap</label>
+        <input type="text" [(ngModel)]="newMatch.matchday" name="matchday" required />
+      </div>
+      <div class="form-group">
+        <label>Ellenfél</label>
+        <input type="text" [(ngModel)]="newMatch.opponent" name="opponent" required />
+      </div>
+      <div class="form-group full-width">
+        <label>Helyszín</label>
+        <div class="radio-group">
+          <label><input type="radio" name="home" value="home" [(ngModel)]="newMatch.home" /> Hazai</label>
+          <label><input type="radio" name="home" value="away" [(ngModel)]="newMatch.home" /> Idegenbeli</label>
+          <label><input type="radio" name="home" value="neutral" [(ngModel)]="newMatch.home" /> Semleges</label>
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label>Eredmény (opcionális)</label>
+        <input type="text" [(ngModel)]="newMatch.score" name="score" />
+      </div>
     </div>
-    <ul class="match-list">
-      <li *ngFor="let match of filteredMatches">
-        <strong>{{ match.date | date:'short' }}</strong> – {{ match.home ? 'FC Barcelona' : match.opponent }}
-        vs
-        {{ match.home ? match.opponent : 'FC Barcelona' }}
-        <span *ngIf="match.score"> ({{ match.score }})</span>
-  
-        <button (click)="editMatch(match)">Szerkesztés</button>
-        <button (click)="deleteMatch(match._id!)">Törlés</button>
-      </li>
-    </ul>
+    <div class="button-row">
+      <button type="submit" class="btn primary">{{ editingMatch ? 'Mentés' : 'Hozzáadás' }}</button>
+      <button type="button" (click)="resetForm()" class="btn secondary">Mégse</button>
+    </div>
+  </form>
+
+  <!-- Szűrő -->
+  <div class="filter-bar card scroll-fade-in">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (input)="onSearchChange()"
+      placeholder="Keresés ellenfélre..."
+    />
+    <select [(ngModel)]="selectedTournament" (change)="onTournamentChange()">
+      <option value="">Összes sorozat</option>
+      <option *ngFor="let tournament of availableTournaments" [value]="tournament">
+        {{ tournament }}
+      </option>
+    </select>
   </div>
-  
+
+  <!-- Meccsek listázása -->
+  <div class="match-card-grid scroll-fade-in">
+    <div class="match-card card" *ngFor="let match of filteredMatches">
+      <div class="match-info">
+        <div class="match-meta">
+          <span class="match-date">{{ match.date | date:'short' }}</span>
+          <span class="match-competition">{{ match.competition }}</span>
+        </div>
+        <div class="match-teams">
+          {{ match.home === 'home' ? 'FC Barcelona' : match.opponent }}
+          <span class="vs">vs</span>
+          {{ match.home === 'home' ? match.opponent : 'FC Barcelona' }}
+        </div>
+        <div class="match-score" *ngIf="match.score">Eredmény: {{ match.score }}</div>
+        <div class="matchday-label">{{ match.matchday }}</div>
+      </div>
+      <div class="match-actions">
+        <button (click)="editMatch(match)" class="btn small edit">Szerkesztés</button>
+        <button (click)="deleteMatch(match._id!)" class="btn small danger">Törlés</button>
+      </div>
+    </div>
+  </div>
+</section>

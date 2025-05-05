@@ -22,7 +22,7 @@
       <img [src]="product.imageUrl" [alt]="product.name" />
       <div class="product-info">
         <h3>{{ product.name }}</h3>
-        <p>{{ product.price | currency:'EUR' }}</p>
+        <p>{{ product.price | currency:'HUF':'symbol':'1.0-0':'hu' }}</p>
       </div>
     </div> 
   </div>

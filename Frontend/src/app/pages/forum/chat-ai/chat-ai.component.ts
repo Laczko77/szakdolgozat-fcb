@@ -14,6 +14,7 @@ interface Message {
   standalone: false
 })
 export class ChatAiComponent {
+  
   messages: Message[] = [];
   userInput = '';
   isLoading = false;

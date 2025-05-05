@@ -1,34 +1,50 @@
-<div class="order-filter">
-  <select id="statusFilter" [(ngModel)]="selectedStatus">
-    <option value="all">Összes</option>
-    <option value="Feldolgozás alatt">Feldolgozás alatt</option>
-    <option value="Teljesítve">Teljesítve</option>
-  </select>
-</div>
-<div class="admin-orders" *ngIf="orders.length > 0; else noOrders">
-  <h2>Összes rendelés</h2>
+<section class="orders-admin-page scroll-fade-in">
+  
 
-  <div *ngFor="let order of filteredOrders" class="order-card">
-    <p><strong>Felhasználó:</strong> {{ order.userId?.email || 'Ismeretlen' }}</p>
-    <p><strong>Dátum:</strong> {{ order.createdAt | date:'medium' }}</p>
-    <p><strong>Státusz:</strong> {{ order.status }}</p>
-    <p><strong>Végösszeg:</strong> {{ order.totalAmount | number }} Ft</p>
+  <h2 class="section-title text-center">Rendelések</h2>
+  <div class="filter-bar card scroll-fade-in">
+    <label for="statusFilter">Szűrés státusz szerint:</label>
+    <select id="statusFilter" [(ngModel)]="selectedStatus">
+      <option value="all">Összes</option>
+      <option value="Feldolgozás alatt">Feldolgozás alatt</option>
+      <option value="Teljesítve">Teljesítve</option>
+    </select>
+  </div>
+  <div class="orders-grid scroll-fade-in" *ngIf="orders.length > 0; else noOrders">
+    
 
-    <ul>
-      <li *ngFor="let item of order.items">
-        <div><strong>{{ item.productId?.name || 'Termék' }}</strong> – {{ item.quantity }} db</div>
-        <div *ngIf="item.size">Méret: {{ item.size }}</div>
-        <div *ngIf="item.player?.name">Játékos: {{ item.player.name }}</div>
-      </li>
-    </ul>
+    <div *ngFor="let order of filteredOrders" class="order-card card">
+      <div class="order-meta">
+        <p><strong>E-mail cím:</strong> {{ order.userId?.email || 'Ismeretlen' }}</p>
+        <p><strong>Dátum:</strong> {{ order.createdAt | date:'yyyy. MMM d., HH:mm' }}</p>
+        <p><strong>Státusz:</strong> {{ order.status }}</p>
+        <p><strong>Végösszeg:</strong> {{ order.totalAmount | number }} Ft</p>
+      </div>
 
-    <div class="admin-actions">
-      <button (click)="markAsCompleted(order._id)" [disabled]="order.status === 'Teljesítve'">✅ Teljesítve</button>
-      <button (click)="deleteOrder(order._id)">❌ Törlés</button>
+      <ul class="order-items">
+        <li *ngFor="let item of order.items">
+          <strong>{{ item.productId?.name || 'Termék' }}</strong> – {{ item.quantity }} db
+          <div class="item-meta">
+            <span *ngIf="item.size">Méret: {{ item.size }}</span>
+            <span *ngIf="item.player?.name">Játékos: {{ item.player.name }}</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="admin-actions">
+        <button
+          class="btn small primary"
+          (click)="markAsCompleted(order._id)"
+          [disabled]="order.status === 'Teljesítve'"
+        >
+          ✅ Teljesítve
+        </button>
+        <button class="btn small danger" (click)="deleteOrder(order._id)">❌ Törlés</button>
+      </div>
     </div>
   </div>
-</div>
 
-<ng-template #noOrders>
-  <p>Nincsenek leadott rendelések.</p>
-</ng-template>
+  <ng-template #noOrders>
+    <p class="no-orders-message">Nincsenek leadott rendelések.</p>
+  </ng-template>
+</section>

@@ -33,7 +33,7 @@
               <div class="item-meta">
                 <p>Kategória: {{ item.productId.category }}</p>
                 <p *ngIf="item.size">Méret: {{ item.size }}</p>
-                <p>Ár: {{ item.productId.price | currency:'EUR' }}</p>
+                <p>Ár: {{ item.productId.price | currency:'HUF':'symbol':'1.0-0':'hu' }}</p>
                 <p *ngIf="item.player">Játékos: {{ item.player.name }}</p>
               </div>
           
@@ -54,7 +54,7 @@
         <div class="summary-box">
           <h3>Összegzés</h3>
           <p>Termékek száma: {{ totalQuantity }}</p>
-          <p>Végösszeg: {{ totalPrice | currency:'EUR' }}</p>
+          <p>Végösszeg: {{ totalPrice | currency:'HUF':'symbol':'1.0-0':'hu' }}</p>
           <button class="btn primary full" (click)="openShippingModal()">Rendelés leadása</button>
         </div>
       </div>
@@ -78,7 +78,5 @@
         </div>
       </div>
     </div>
-    
-
   </section>
 </ng-template>

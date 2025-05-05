@@ -14,7 +14,7 @@ export class MatchAdminComponent implements OnInit {
   selectedTournament: string = '';
   filteredMatches: Match[] = [];
 
-  availableTournaments: string[] = [
+  availableTournaments: string[] = [ 
     'La Liga',
     'Bajnokok Ligája',
     'Copa del Rey',
@@ -72,8 +72,18 @@ export class MatchAdminComponent implements OnInit {
 
   editMatch(match: Match): void {
     this.editingMatch = match;
-    this.newMatch = { ...match };
+  
+    // Biztonságos másolás, hogy az ngModel reagáljon
+    this.newMatch = {
+      date: match.date,
+      competition: match.competition,
+      matchday: match.matchday,
+      opponent: match.opponent,
+      home: match.home,
+      score: match.score || ''
+    };
   }
+  
 
   deleteMatch(id: string): void {
     if (confirm('Biztosan törlöd a meccset?')) {

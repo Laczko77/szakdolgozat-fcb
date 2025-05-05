@@ -1,48 +1,54 @@
-<div class="news-admin-container">
+<section class="news-admin-page scroll-fade-in">
+  <div class="card news-form-container">
+    <h2>{{ selectedNews ? 'Hír szerkesztése' : 'Új hír létrehozása' }}</h2>
 
-  <div class="news-form-container">
-    <h3 *ngIf="selectedNews; else newForm">Hír szerkesztése</h3>
-    <ng-template #newForm><h3>Új hír létrehozása</h3></ng-template>
+    <form [formGroup]="newsForm" (ngSubmit)="submit()" id="newsForm" class="news-form">
+      <div class="form-group">
+        <label for="title">Cím</label>
+        <input id="title" type="text" formControlName="title" />
+      </div>
 
-    <form [formGroup]="newsForm" (ngSubmit)="submit()" id="newsForm">
-      <label for="title">Cím</label>
-      <input id="title" type="text" formControlName="title" />
+      <div class="form-group">
+        <label for="content">Tartalom</label>
+        <textarea id="content" formControlName="content" rows="6"></textarea>
+      </div>
 
-      <label for="content">Tartalom</label>
-      <textarea id="content" formControlName="content" rows="5"></textarea>
+      <div class="form-group">
+        <label for="image">Kép</label>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
 
-      <label for="imageUrl">Kép</label>
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-
-      <button type="submit" [disabled]="isSubmitting">
-        {{ selectedNews ? 'Frissítés' : 'Létrehozás' }}
-      </button>
-
-      <button type="button" class="cancel" *ngIf="selectedNews" (click)="clearForm()">
-        Mégse
-      </button>
+      <div class="button-row">
+        <button type="submit" class="btn primary" [disabled]="isSubmitting">
+          {{ selectedNews ? 'Frissítés' : 'Létrehozás' }}
+        </button>
+        <button type="button" class="btn secondary" *ngIf="selectedNews" (click)="clearForm()">Mégse</button>
+      </div>
     </form>
   </div>
 
-  <h2>Hírek kezelése</h2>
+  <h2 class="section-title">Hírek kezelése</h2>
 
-  <input
-    type="text"
-    [(ngModel)]="searchTerm"
-    placeholder="Keresés cím alapján..."
-    class="search-bar"
-  />
+  <div class="filter-bar card scroll-fade-in">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Keresés cím alapján..."
+    />
+  </div>
 
-  <div class="news-grid">
-    <div *ngFor="let news of filteredNews()" class="news-card">
+  <div class="news-grid scroll-fade-in">
+    <div class="news-card card" *ngFor="let news of filteredNews()">
       <img [src]="news.imageUrl" alt="Hír képe" />
-      <div class="news-content">
-        <h4>{{ news.title }}</h4>
+      <div class="news-info">
+        <h4 class="news-title">{{ news.title }}</h4>
         <div class="news-actions">
-          <button (click)="edit(news)">Szerkesztés</button>
-          <button (click)="deleteNews(news._id!)">Törlés</button>
+          <div class="news-actions absolute-actions">
+            <button class="btn small edit" (click)="edit(news)">Szerkesztés</button>
+            <button class="btn small danger" (click)="deleteNews(news._id!)">Törlés</button>
+          </div>          
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>

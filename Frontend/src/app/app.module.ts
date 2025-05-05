@@ -32,8 +32,11 @@ import { LeaderboardComponent } from './pages/polls/leaderboard/leaderboard.comp
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ChatAiComponent } from './pages/forum/chat-ai/chat-ai.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeHu from '@angular/common/locales/hu';
 
-
+registerLocaleData(localeHu);
 
 
 @NgModule({ declarations: [
@@ -89,7 +92,9 @@ import { FooterComponent } from '../shared/footer/footer.component';
 
 
     providers: [
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        { provide: LOCALE_ID, useValue: 'hu-HU' }
+        
         
     ] 
 
