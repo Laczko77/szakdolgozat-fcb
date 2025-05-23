@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials.email, credentials.password).subscribe(
       (response) => {
         console.log('Login successful:', response);
-        this.router.navigateByUrl(this.returnUrl); // ➕ visszairányítás
+        this.router.navigateByUrl(this.returnUrl); 
       },
       (error) => {
         console.error('Login failed:', error);
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
   handleGoogleResponse(response: any) {
     const credential = response.credential;
 
-    this.http.post<any>('http://localhost:3000/api/users/google-login', { token: credential })
+    this.http.post<any>('https://szakdolgozat-fcb.onrender.com/api/users/google-login', { token: credential })
       .subscribe(
         (res) => {
           console.log('Google login sikeres:', res);
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
           this.authService['tokenSubject'].next(res.token);
 
           setTimeout(() => {
-            this.router.navigateByUrl(this.returnUrl); // ➕ visszairányítás Google login után is
+            this.router.navigateByUrl(this.returnUrl);
           }, 100);
         },
         (err) => {

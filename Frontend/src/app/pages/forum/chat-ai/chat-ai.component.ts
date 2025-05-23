@@ -35,7 +35,7 @@ export class ChatAiComponent {
       ]
     };
 
-    this.http.post<any>('http://localhost:3000/api/chat', payload).subscribe({
+    this.http.post<any>('https://szakdolgozat-fcb.onrender.com/api/chat', payload).subscribe({
       next: (res) => {
         const reply = res.choices?.[0]?.message?.content || '[Nincs válasz]';
         this.messages.push({ role: 'assistant', content: reply });
