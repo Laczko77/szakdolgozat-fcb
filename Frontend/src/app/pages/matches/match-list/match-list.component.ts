@@ -52,7 +52,7 @@ export class MatchListComponent implements OnInit, AfterViewInit {
         
       });
     }, {
-      threshold: 0.05
+      threshold: 0.03
     });
 
     this.fadeElements.changes.subscribe((elements: QueryList<ElementRef>) => {

@@ -21,9 +21,8 @@ const createProduct = async (req, res) => {
       return res.status(400).json({ error: 'A kategória megadása kötelező és legalább 2 karakteres.' });
     }
 
-    const imageUrl = req.file
-      ? `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`
-      : '';
+    const imageUrl = req.file ? req.file.path : '';
+
 
     const newProduct = new Product({
       name: name.trim(),
@@ -59,16 +58,12 @@ const updateProduct = async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ error: 'Termék nem található.' });
 
-    // Új kép feltöltése esetén régi törlése
+    
     if (req.file) {
-      if (product.imageUrl) {
-        const oldPath = `${product.imageUrl}`;
-        fs.unlink(oldPath, err => {
-          if (err) console.error('Régi kép törlése sikertelen:', err);
-        });
-      }
-      product.imageUrl = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
+  
+      product.imageUrl = req.file.path;
     }
+
 
     // Validált frissítések
     if (req.body.name !== undefined) {
@@ -115,7 +110,7 @@ const deleteProduct = async (req, res) => {
     if (!product) return res.status(404).json({ error: 'Termék nem található.' });
 
     // ha volt kép, akkor töröljük a fájlt
-    if (product.imageUrl) {
+    /*if (product.imageUrl) {
       const imageFileName = product.imageUrl.split('/uploads/products/')[1];
       if (imageFileName) {
         const filePath = path.join(__dirname, '..', 'uploads', 'products', imageFileName);
@@ -123,7 +118,7 @@ const deleteProduct = async (req, res) => {
           if (err) console.error('Nem sikerült törölni a képet:', err);
         });
       }
-    }
+    }*/
 
     await product.deleteOne();
     res.json({ message: 'Termék törölve.' });

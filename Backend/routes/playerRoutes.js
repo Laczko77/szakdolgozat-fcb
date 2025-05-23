@@ -9,16 +9,17 @@ const {
 } = require('../controllers/playerController');
 const { authenticateToken, requireAdmin } = require('../middlewares/authMiddleware');
 
+const { cloudinary } = require('../services/cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const path = require('path');
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/players/');
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'players', // Cloudinary-n ebbe a mappába mennek a képek
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    public_id: (req, file) => Date.now().toString(),
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 const upload = multer({ storage });
 

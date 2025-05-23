@@ -2,18 +2,21 @@ const express = require('express');
 const router = express.Router();
 const newsController = require('../controllers/newsController');
 const { authenticateToken, requireAdmin } = require('../middlewares/authMiddleware');
-const multer = require('multer');
-const path = require('path');
+const { cloudinary } = require('../services/cloudinary'); // vagy ahova raktad!
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer'); 
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/news/');
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'news', // minden típusnál más lehet pl. 'players', 'products'
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    public_id: (req, file) => Date.now().toString(),
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 const upload = multer({ storage });
+
 
 // Publikus hírek lekérése
 router.get('/', newsController.getAllNews);

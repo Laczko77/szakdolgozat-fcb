@@ -6,9 +6,8 @@ const path = require('path');
 const createForumPost = async (req, res) => {
   try {
     const { text } = req.body;
-    const imageUrl = req.file
-      ? `${req.protocol}://${req.get('host')}/uploads/forum/${req.file.filename}`
-      : '';
+    const imageUrl = req.file ? req.file.path : '';
+
 
     if ((!text || text.trim().length < 3) && !imageUrl) {
       return res.status(400).json({ error: 'Legalább 3 karakteres szöveg vagy kép megadása szükséges.' });
@@ -55,14 +54,9 @@ const updateForumPost = async (req, res) => {
 
     // Ha új kép jön, régi törlése
     if (req.file) {
-      if (post.imageUrl) {
-        const oldPath = `.${post.imageUrl}`;
-        fs.unlink(oldPath, err => {
-          if (err) console.error('Régi kép törlése sikertelen:', err);
-        });
-      }
-      post.imageUrl = `${req.protocol}://${req.get('host')}/uploads/forum/${req.file.filename}`;
+      post.imageUrl = req.file.path;
     }
+
 
     if (req.body.text !== undefined) {
       const trimmedText = req.body.text.trim();
@@ -91,7 +85,7 @@ const deleteForumPost = async (req, res) => {
     if (!post) return res.status(404).json({ error: 'Bejegyzés nem található.' });
 
     // ha volt kép, akkor töröljük a fájlt
-    if (post.imageUrl) {
+    /*if (post.imageUrl) {
       const imageFileName = post.imageUrl.split('/uploads/forum/')[1];
       if (imageFileName) {
         const filePath = path.join(__dirname, '..', 'uploads', 'forum', imageFileName);
@@ -99,7 +93,7 @@ const deleteForumPost = async (req, res) => {
           if (err) console.error('Nem sikerült törölni a képet:', err);
         });
       }
-    }
+    }*/
 
     await post.deleteOne();
     res.json({ message: 'Bejegyzés törölve.' });

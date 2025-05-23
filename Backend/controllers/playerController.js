@@ -63,9 +63,7 @@ const createPlayer = async (req, res) => {
       appearances: Number(appearances) || 0,
       goals: Number(goals) || 0,
       assists: Number(assists) || 0,
-      imageUrl: req.file
-        ? `${req.protocol}://${req.get('host')}/uploads/players/${req.file.filename}`
-        : ''
+      imageUrl: req.file ? req.file.path : ''
     };
 
     const newPlayer = new Player(playerData);
@@ -90,12 +88,7 @@ const updatePlayer = async (req, res) => {
     const data = req.body;
 
     if (req.file) {
-      // Régi kép törlése
-      if (existingPlayer.imageUrl) {
-        const oldPath = path.join(__dirname, '..', 'uploads', 'players', path.basename(existingPlayer.imageUrl));
-        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-      }
-      data.imageUrl = `${req.protocol}://${req.get('host')}/uploads/players/${req.file.filename}`;
+      data.imageUrl = req.file.path;
     }
 
     const updated = await Player.findByIdAndUpdate(req.params.id, data, { new: true });
@@ -113,12 +106,12 @@ const deletePlayer = async (req, res) => {
     if (!player) return res.status(404).json({ message: 'Játékos nem található' });
 
     // Ha van feltöltött kép, töröljük a fájlt
-    if (player.imageUrl) {
+    /*if (player.imageUrl) {
       const imagePath = path.join(__dirname, '..', 'uploads', 'players', path.basename(player.imageUrl));
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
       }
-    }
+    }*/
 
     await player.deleteOne();
     res.json({ message: 'Játékos törölve' });

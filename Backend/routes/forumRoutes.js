@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const { authenticateToken } = require('../middlewares/authMiddleware');
-const multer = require('multer');
 const forumController = require('../controllers/forumController');
+const { cloudinary } = require('../services/cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
 
 
 // képfeltöltés konfiguráció
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/forum/'),
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'forum',
+    allowed_formats: ['jpg', 'jpeg', 'png'],
+    public_id: (req, file) => Date.now().toString(),
+  },
 });
 const upload = multer({ storage });
 

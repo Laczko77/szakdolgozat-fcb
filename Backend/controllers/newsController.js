@@ -25,9 +25,8 @@ const createNews = async (req, res) => {
       return res.status(400).json({ message: 'A tartalom legalább 10 karakter hosszú legyen.' });
     }
 
-    const imageUrl = req.file
-      ? `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`
-      : '';
+    const imageUrl = req.file ? req.file.path : '';
+
 
     const newNews = new News({
       title: title.trim(),
@@ -54,12 +53,12 @@ const deleteNews = async (req, res) => {
     if (!news) return res.status(404).json({ message: 'Hír nem található' });
 
     // Régi kép törlése, ha van
-    if (news.imageUrl) {
+    /*if (news.imageUrl) {
       const imagePath = path.join(__dirname, '..', 'uploads', 'news', path.basename(news.imageUrl));
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
       }
-    }
+    }*/
 
     await News.findByIdAndDelete(req.params.id);
     res.json({ message: 'Hír sikeresen törölve' });
@@ -101,13 +100,7 @@ const updateNews = async (req, res) => {
     }
 
     if (req.file) {
-      // töröljük a régit
-      if (news.imageUrl) {
-        const oldImagePath = path.join(__dirname, '..', 'uploads', 'news', path.basename(news.imageUrl));
-        if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
-      }
-
-      updateData.imageUrl = `${req.protocol}://${req.get('host')}/uploads/news/${req.file.filename}`;
+      updateData.imageUrl = req.file.path;
     }
 
     const updated = await News.findByIdAndUpdate(req.params.id, updateData, { new: true });
@@ -117,6 +110,7 @@ const updateNews = async (req, res) => {
     res.status(500).json({ message: 'Szerverhiba a hír frissítésekor.' });
   }
 };
+
 
 
 
