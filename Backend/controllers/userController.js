@@ -64,6 +64,7 @@ const login = async (req, res) => {
 // Google OAuth login függvény
 const googleLogin = async (req, res) => {
   const { token } = req.body;
+  console.log("Kapott Google token:", token?.slice(0, 40) + '...');
 
   try {
     const ticket = await client.verifyIdToken({
@@ -72,6 +73,7 @@ const googleLogin = async (req, res) => {
     });
 
     const payload = ticket.getPayload();
+    console.log("Google token payload:", payload);
     const { email, name } = payload;
 
     let user = await userService.findUserByEmail(email);
@@ -103,6 +105,7 @@ const googleLogin = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    console.error("Google token validation error:", error);
     res.status(401).json({ message: 'Invalid Google token' });
   }
 };

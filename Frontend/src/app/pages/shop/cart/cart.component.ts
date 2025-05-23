@@ -203,8 +203,8 @@ export class CartComponent implements OnInit, AfterViewInit {
               order_id: createdOrder.order?._id || '',
               email: user.email || '',
               orders: createdOrder.order?.items.map((item: any) => ({
-                image_url: item.imageUrl || '',           // ➔ közvetlenül az Orderből
-                name: item.name || 'Termék',               // ➔ közvetlenül az Orderből
+                image_url: item.imageUrl || '',           
+                name: item.name || 'Termék',               
                 units: item.quantity,
                 price: item.price || 0,
                 size: item.size || '-',
