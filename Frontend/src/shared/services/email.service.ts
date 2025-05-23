@@ -1,5 +1,5 @@
 import emailjs from '@emailjs/browser';
-import { environment } from '../enviroments/enviroment';
+import { environment } from '../../enviroments/enviroment.prod';
 
 export function sendOrderEmail(orderData: any) {
     const serviceID = environment.emailjsServiceId;
