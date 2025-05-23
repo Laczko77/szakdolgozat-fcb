@@ -6,10 +6,11 @@ import { HttpErrorHandlerService } from './http-error-handler.service';
 import { AuthService } from './auth.service';
 import { Product } from '../../app/pages/shop/product-admin/product-admin.component';
 import { Player } from './player.service';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private apiUrl = 'http://localhost:3000/api/products';
+  private apiUrl = environment.apiUrl + '/products';
 
   constructor(
     private http: HttpClient,

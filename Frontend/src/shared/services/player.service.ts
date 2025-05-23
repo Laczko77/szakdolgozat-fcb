@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
+import { environment } from '../../environments/environment.prod';
 
 export interface Player {
   _id?: string;
@@ -20,7 +21,7 @@ export interface Player {
 
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
-  private apiUrl = 'http://localhost:3000/api/players';
+  private apiUrl = environment.apiUrl + '/players';
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 

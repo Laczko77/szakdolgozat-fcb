@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
+import { environment } from '../../environments/environment.prod';
 
 export interface Order {
   _id: string;
@@ -30,7 +31,7 @@ export interface ProductOrderItem {
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private apiUrl = 'http://localhost:3000/api/orders';
+  private apiUrl = environment.apiUrl + '/orders';
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 

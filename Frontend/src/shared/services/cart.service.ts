@@ -7,6 +7,7 @@ import { Player } from './player.service';
 import { Product } from '../../app/pages/shop/product-admin/product-admin.component';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment.prod';
 
 export interface CartItem {
 [x: string]: any;
@@ -28,7 +29,7 @@ export interface Cart {
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private apiUrl = 'http://localhost:3000/api/cart';
+  private apiUrl = environment.apiUrl + '/cart';
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 

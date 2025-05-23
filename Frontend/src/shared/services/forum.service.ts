@@ -4,12 +4,13 @@ import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ForumService {
-  private apiUrl = 'http://localhost:3000/api/forum';
+  private apiUrl = environment.apiUrl + '/forum';
 
   constructor(
     private http: HttpClient,

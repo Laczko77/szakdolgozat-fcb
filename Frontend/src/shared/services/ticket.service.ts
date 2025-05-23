@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
+import { environment } from '../../environments/environment.prod';
 
 export interface TicketRequest {
   matchId: string;
@@ -18,7 +19,7 @@ export interface TicketResponse {
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
-  private apiUrl = 'http://localhost:3000/api/tickets';
+  private apiUrl = environment.apiUrl + '/tickets';
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 

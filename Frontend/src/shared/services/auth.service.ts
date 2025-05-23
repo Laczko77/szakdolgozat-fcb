@@ -4,12 +4,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { catchError, tap, map } from 'rxjs/operators';
 import { HttpErrorHandlerService } from './http-error-handler.service';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/users';
+  private apiUrl = environment.apiUrl + '/users';
   private tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('token'));
   authStatus$ = this.tokenSubject.asObservable().pipe(map(token => !!token));
 
