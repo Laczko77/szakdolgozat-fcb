@@ -13,7 +13,7 @@ export interface News {
 
 @Injectable({ providedIn: 'root' })
 export class NewsService {
-  private apiUrl = 'http://localhost:3000/api/news';
+  private apiUrl = 'https://szakdolgozat-fcb.onrender.com/api/news';
 
   constructor(private http: HttpClient, private errorHandler: HttpErrorHandlerService) {}
 

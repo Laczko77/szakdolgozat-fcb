@@ -28,7 +28,7 @@ const port = 3000;
 
 
 // Middleware-ek
-app.use(cors());
+app.use(cors({ origin: 'https://szakdolgozat-fcb-frontend.onrender.com' }));
 // A CORS middleware engedélyezése, hogy a frontend és backend külön porton kommunikálhasson.
 
 app.use(express.json());
