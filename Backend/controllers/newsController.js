@@ -79,6 +79,8 @@ const getNewsById = async (req, res) => {
 
 
 const updateNews = async (req, res) => {
+  console.log('updateNews req.body:', req.body);
+  console.log('updateNews req.file:', req.file);
   try {
     const news = await News.findById(req.params.id);
     if (!news) return res.status(404).json({ message: 'Hír nem található' });
