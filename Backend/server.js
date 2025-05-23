@@ -91,6 +91,6 @@ app.use('/api/chat', chatRoutes);
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at https://szakdolgozat-fcb-frontend.onrender.com`);
 });
 // A szerver elindítása a 3000-es porton. A konzolon megjelenik egy üzenet a sikeres induláskor.
