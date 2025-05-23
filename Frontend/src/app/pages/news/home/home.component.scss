@@ -1,20 +1,51 @@
 .hero-section {
-  background-image: url('/assets/home/hatter.png'); 
-  background-size: cover;
-  background-position: center;
-  height: 90vh;
   position: relative;
+  height: 90vh;
   display: flex;
   align-items: flex-end;
   padding: 2rem;
+  overflow: hidden;
+
+  .hero-bg-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%; // vagy center center, kísérletezd ki!
+    z-index: 0;
+    filter: none;
+    pointer-events: none;
+    user-select: none;
+  }
 
   .hero-text {
+    position: relative;
+    z-index: 2;
     color: white;
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: bold;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
   }
+
+  @media (max-width: 1024px) {
+    height: 48vh;
+    min-height: 200px;
+    .hero-text {
+      font-size: 2.3rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+  @media (max-width: 600px) {
+    height: 36vh;
+    min-height: 110px;
+    padding: 0.6rem;
+    .hero-text {
+      font-size: 1.5rem;
+    }
+  }
 }
+
 
 .news-section {
 

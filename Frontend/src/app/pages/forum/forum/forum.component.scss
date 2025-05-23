@@ -1,20 +1,53 @@
 .forum-hero-section {
-  background-image: url('/assets/home/hatter.png');
-  background-size: cover;
-  background-position: center;
+  position: relative;
   height: 90vh;
   display: flex;
   align-items: flex-end;
   padding: 2rem;
+  overflow: hidden;
+
+  .forum-hero-bg-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%; // vagy center center, ha az jobb a képedhez
+    z-index: 0;
+    filter: none;
+    pointer-events: none;
+    user-select: none;
+  }
 
   .hero-text {
+    position: relative;
+    z-index: 2;
     font-size: 3rem;
     font-weight: bold;
     color: white;
     text-shadow: 0 0 10px black;
     font-family: 'Barlow Condensed', sans-serif;
   }
+
+  @media (max-width: 1024px) {
+    height: 48vh;
+    min-height: 150px;
+    padding: 1rem;
+    .hero-text {
+      font-size: 1.7rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+  @media (max-width: 600px) {
+    height: 32vh;
+    min-height: 80px;
+    padding: 0.6rem;
+    .hero-text {
+      font-size: 1.05rem;
+    }
+  }
 }
+
 
 .forum-section {
   padding: 2rem;
@@ -96,7 +129,7 @@
 
       .post-body {
         p {
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           margin-bottom: 0.7rem;
         }
 

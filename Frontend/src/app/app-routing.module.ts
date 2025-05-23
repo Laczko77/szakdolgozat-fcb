@@ -4,51 +4,54 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component'; // Profile importálása
 import { AuthGuard } from '../shared/services/auth.guard';// AuthGuard importálása
-import { HomeComponent } from './pages/main/home/home.component';
-import { NewsDetailComponent } from './pages/news/news-detail/news-detail.component';
-import { NewsCreateComponent } from './pages/news/news-create/news-create.component';
-import { ProductAdminComponent } from './pages/shop/product-admin/product-admin.component';
-import { ShopComponent } from './pages/shop/shop/shop.component';
-import { ProductDetailComponent } from './pages/shop/product-detail/product-detail.component';
-import { CartComponent } from './pages/shop/cart/cart.component';
-import { OrdersComponent } from './pages/shop/orders/orders.component';
-import { OrdersAdminComponent } from './pages/shop/orders-admin/orders-admin.component';
-import { MatchAdminComponent } from './pages/matches/match-admin/match-admin.component';
-import { MatchListComponent } from './pages/matches/match-list/match-list.component';
-import { PlayerAdminComponent } from './pages/squad/player-admin/player-admin.component';
-import { PlayerListComponent } from './pages/squad/player-list/player-list.component';
-import { TicketPurchaseComponent } from './pages/matches/ticket-purchase/ticket-purchase.component';
-import { ForumComponent } from './pages/forum/forum/forum.component';
-import { PollAdminComponent } from './pages/polls/poll-admin/poll-admin.component';
-import { PollUserComponent } from './pages/polls/poll-user/poll-user.component';
-import { LeaderboardComponent } from './pages/polls/leaderboard/leaderboard.component';
+
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'news/create', component: NewsCreateComponent, canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'news/:id', component: NewsDetailComponent },
-  { path: 'shop/admin', component: ProductAdminComponent,canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'shop', component: ShopComponent },
-  { path: 'shop/product/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
-  { path: 'cart', component: CartComponent,canActivate: [AuthGuard] },
-  { path: 'orders', component: OrdersComponent, canActivate: [AuthGuard] },
-  { path: 'admin/orders', component: OrdersAdminComponent, canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'admin/matches', component: MatchAdminComponent, canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'matches', component: MatchListComponent },
-  { path: 'admin/players', component: PlayerAdminComponent, canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'players', component: PlayerListComponent },
-  { path: 'tickets/purchase/:id', component: TicketPurchaseComponent, canActivate: [AuthGuard] },
-  { path: 'admin/poll', component: PollAdminComponent, canActivate: [AuthGuard], data: { adminOnly: true } },
-  { path: 'polls', component: PollUserComponent, canActivate: [AuthGuard] },
-  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard] },
-  { path: 'forum', component: ForumComponent, canActivate: [AuthGuard] }
+
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/news/news.module').then(m => m.NewsModule)
+  }
+,  
   
-];
+  {
+    path: 'shop',
+    loadChildren: () => import('./pages/shop/shop.module').then(m => m.ShopModule)
+  },
+  
+  
+  {
+    path: 'players',
+    loadChildren: () => import('./pages/squad/squad.module').then(m => m.SquadModule)
+  },
+  
+  {
+    path: 'matches',
+    loadChildren: () => import('./pages/matches/matches.module').then(m => m.MatchesModule)
+  },
+  
+
+  {
+    path: 'polls',
+    loadChildren: () => import('./pages/polls/polls.module').then(m => m.PollsModule)
+  },
+  
+  {
+    path: 'forum',
+    loadChildren: () => import('./pages/forum/forum.module').then(m => m.ForumModule)
+  }
+  ,
+
+  { path: '**', redirectTo: '/home' },
+  
+]; 
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

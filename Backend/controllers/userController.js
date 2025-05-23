@@ -94,7 +94,7 @@ const googleLogin = async (req, res) => {
         role: user.role
       },
       'secretkey',
-      { expiresIn: '1h' }
+      { expiresIn: '3h' }
     );
 
     res.json({ 

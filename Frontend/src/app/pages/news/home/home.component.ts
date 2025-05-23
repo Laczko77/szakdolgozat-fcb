@@ -94,7 +94,7 @@ loadMoreNews(): void {
 
   goToDetail(id: string | undefined) {
     if (id) {
-      this.router.navigate(['/news', id]);
+      this.router.navigate(['/home/news', id]);
     }
   }
 }

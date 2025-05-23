@@ -1,9 +1,11 @@
 <section class="player-hero-section scroll-fade-in" #fadeElement>
+  <img class="player-hero-bg-img" src="/assets/home/hatter.png" alt="Játékosok háttér" />
   <div class="hero-text">JÁTÉKOSOK</div>
 </section>
 
+
 <section class="player-list-section scroll-fade-in" #fadeElement>
-  <div *ngFor="let group of groupedPlayers | keyvalue">
+  <div *ngFor="let group of groupedPlayers | keyvalue:comparePositions">
     <h2 class="position-title">{{ group.key }}</h2>
   
     <div class="player-grid scroll-fade-in" #fadeElement>

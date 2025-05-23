@@ -1,10 +1,10 @@
 .news-detail {
   padding: 7rem 2rem 4rem;
-  
+  position: relative; // hogy a vissza-gomb jól pozícionálható legyen
 
   .back-button-container {
     position: absolute;
-    top: 8rem; // navbar alá
+    top: 8rem;
     left: 2rem;
     z-index: 2;
 
@@ -27,6 +27,9 @@
     flex-direction: column;
     gap: 2rem;
     padding-top: 4.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.08);
   }
 
   .news-image {
@@ -36,6 +39,8 @@
     img {
       width: 800px;
       height: 400px;
+      max-width: 100%;
+      max-height: 48vw;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       object-fit: cover;
@@ -43,20 +48,114 @@
   }
 
   .news-content {
+    padding: 0 2rem;
+
     h1 {
       font-size: 2rem;
       margin-bottom: 1.5rem;
       color: #002b5c;
+      text-align: center;
     }
 
     .content {
       font-size: 1.1rem;
       line-height: 1.7;
       white-space: pre-line;
+      text-align: justify;
+      margin-bottom: 2rem;
     }
   }
 }
 
+/* ----------- Responsive Design ----------- */
 
+/* Tablet (769px – 1100px) */
+@media (max-width: 1100px) {
+  .news-detail {
+    padding: 7rem 0.7rem 2.5rem;
 
+    .news-container {
+      max-width: 98vw;
+      padding-top: 3rem;
+    }
+    .news-image img {
+      width: 95vw;
+      max-width: 600px;
+      height: 320px;
+      max-height: 50vw;
+    }
+    .news-content {
+      padding: 0 1rem;
+      h1 { font-size: 1.6rem; }
+      .content { font-size: 1rem; }
+    }
+    .back-button-container {
+      top: 6rem;
+      left: 1rem;
+    }
+  }
+}
 
+/* Mobil (max 768px) */
+@media (max-width: 768px) {
+  .news-detail {
+    padding: 5.5rem 0.3rem 1.5rem;
+
+    .news-container {
+      padding-top: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 3px 16px rgba(0,0,0,0.10);
+      gap: 1.2rem;
+    }
+
+    .news-image img {
+      width: 98vw;
+      max-width: 99vw;
+      height: auto;
+      min-height: 130px;
+      max-height: 46vw;
+      border-radius: 7px;
+    }
+
+    .news-content {
+      padding: 0 0.3rem;
+      h1 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+      .content {
+        font-size: 0.96rem;
+        margin-bottom: 1.2rem;
+      }
+    }
+
+    .back-button-container {
+      position: static;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 1rem;
+      left: unset;
+      top: unset;
+
+      .back-button {
+        font-size: 0.96rem;
+        padding: 0.3rem 0.8rem;
+      }
+    }
+  }
+}
+
+/* Extra kis mobil (max 400px) */
+@media (max-width: 400px) {
+  .news-detail {
+    .news-image img {
+      min-height: 80px;
+      max-height: 28vw;
+    }
+    .news-content {
+      h1 { font-size: 0.99rem; }
+      .content { font-size: 0.93rem; }
+    }
+  }
+}

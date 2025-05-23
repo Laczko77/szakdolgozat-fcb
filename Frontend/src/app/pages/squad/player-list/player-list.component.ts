@@ -11,6 +11,7 @@ import { PlayerService, Player } from '../../../../shared/services/player.servic
 export class PlayerListComponent implements OnInit , AfterViewInit{
   players: Player[] = [];
   groupedPlayers: { [key: string]: Player[] } = {};
+  positionOrder = ["Kapus", "Védő", "Középpályás", "Támadó", "Edzők", "Legenda"];
   @ViewChildren('fadeElement') fadeElements!: QueryList<ElementRef>;
 
   constructor(private playerService: PlayerService) {}
@@ -34,7 +35,7 @@ export class PlayerListComponent implements OnInit , AfterViewInit{
         
       });
     }, {
-      threshold: 0.08
+      threshold: 0.04
     });
 
     this.fadeElements.changes.subscribe((elements: QueryList<ElementRef>) => {
@@ -59,5 +60,11 @@ export class PlayerListComponent implements OnInit , AfterViewInit{
       this.groupedPlayers[key].push(player); 
     });
   }
+
+  comparePositions = (a: {key: string}, b: {key: string}) => {
+  const order = this.positionOrder;
+  return order.indexOf(a.key) - order.indexOf(b.key);
+}
+
 } 
 

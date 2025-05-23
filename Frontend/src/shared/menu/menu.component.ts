@@ -18,10 +18,14 @@ export class MenuComponent implements OnInit, OnDestroy {
   menuOpen = false;
   isVisible = true;
   lastScrollTop = 0;
-  scrollListener: any;
+  scrollListener: any; 
   isReturning = false;
   isProductDetailPage: boolean = false;
   isProductDetail: boolean = false;
+  firstTeamOpen = false;
+  socialOpen = false;
+  adminOpen = false;
+
 
 
   constructor(

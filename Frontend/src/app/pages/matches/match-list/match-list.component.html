@@ -1,6 +1,8 @@
 <section class="match-hero-section scroll-fade-in" #fadeElement>
+  <img class="match-hero-bg-img" src="/assets/home/hatter.png" alt="Mérkőzések háttér" />
   <div class="hero-text">MÉRKŐZÉSEK</div>
 </section>
+
 
 <section class="match-list-section scroll-fade-in" #fadeElement>
   <div *ngFor="let month of monthOrder">
@@ -79,13 +81,13 @@
       <button
         class="ticket-btn"
         *ngIf="!selectedMatch.score"
-        [routerLink]="['/tickets/purchase', selectedMatch._id]"
+        [routerLink]="['/matches/tickets/purchase', selectedMatch._id]"
         (click)="$event.stopPropagation()"
       >
         Jegyvásárlás
       </button>
     </div>    
   </div>
-</div>
+</div> 
 
 

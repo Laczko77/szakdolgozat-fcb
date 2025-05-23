@@ -15,13 +15,10 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 // Az `authRoutes` importálása, amely az autentikációhoz kapcsolódó végpontokat tartalmazza.
 
-// MongoDB kapcsolódás
-mongoose.connect('mongodb://localhost:27017/Szakdolgozat')
-// Kapcsolódás a helyi MongoDB adatbázishoz, a `Szakdolgozat` nevű adatbázisba.
-  .then(() => console.log('MongoDB connected'))
-  // Ha a kapcsolat sikeres, megjelenik egy üzenet a konzolon.
-  .catch(err => console.log('MongoDB connection error: ', err));
-  // Ha hiba történik a kapcsolódás során, a hibát kiírja a konzolra.
+// MongoDB kapcsolódás Atlashoz (env-ből olvassa ki!)
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('MongoDB Atlas connected!'))
+.catch(err => console.log('MongoDB connection error: ', err));
 
 const app = express();
 // Az Express alkalmazás példányosítása.

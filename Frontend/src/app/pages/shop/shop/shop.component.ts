@@ -50,7 +50,7 @@ export class ShopComponent implements OnInit, AfterViewInit {
         
       });
     }, {
-      threshold: 0.08
+      threshold: 0.05
     });
 
     this.fadeElements.changes.subscribe((elements: QueryList<ElementRef>) => {

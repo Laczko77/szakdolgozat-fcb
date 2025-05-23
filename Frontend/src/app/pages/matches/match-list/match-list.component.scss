@@ -1,20 +1,52 @@
 .match-hero-section {
-  background-image: url('/assets/home/hatter.png');
-  background-size: cover;
-  background-position: center;
-  height: 90vh;
   position: relative;
+  height: 90vh;
   display: flex;
   align-items: flex-end;
   padding: 2rem;
+  overflow: hidden;
+
+  .match-hero-bg-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%; // Kicsit felfelé fókuszál, hogy mobilon is jó legyen
+    z-index: 0;
+    filter: none;
+    pointer-events: none;
+    user-select: none;
+  }
 
   .hero-text {
+    position: relative;
+    z-index: 2;
     font-size: 3rem;
     font-weight: bold;
     color: white;
     text-shadow: 0 0 10px black;
   }
+
+  @media (max-width: 1024px) {
+    height: 48vh;
+    min-height: 200px;
+    padding: 1rem;
+    .hero-text {
+      font-size: 2rem;
+      padding-bottom: 0.7rem;
+    }
+  }
+  @media (max-width: 600px) {
+    height: 36vh;
+    min-height: 100px;
+    padding: 0.6rem;
+    .hero-text {
+      font-size: 1.1rem;
+    }
+  }
 }
+
 
 .match-list-section {
   padding: 2rem;

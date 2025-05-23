@@ -1,8 +1,9 @@
 <nav class="menu-container"
-[class.hovered]="!isProductDetail && hovered"
-[class.hidden]="!isProductDetail && !isVisible"
-[class.returning]="!isProductDetail && isReturning"
-[class.force-bg]="isProductDetail" (mouseenter)="hovered = true"(mouseleave)="hovered = false">
+  [class.hovered]="!isProductDetail && hovered"
+  [class.hidden]="!isProductDetail && !isVisible"
+  [class.returning]="!isProductDetail && isReturning"
+  [class.force-bg]="isProductDetail"
+  (mouseenter)="hovered = true" (mouseleave)="hovered = false">
 
   <img routerLink="/home" src="assets/home/logo.png" alt="FCB Logo" class="logo" />
 
@@ -14,67 +15,107 @@
         <a routerLink="/players">Játékosok</a>
       </div>
     </div>
-
     <a routerLink="/shop">Shop</a>
-
     <div class="dropdown">
-      <a  *ngIf="isLoggedIn" class="main-link">Social</a>
+      <a *ngIf="isLoggedIn" class="main-link">Social</a>
       <div class="dropdown-content">
         <a routerLink="/forum">Fórum</a>
         <a routerLink="/polls">Szavazások</a>
-        <a routerLink="/leaderboard">Ranglista</a>
+        <a routerLink="/polls/leaderboard">Ranglista</a>
       </div>
     </div>
-
     <div class="dropdown">
-      <a  *ngIf="isAdmin" class="main-link">Admin</a>
+      <a *ngIf="isAdmin" class="main-link">Admin</a>
       <div class="dropdown-content">
-        <a routerLink="/admin/orders">Rendelések</a>
-        <a routerLink="/admin/poll">Szavazások</a>
-
-        <a routerLink="/news/create">Hírek</a>
+        <a routerLink="/shop/admin/orders">Rendelések</a>
+        <a routerLink="/polls/admin">Szavazások</a>
+        <a routerLink="/home/news/create">Hírek</a>
         <a routerLink="/shop/admin">Termékek</a>
-        <a routerLink="/admin/matches">Meccsnaptár</a>
-        <a routerLink="/admin/players">Csapat</a>
-        
+        <a routerLink="/matches/admin">Meccsnaptár</a>
+        <a routerLink="/players/admin">Csapat</a>
       </div>
     </div>
   </div>
 
-
   <div class="right-icons">
-    <div class="cart-icon" routerLink="/cart">
+    <div class="cart-icon" routerLink="/shop/cart">
       <i class="bx bx-cart"></i>
       <span *ngIf="cartItemCount > 0" class="cart-badge">{{ cartItemCount }}</span>
     </div>
-  
-    <div class="burger-menu">
+    <!-- Desktop hamburger menü: csak desktopon -->
+    <div class="burger-menu-desktop">
       <i class="bx bx-menu"></i>
       <div class="burger-dropdown">
         <ng-container *ngIf="isLoggedIn; else guestLinks">
-          <a routerLink="/profile">
-            <i class="bx bxs-user"></i>
-            Profil
-          </a>
-          <a (click)="logout()">
-            <i class="bx bxs-log-out"></i>
-            Kijelentkezés
-          </a>
+          <a routerLink="/profile"><i class="bx bxs-user"></i>Profil</a>
+          <a (click)="logout()"><i class="bx bxs-log-out"></i>Kijelentkezés</a>
         </ng-container>
         <ng-template #guestLinks>
-          <a routerLink="/login">
-            <i class="bx bxs-log-in"></i>
-            Bejelentkezés
-          </a>
-          <a routerLink="/register">
-            <i class="bx bxs-user-plus"></i>
-            Regisztráció
-          </a>
+          <a routerLink="/login"><i class="bx bxs-log-in"></i>Bejelentkezés</a>
+          <a routerLink="/register"><i class="bx bxs-user-plus"></i>Regisztráció</a>
         </ng-template>
       </div>
     </div>
+    <!-- Mobil hamburger ikon -->
+    <div class="burger-menu-mobile">
+      <i class="bx bx-menu" (click)="menuOpen = true"></i>
+    </div>
   </div>
-  
-
-
 </nav>
+
+
+<!-- Mobil oldalsó drawer -->
+<div class="drawer-backdrop" [class.open]="menuOpen" (click)="menuOpen = false"></div>
+<aside class="side-drawer" [class.open]="menuOpen">
+  <div class="drawer-header">
+    <img routerLink="/home" src="assets/home/logo.png" class="drawer-logo" />
+    <i class="bx bx-x close-drawer" (click)="menuOpen = false"></i>
+  </div>
+  <div class="drawer-links">
+    <div class="drawer-item" (click)="firstTeamOpen = !firstTeamOpen">
+      First Team
+      <i class="bx" [class.bx-chevron-down]="!firstTeamOpen" [class.bx-chevron-up]="firstTeamOpen"></i>
+    </div>
+    <div class="drawer-sub-links" *ngIf="firstTeamOpen">
+      <a routerLink="/matches" (click)="menuOpen = false">Meccsek</a>
+      <a routerLink="/players" (click)="menuOpen = false">Játékosok</a>
+    </div>
+    <a routerLink="/shop" (click)="menuOpen = false">Shop</a>
+    <div *ngIf="isLoggedIn">
+      <div class="drawer-item" (click)="socialOpen = !socialOpen">
+        Social
+        <i class="bx" [class.bx-chevron-down]="!socialOpen" [class.bx-chevron-up]="socialOpen"></i>
+      </div>
+      <div class="drawer-sub-links" *ngIf="socialOpen">
+        <a routerLink="/forum" (click)="menuOpen = false">Fórum</a>
+        <a routerLink="/polls" (click)="menuOpen = false">Szavazások</a>
+        <a routerLink="/polls/leaderboard" (click)="menuOpen = false">Ranglista</a>
+      </div>
+    </div>
+    <div *ngIf="isAdmin">
+      <div class="drawer-item" (click)="adminOpen = !adminOpen">
+        Admin
+        <i class="bx" [class.bx-chevron-down]="!adminOpen" [class.bx-chevron-up]="adminOpen"></i>
+      </div>
+      <div class="drawer-sub-links" *ngIf="adminOpen">
+        <a routerLink="/shop/admin/orders" (click)="menuOpen = false">Rendelések</a>
+        <a routerLink="/polls/admin" (click)="menuOpen = false">Szavazások</a>
+        <a routerLink="/home/news/create" (click)="menuOpen = false">Hírek</a>
+        <a routerLink="/shop/admin" (click)="menuOpen = false">Termékek</a>
+        <a routerLink="/matches/admin" (click)="menuOpen = false">Meccsnaptár</a>
+        <a routerLink="/players/admin" (click)="menuOpen = false">Csapat</a>
+      </div>
+
+    </div>
+    <hr>
+    <ng-container *ngIf="isLoggedIn; else guestLinks">
+      <a routerLink="/profile" (click)="menuOpen = false"><i class="bx bxs-user"></i>Profil</a>
+      <a (click)="logout(); menuOpen = false"><i class="bx bxs-log-out"></i>Kijelentkezés</a>
+    </ng-container>
+    <ng-template #guestLinks>
+      <a routerLink="/login" (click)="menuOpen = false"><i class="bx bxs-log-in"></i>Bejelentkezés</a>
+      <a routerLink="/register" (click)="menuOpen = false"><i class="bx bxs-user-plus"></i>Regisztráció</a>
+    </ng-template>
+
+  </div>
+</aside>

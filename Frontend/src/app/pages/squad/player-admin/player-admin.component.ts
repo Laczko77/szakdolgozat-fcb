@@ -1,4 +1,3 @@
-
 import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
 import { PlayerService, Player } from '../../../../shared/services/player.service';
 
@@ -17,6 +16,7 @@ export class PlayerAdminComponent implements OnInit {
   filteredPlayers: Player[] = [];
   selectedFile: File | null = null;
   @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('formTop') formTop!: ElementRef;
 
   constructor(private playerService: PlayerService) {}
 
@@ -89,6 +89,9 @@ export class PlayerAdminComponent implements OnInit {
   editPlayer(player: Player): void {
     this.editingPlayer = player;
     this.newPlayer = { ...player };
+    setTimeout(() => {
+      this.formTop?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
   }
 
   deletePlayer(id: string): void {

@@ -2,7 +2,7 @@
   <div class="order-success scroll-fade-in" #fadeElement>
     <h2>Sikeres rendelés!</h2>
     <p>Köszönjük a rendelésed. A részleteket megtalálod a rendeléseid között.</p>
-    <button routerLink="/orders" class="btn primary">Rendeléseim megtekintése</button>
+    <button routerLink="/shop/orders" class="btn primary">Rendeléseim megtekintése</button>
   </div>
 </div>
 
@@ -17,7 +17,7 @@
         <div *ngIf="cart.items.length === 0" class="empty-cart">
           <p>A kosarad üres!</p>
           <button routerLink="/shop" class="btn secondary">Vásárlás folytatása</button>
-          <button routerLink="/orders" class="btn secondary">Rendeléseim megtekintése</button>
+          <button routerLink="/shop/orders" class="btn secondary">Rendeléseim megtekintése</button>
         </div>
 
         <div *ngIf="cart.items.length > 0">

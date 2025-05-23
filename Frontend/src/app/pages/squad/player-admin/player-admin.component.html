@@ -1,5 +1,5 @@
 <section class="player-admin-page scroll-fade-in">
-  <div class="card player-form-container">
+  <div class="card player-form-container" #formTop>
     <h2>{{ editingPlayer ? 'Játékos szerkesztése' : 'Új játékos hozzáadása' }}</h2>
   
     <form (ngSubmit)="savePlayer()" class="player-form form-grid">
@@ -69,7 +69,9 @@
       <option value="Kapus">Kapus</option>
       <option value="Védő">Védő</option>
       <option value="Középpályás">Középpályás</option>
-      <option value="Csatár">Támadó</option>
+      <option value="Támadó">Támadó</option>
+      <option value="Edző">Edző</option>
+      <option value="Legenda">Legenda</option>
     </select>
   </div>
 

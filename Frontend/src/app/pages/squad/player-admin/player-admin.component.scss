@@ -107,7 +107,7 @@
   }
 
   .player-card {
-    position: relative;
+     position: relative;
     max-width: 400px;
     margin: 0 auto;
     padding-bottom: 4rem;
@@ -123,6 +123,7 @@
     .player-info {
       text-align: center;
       margin-top: 1rem;
+      position: relative; 
 
       .player-name {
         font-size: 1.2rem;
@@ -136,10 +137,12 @@
 
       .player-actions.absolute-actions {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-        display: flex;
+        bottom: -2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex; 
         gap: 0.5rem;
+        width: auto;
       }
     }
   }
