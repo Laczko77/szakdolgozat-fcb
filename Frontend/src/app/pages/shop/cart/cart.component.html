@@ -55,13 +55,13 @@
           <h3>Összegzés</h3>
           <p>Termékek száma: {{ totalQuantity }}</p>
           <p>Végösszeg: {{ totalPrice | currency:'HUF':'symbol':'1.0-0':'hu' }}</p>
-          <button class="btn primary full" (click)="placeOrder()">Rendelés leadása</button>
+          <button class="btn primary full" (click)="openShippingModal()">Rendelés leadása</button>
         </div>
       </div>
     </div>
 
     <!-- MODAL -->
-    <!--<div class="modal-overlay" *ngIf="isShippingModalOpen" (click)="closeShippingModal()">
+    <div class="modal-overlay" *ngIf="isShippingModalOpen" (click)="closeShippingModal()">
       <div class="shipping-modal" (click)="$event.stopPropagation()">
         <h3>Szállítási adatok</h3>
         <form [formGroup]="shippingForm" class="shipping-form">
@@ -77,6 +77,6 @@
           <button class="btn primary" [disabled]="shippingForm.invalid" (click)="submitShippingAndOrder()">Rendelés leadása</button>
         </div>
       </div>
-    </div>-->
+    </div>
   </section>
 </ng-template>
