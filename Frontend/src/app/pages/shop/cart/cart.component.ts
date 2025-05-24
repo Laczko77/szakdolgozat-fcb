@@ -198,6 +198,8 @@ export class CartComponent implements OnInit, AfterViewInit {
         this.orderService.placeOrder().subscribe({
           next: (createdOrder) => {
             console.log('✅ Rendelés sikeresen leadva:', createdOrder);
+            
+
   
             const orderData = {
               order_id: createdOrder.order?._id || '',
@@ -213,8 +215,9 @@ export class CartComponent implements OnInit, AfterViewInit {
               cost: {
                 total: createdOrder.order?.totalAmount || 0
               }
+              
             };
-  
+            console.log('Orders részletesen:', orderData.orders);
             console.log('📦 Email küldésre előkészített adatok:', orderData);
   
             sendOrderEmail(orderData)
